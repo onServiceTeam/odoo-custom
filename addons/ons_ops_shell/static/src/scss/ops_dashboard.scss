@@ -1,0 +1,53 @@
+/* ═══════════════════════════════════════════════════════════════
+   Operations Dashboard — Styles
+   
+   Uses Odoo/Bootstrap CSS variables for theme compatibility.
+   Works with both light and dark modes.
+   ═══════════════════════════════════════════════════════════════ */
+
+.o_ops_dashboard {
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.o_ops_title {
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+/* ── KPI Cards ──────────────────────────────────────────────── */
+
+.o_ops_kpi_card {
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, transform 0.15s ease;
+    border: 1px solid var(--o-color-border, #{$border-color});
+
+    &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transform: translateY(-2px);
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--o-brand-primary, #{$o-brand-primary});
+        outline-offset: 2px;
+    }
+}
+
+.o_ops_kpi_value {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--o-color-text, inherit);
+}
+
+.o_ops_kpi_label {
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+}
+
+.o_ops_kpi_icon {
+    opacity: 0.85;
+}

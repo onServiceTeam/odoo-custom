@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="ons_ops_shell.OpsDashboard">
+        <div class="o_action o_ops_dashboard">
+
+            <!-- ── Header ─────────────────────────────────────── -->
+            <div class="o_ops_dashboard_header mb-4">
+                <h1 class="o_ops_title mb-1">Operations Center</h1>
+                <p class="text-muted mb-0">
+                    Welcome back, <t t-esc="state.userName"/>
+                </p>
+            </div>
+
+            <!-- ── KPI Cards ──────────────────────────────────── -->
+            <div class="row g-3 mb-4">
+
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card o_ops_kpi_card h-100"
+                         role="button" tabindex="0"
+                         t-on-click="openContacts">
+                        <div class="card-body text-center py-4">
+                            <div class="o_ops_kpi_icon mb-2">
+                                <i class="fa fa-users fa-fw fa-2x text-primary"/>
+                            </div>
+                            <div class="o_ops_kpi_value">
+                                <t t-esc="state.customerCount"/>
+                            </div>
+                            <div class="o_ops_kpi_label text-muted">Customers</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card o_ops_kpi_card h-100"
+                         role="button" tabindex="0"
+                         t-on-click="openPipeline">
+                        <div class="card-body text-center py-4">
+                            <div class="o_ops_kpi_icon mb-2">
+                                <i class="fa fa-filter fa-fw fa-2x text-success"/>
+                            </div>
+                            <div class="o_ops_kpi_value">
+                                <t t-esc="state.leadCount"/>
+                            </div>
+                            <div class="o_ops_kpi_label text-muted">Open Leads</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card o_ops_kpi_card h-100"
+                         role="button" tabindex="0"
+                         t-on-click="openActivities">
+                        <div class="card-body text-center py-4">
+                            <div class="o_ops_kpi_icon mb-2">
+                                <i class="fa fa-clock-o fa-fw fa-2x text-warning"/>
+                            </div>
+                            <div class="o_ops_kpi_value">
+                                <t t-esc="state.activityCount"/>
+                            </div>
+                            <div class="o_ops_kpi_label text-muted">My Activities</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card o_ops_kpi_card h-100"
+                         role="button" tabindex="0"
+                         t-on-click="openDiscuss">
+                        <div class="card-body text-center py-4">
+                            <div class="o_ops_kpi_icon mb-2">
+                                <i class="fa fa-comments fa-fw fa-2x text-info"/>
+                            </div>
+                            <div class="o_ops_kpi_value">
+                                <i class="fa fa-arrow-right"/>
+                            </div>
+                            <div class="o_ops_kpi_label text-muted">Discuss</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ── Quick Actions ──────────────────────────────── -->
+            <div class="o_ops_quick_actions mb-4">
+                <h3 class="mb-3">Quick Actions</h3>
+                <div class="d-flex gap-2 flex-wrap">
+                    <button class="btn btn-primary"
+                            t-on-click="openContacts">
+                        <i class="fa fa-users me-1"/>
+                        Customers
+                    </button>
+                    <button class="btn btn-primary"
+                            t-on-click="openPipeline">
+                        <i class="fa fa-filter me-1"/>
+                        Pipeline
+                    </button>
+                    <button class="btn btn-primary"
+                            t-on-click="openDiscuss">
+                        <i class="fa fa-comments me-1"/>
+                        Discuss
+                    </button>
+                    <button class="btn btn-outline-primary"
+                            t-on-click="openActivities">
+                        <i class="fa fa-clock-o me-1"/>
+                        My Activities
+                    </button>
+                </div>
+            </div>
+
+            <!-- ── Info Card ──────────────────────────────────── -->
+            <div class="card border-0 bg-100">
+                <div class="card-body">
+                    <h5 class="card-title mb-2">
+                        <i class="fa fa-info-circle me-1 text-primary"/>
+                        Getting Started
+                    </h5>
+                    <p class="card-text text-muted mb-0">
+                        This is your Operations Center. As new modules are
+                        installed (Intake, Cases, Dispatch, QA, Reports),
+                        additional sections and live metrics will appear
+                        here automatically. Use the menu on the left to
+                        navigate between sections.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </t>
+
+</templates>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Top-Level Application Menu — Operations
+
+         Sequence 3 places it between Discuss (5) and CRM (10).
+         Visible to any user in the Agent group (or higher).
+         The root menu action opens the dashboard on click.
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <menuitem
+        id="menu_ops_root"
+        name="Operations"
+        action="action_ops_dashboard"
+        web_icon="ons_ops_shell,static/description/icon.png"
+        groups="ons_ops_core.group_ops_agent"
+        sequence="3"
+    />
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Dashboard (first child — appears at top of left nav)
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <menuitem
+        id="menu_ops_dashboard"
+        name="Dashboard"
+        parent="menu_ops_root"
+        action="action_ops_dashboard"
+        sequence="1"
+    />
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Section: Intake & CRM
+
+         Shortcuts to existing Contacts and CRM Pipeline views.
+         Future modules (ons_ops_intake, ons_ops_crm) will add
+         their own leaf items under this parent.
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <menuitem
+        id="menu_ops_intake_section"
+        name="Intake &amp; CRM"
+        parent="menu_ops_root"
+        sequence="10"
+    />
+
+    <menuitem
+        id="menu_ops_customers"
+        name="Customers"
+        parent="menu_ops_intake_section"
+        action="contacts.action_contacts"
+        sequence="10"
+    />
+
+    <menuitem
+        id="menu_ops_pipeline"
+        name="Pipeline"
+        parent="menu_ops_intake_section"
+        action="crm.crm_lead_action_pipeline"
+        sequence="20"
+    />
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Section: Communication
+
+         Shortcut to Odoo Discuss. Future modules (ons_ops_comms)
+         will add SMS Center, Shared Inbox, etc.
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <menuitem
+        id="menu_ops_comms_section"
+        name="Communication"
+        parent="menu_ops_root"
+        sequence="30"
+    />
+
+    <menuitem
+        id="menu_ops_discuss"
+        name="Discuss"
+        parent="menu_ops_comms_section"
+        action="mail.action_discuss"
+        sequence="10"
+    />
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Section: Management (Manager+ only)
+
+         Empty section for now — ons_ops_reports, ons_ops_cases, and
+         ons_ops_dispatch will add their leaf items here.
+         The section itself is hidden when empty (Odoo behaviour).
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <menuitem
+        id="menu_ops_management_section"
+        name="Management"
+        parent="menu_ops_root"
+        groups="ons_ops_core.group_ops_manager"
+        sequence="50"
+    />
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Section: Configuration (Admin only)
+
+         Future modules will add integration settings, QA config,
+         product catalog, etc. under this parent.
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <menuitem
+        id="menu_ops_config_section"
+        name="Configuration"
+        parent="menu_ops_root"
+        groups="ons_ops_core.group_ops_admin"
+        sequence="90"
+    />
+
+</odoo>

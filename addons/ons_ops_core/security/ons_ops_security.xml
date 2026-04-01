@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Module Category — groups the privilege on the user form
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <record id="module_category_ons_operations" model="ir.module.category">
+        <field name="name">onService Operations</field>
+        <field name="description">Access levels for the onService Operations Center.</field>
+        <field name="sequence">200</field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Privilege — Odoo 19 pattern: res.groups.privilege groups
+         the radio-button selector on the user form.
+
+         On the user form this renders as:
+           onService Operations: [ Agent ▾ ]
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <record id="privilege_ons_operations" model="res.groups.privilege">
+        <field name="name">onService Operations</field>
+        <field name="category_id" ref="module_category_ons_operations"/>
+        <field name="sequence">200</field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Security Groups — three-tier hierarchy via implied_ids
+
+         Admin ──implies──▶ Manager ──implies──▶ Agent ──implies──▶ Internal User
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <!-- Tier 1: Agent — every operations employee -->
+    <record id="group_ops_agent" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="sequence">10</field>
+        <field name="privilege_id" ref="privilege_ons_operations"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">Operations agent. Access intake, customer records, cases, sessions, personal dashboards, and messaging.</field>
+    </record>
+
+    <!-- Tier 2: Manager — implies Agent -->
+    <record id="group_ops_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="sequence">20</field>
+        <field name="privilege_id" ref="privilege_ons_operations"/>
+        <field name="implied_ids" eval="[(4, ref('group_ops_agent'))]"/>
+        <field name="comment">Operations manager. Team performance, QA center, dispatch queue, reporting, and all agent permissions.</field>
+    </record>
+
+    <!-- Tier 3: Administrator — implies Manager -->
+    <record id="group_ops_admin" model="res.groups">
+        <field name="name">Administrator</field>
+        <field name="sequence">30</field>
+        <field name="privilege_id" ref="privilege_ons_operations"/>
+        <field name="implied_ids" eval="[(4, ref('group_ops_manager'))]"/>
+        <field name="comment">Operations administrator. Integration settings, product catalog, AI services config, and all manager permissions.</field>
+    </record>
+
+</odoo>

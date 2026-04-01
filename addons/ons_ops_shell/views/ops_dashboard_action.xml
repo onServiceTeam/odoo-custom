@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Client Action — Operations Dashboard
+
+         The Owl component tag must match the key registered in
+         registry.category("actions") inside ops_dashboard.js.
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <record id="action_ops_dashboard" model="ir.actions.client">
+        <field name="name">Operations Dashboard</field>
+        <field name="tag">ons_ops_shell.dashboard</field>
+    </record>
+
+</odoo>
