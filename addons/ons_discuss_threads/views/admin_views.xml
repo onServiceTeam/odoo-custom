@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Admin: All Channels — Tree + Search
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <record id="view_discuss_channel_admin_tree" model="ir.ui.view">
+        <field name="name">discuss.channel.admin.tree</field>
+        <field name="model">discuss.channel</field>
+        <field name="arch" type="xml">
+            <list string="All Channels" default_order="sequence asc, create_date desc">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="channel_type"/>
+                <field name="member_count"/>
+                <field name="parent_channel_id" optional="show"/>
+                <field name="create_uid" optional="show"/>
+                <field name="create_date"/>
+                <field name="description" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_discuss_channel_admin_search" model="ir.ui.view">
+        <field name="name">discuss.channel.admin.search</field>
+        <field name="model">discuss.channel</field>
+        <field name="arch" type="xml">
+            <search string="Search Channels">
+                <field name="name"/>
+                <field name="channel_type"/>
+                <field name="create_uid"/>
+                <filter string="Channels" name="channels" domain="[('channel_type', '=', 'channel')]"/>
+                <filter string="Groups" name="groups" domain="[('channel_type', '=', 'group')]"/>
+                <filter string="Chats" name="chats" domain="[('channel_type', '=', 'chat')]"/>
+                <separator/>
+                <filter string="Threads" name="threads" domain="[('parent_channel_id', '!=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_admin_all_channels" model="ir.actions.act_window">
+        <field name="name">All Channels</field>
+        <field name="res_model">discuss.channel</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_discuss_channel_admin_tree')}),
+        ]"/>
+        <field name="search_view_id" ref="view_discuss_channel_admin_search"/>
+    </record>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Admin: All Members — Tree + Search
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <record id="view_discuss_member_admin_tree" model="ir.ui.view">
+        <field name="name">discuss.channel.member.admin.tree</field>
+        <field name="model">discuss.channel.member</field>
+        <field name="arch" type="xml">
+            <list string="All Channel Members" default_order="create_date desc">
+                <field name="channel_id"/>
+                <field name="partner_id"/>
+                <field name="create_date"/>
+                <field name="last_seen_dt" optional="show"/>
+                <field name="fetched_message_id" optional="hide"/>
+                <field name="seen_message_id" optional="hide"/>
+                <field name="message_unread_counter" optional="show"/>
+                <field name="custom_notifications" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_discuss_member_admin_search" model="ir.ui.view">
+        <field name="name">discuss.channel.member.admin.search</field>
+        <field name="model">discuss.channel.member</field>
+        <field name="arch" type="xml">
+            <search string="Search Members">
+                <field name="channel_id"/>
+                <field name="partner_id"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_admin_all_members" model="ir.actions.act_window">
+        <field name="name">All Members</field>
+        <field name="res_model">discuss.channel.member</field>
+        <field name="view_mode">list</field>
+        <field name="view_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_discuss_member_admin_tree')}),
+        ]"/>
+        <field name="search_view_id" ref="view_discuss_member_admin_search"/>
+    </record>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Menu Items — Under Discuss → Administration (admin-only)
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <menuitem id="menu_discuss_administration"
+              name="Administration"
+              parent="mail.menu_root_discuss"
+              sequence="100"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_admin_all_channels"
+              name="All Channels"
+              parent="menu_discuss_administration"
+              action="action_admin_all_channels"
+              sequence="10"/>
+
+    <menuitem id="menu_admin_all_members"
+              name="All Members"
+              parent="menu_discuss_administration"
+              action="action_admin_all_members"
+              sequence="20"/>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Customer Intakes — Tree + Form + Search
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <record id="view_discuss_intake_tree" model="ir.ui.view">
+        <field name="name">discuss.intake.tree</field>
+        <field name="model">discuss.intake</field>
+        <field name="arch" type="xml">
+            <list string="Customer Intakes" default_order="create_date desc">
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="subject"/>
+                <field name="agent_id"/>
+                <field name="channel_id"/>
+                <field name="thread_id"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'new'"
+                       decoration-warning="state == 'in_progress'"
+                       decoration-success="state == 'completed'"/>
+                <field name="create_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_discuss_intake_form" model="ir.ui.view">
+        <field name="name">discuss.intake.form</field>
+        <field name="model">discuss.intake</field>
+        <field name="arch" type="xml">
+            <form string="Customer Intake">
+                <header>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Customer Info">
+                            <field name="name"/>
+                            <field name="phone"/>
+                            <field name="caller_type"/>
+                            <field name="call_driver"/>
+                        </group>
+                        <group string="Assignment">
+                            <field name="agent_id"/>
+                            <field name="channel_id"/>
+                            <field name="thread_id"/>
+                        </group>
+                    </group>
+                    <group string="Details">
+                        <field name="subject"/>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_discuss_intake_search" model="ir.ui.view">
+        <field name="name">discuss.intake.search</field>
+        <field name="model">discuss.intake</field>
+        <field name="arch" type="xml">
+            <search string="Search Intakes">
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="agent_id"/>
+                <filter string="New" name="new" domain="[('state', '=', 'new')]"/>
+                <filter string="In Progress" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
+                <filter string="Completed" name="completed" domain="[('state', '=', 'completed')]"/>
+                <separator/>
+                <filter string="My Intakes" name="mine" domain="[('agent_id', '=', uid)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_discuss_intakes" model="ir.actions.act_window">
+        <field name="name">Customer Intakes</field>
+        <field name="res_model">discuss.intake</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_discuss_intake_search"/>
+        <field name="context">{'search_default_mine': 1}</field>
+    </record>
+
+    <menuitem id="menu_admin_intakes"
+              name="Customer Intakes"
+              parent="menu_discuss_administration"
+              action="action_discuss_intakes"
+              sequence="30"/>
+
+</odoo>

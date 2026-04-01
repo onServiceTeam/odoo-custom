@@ -1,60 +1,35 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Discuss Administration Suite",
-    "version": "19.0.5.2.0",
+    "version": "19.0.6.0.0",
     "category": "Discuss",
-    "summary": "Admin controls: thread/channel management, message moderation, member oversight, auto-cleanup",
+    "summary": "Meta-package: installs all OnService Discuss addons",
     "description": """
-Discuss Administration Suite
-============================
+Discuss Administration Suite — Meta-package
+=============================================
 
-Comprehensive admin controls for Odoo 19 Discuss:
+This module has been refactored into separate ons_* addons:
 
-* Admin-only thread deletion toggle
-* Auto-cleanup of empty group channels when all members leave
-* Last-member leave warning
-* Backend admin views for channels and members
-* Admin can kick/remove any member from any channel
-* Admin hard-delete messages (permanent removal)
-* Discord/Slack-inspired visual theme with visible thread connectors
-* Real presence only — no fake status (online/offline based on activity)
-* Slack-style work status presets (In a meeting, Working remotely, etc.)
-* Discord-style persistent voice channels with auto-join
-* Admin drag-and-drop channel reordering
-* GIPHY integration for GIF picker (replaces discontinued Tenor)
+* **ons_discuss_ui** — Discord/Slack theme, work status, tab counter, category config
+* **ons_gif_provider** — GIPHY integration for GIF picker
+* **ons_discuss_threads** — Thread admin, kick/delete/hard-delete, reorder, intake
+* **ons_discuss_voice** — Persistent voice channels with auto-join
+* **ons_webrtc** — TURN/STUN/SFU configuration management
+
+Installing this module installs all of the above.
     """,
     "author": "OnService",
     "website": "https://team.onservice.us",
     "license": "LGPL-3",
-    "depends": ["mail"],
-    "data": [
-        "security/ir.model.access.csv",
-        "views/res_config_settings_views.xml",
-        "views/admin_views.xml",
+    "depends": [
+        "ons_discuss_ui",
+        "ons_gif_provider",
+        "ons_discuss_threads",
+        "ons_discuss_voice",
+        "ons_webrtc",
     ],
-    "assets": {
-        "web.assets_backend": [
-            "discuss_thread_admin/static/src/scss/discord_theme.scss",
-            "discuss_thread_admin/static/src/xml/work_status_dropdown.xml",
-            "discuss_thread_admin/static/src/xml/voice_channel_sidebar.xml",
-            "discuss_thread_admin/static/src/xml/sidebar_reorder.xml",
-            "discuss_thread_admin/static/src/js/store_service_patch.js",
-            "discuss_thread_admin/static/src/js/thread_actions_patch.js",
-            "discuss_thread_admin/static/src/js/delete_thread_dialog_patch.js",
-            "discuss_thread_admin/static/src/js/message_actions_patch.js",
-            "discuss_thread_admin/static/src/js/channel_actions_patch.js",
-            "discuss_thread_admin/static/src/js/leave_channel_patch.js",
-            "discuss_thread_admin/static/src/js/discuss_ux_patch.js",
-            "discuss_thread_admin/static/src/js/work_status_dropdown.js",
-            "discuss_thread_admin/static/src/js/voice_channel_patch.js",
-            "discuss_thread_admin/static/src/js/sidebar_reorder_patch.js",
-            "discuss_thread_admin/static/src/js/category_config_patch.js",
-            "discuss_thread_admin/static/src/js/gif_composer_patch.js",
-        ],
-        "web.assets_web_dark": [
-            "discuss_thread_admin/static/src/scss/discord_theme.dark.scss",
-        ],
-    },
+    "data": [],
+    "assets": {},
     "installable": True,
     "application": False,
     "auto_install": False,

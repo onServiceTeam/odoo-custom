@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Add voice channel column to the admin channel tree from ons_discuss_threads -->
+    <record id="view_discuss_channel_admin_tree_voice" model="ir.ui.view">
+        <field name="name">discuss.channel.admin.tree.voice</field>
+        <field name="model">discuss.channel</field>
+        <field name="inherit_id" ref="ons_discuss_threads.view_discuss_channel_admin_tree"/>
+        <field name="arch" type="xml">
+            <field name="member_count" position="after">
+                <field name="is_voice_channel" optional="show"/>
+            </field>
+        </field>
+    </record>
+</odoo>

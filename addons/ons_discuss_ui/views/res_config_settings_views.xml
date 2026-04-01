@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_ons_discuss_ui" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.ons.discuss.ui</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="mail.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <setting id="activities_setting" position="after">
+                <setting id="thread_admin_setting"
+                         string="Thread Management"
+                         help="Control who can delete Discuss threads (sub-channels)">
+                    <field name="discuss_thread_admin_only_delete"/>
+                    <div class="text-muted mt8">
+                        <p class="mb-1">
+                            <strong>OFF:</strong> Thread creators and admins can delete threads.
+                        </p>
+                        <p class="mb-0">
+                            <strong>ON:</strong> Only admins (Settings group) can delete threads.
+                        </p>
+                    </div>
+                </setting>
+                <setting id="auto_cleanup_setting"
+                         string="Auto-Cleanup Empty Groups"
+                         help="Automatically delete group chats when all members leave">
+                    <field name="discuss_auto_cleanup_empty_groups"/>
+                    <div class="text-muted mt8">
+                        <p class="mb-1">
+                            <strong>ON:</strong> Empty group chats are automatically removed when
+                            the last member leaves. Prevents ghost channels in search.
+                        </p>
+                        <p class="mb-0">
+                            <strong>OFF:</strong> Empty group chats remain (can be cleaned up manually).
+                        </p>
+                    </div>
+                </setting>
+                <setting id="sidebar_categories_setting"
+                         string="Sidebar Categories"
+                         help="Customize sidebar category labels and visibility">
+                    <div class="row mt8">
+                        <label for="discuss_channels_label" class="col-3 col-form-label">Channels Label</label>
+                        <div class="col-9">
+                            <field name="discuss_channels_label" placeholder="Channels (default)"/>
+                        </div>
+                    </div>
+                    <div class="row mt8">
+                        <label for="discuss_chats_label" class="col-3 col-form-label">DMs Label</label>
+                        <div class="col-9">
+                            <field name="discuss_chats_label" placeholder="Direct messages (default)"/>
+                        </div>
+                    </div>
+                    <div class="mt8">
+                        <field name="discuss_hide_looking_for_help"/>
+                        <label for="discuss_hide_looking_for_help"
+                               string="Hide 'Looking for Help' category"/>
+                    </div>
+                </setting>
+            </setting>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_ons_gif_provider" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.ons.gif.provider</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="mail.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Hide the discontinued Tenor GIF API key setting -->
+            <setting id="tenor_api_key" position="replace"/>
+
+            <setting id="activities_setting" position="after">
+                <setting id="giphy_api_key_setting"
+                         string="GIPHY API Key"
+                         help="Enable GIF picker in Discuss using the GIPHY API">
+                    <field name="discuss_giphy_api_key" placeholder="Paste your GIPHY API key"/>
+                    <div class="text-muted mt8">
+                        <p class="mb-0">
+                            Get a free API key from <a href="https://developers.giphy.com/" target="_blank">developers.giphy.com</a>.
+                            Enables the GIF button in the Discuss message composer.
+                        </p>
+                    </div>
+                </setting>
+            </setting>
+        </field>
+    </record>
+</odoo>
