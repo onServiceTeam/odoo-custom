@@ -9,7 +9,7 @@
                 <setting id="thread_admin_setting"
                          string="Thread Management"
                          help="Control who can delete Discuss threads (sub-channels)">
-                    <field name="discuss_thread_admin_only_delete"/>
+                    <field name="discuss_admin_only_delete"/>
                     <div class="text-muted mt8">
                         <p class="mb-1">
                             <strong>OFF:</strong> Thread creators and admins can delete threads.

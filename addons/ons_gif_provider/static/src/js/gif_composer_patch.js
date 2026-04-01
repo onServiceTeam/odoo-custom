@@ -10,6 +10,19 @@ import { Composer } from "@mail/core/common/composer";
 import { patch } from "@web/core/utils/patch";
 import { markup } from "@odoo/owl";
 
+/**
+ * Minimal HTML-attribute escaper for untrusted strings interpolated into
+ * the markup tagged template.  Covers the OWASP-recommended set for
+ * double-quoted HTML attribute values.
+ */
+function escapeAttr(str) {
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/"/g, "&quot;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+}
+
 patch(Composer.prototype, {
     async sendGifMessage(gif) {
         // Prefer the direct media URL; fall back to tinygif thumbnail
@@ -17,9 +30,19 @@ patch(Composer.prototype, {
         if (!src) {
             return;
         }
-        const alt = gif.content_description || gif.title || "GIF";
+        // Only allow https:// URLs to prevent javascript: or data: injection
+        try {
+            const parsed = new URL(src);
+            if (parsed.protocol !== "https:") {
+                return;
+            }
+        } catch {
+            return;
+        }
+        const safeSrc = escapeAttr(src);
+        const safeAlt = escapeAttr(gif.content_description || gif.title || "GIF");
         await this._sendMessage(
-            markup`<img src="${src}" alt="${alt}" style="max-width:400px;max-height:300px;" />`,
+            markup`<img src="${safeSrc}" alt="${safeAlt}" style="max-width:400px;max-height:300px;" />`,
             {
                 parentId: this.props.composer.replyToMessage?.id,
             }

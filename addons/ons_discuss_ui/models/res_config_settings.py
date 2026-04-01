@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 from odoo import fields, models
 
+# NOTE: config_parameter keys retain the "discuss_thread_admin.*" prefix for
+# backward compatibility — these values already exist in ir.config_parameter
+# from the original module and renaming them would require a data migration.
+
 
 class ResConfigSettings(models.TransientModel):
     _inherit = "res.config.settings"
 
-    discuss_thread_admin_only_delete = fields.Boolean(
+    discuss_admin_only_delete = fields.Boolean(
         string="Only Admins Can Delete Threads",
         help=(
             "When enabled, only users in the Administration / Settings group can "
