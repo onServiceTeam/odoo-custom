@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="discuss_thread_admin.WorkStatusDropdown">
+        <Dropdown menuClass="'o-discuss-WorkStatusDropdown'">
+            <a href="#" t-att-class="{ 'd-block text-body py-3 fs-4 d-flex flex-row gap-2': env.isSmall }">
+                <ImStatus persona="store.self"/>
+                <span t-esc="readableImStatus"/>
+                <t t-if="currentWorkStatus">
+                    <span class="text-muted ms-1 small">— <t t-esc="currentWorkStatus"/></span>
+                </t>
+                <i t-if="env.isSmall" class="oi oi-chevron-right ms-auto mt-1"/>
+            </a>
+            <t t-set-slot="content">
+                <!-- Current status (read-only) -->
+                <div class="px-3 py-2 text-muted small fw-bold text-uppercase">Status</div>
+                <div class="px-3 pb-2 d-flex align-items-center gap-2">
+                    <ImStatus persona="store.self"/>
+                    <span t-esc="readableImStatus"/>
+                    <span class="text-muted small">(automatic)</span>
+                </div>
+                <hr class="my-1"/>
+                <!-- Work status presets -->
+                <div class="px-3 py-2 text-muted small fw-bold text-uppercase">Set your status</div>
+                <t t-foreach="presets" t-as="preset" t-key="preset.key">
+                    <DropdownItem
+                        class="{ 'active': state.currentText === preset.text }"
+                        onSelected="() => this.setWorkStatus(preset.emoji, preset.text)">
+                        <span t-esc="preset.emoji" class="me-2"/>
+                        <span t-esc="preset.text"/>
+                    </DropdownItem>
+                </t>
+                <t t-if="currentWorkStatus">
+                    <hr class="my-1"/>
+                    <DropdownItem onSelected="() => this.clearWorkStatus()">
+                        <i class="fa fa-times text-danger me-2"/> Clear status
+                    </DropdownItem>
+                </t>
+            </t>
+        </Dropdown>
+    </t>
+</templates>

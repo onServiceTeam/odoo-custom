@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_discuss_intake_user,discuss.intake.user,model_discuss_intake,base.group_user,1,1,1,0
+access_discuss_intake_admin,discuss.intake.admin,model_discuss_intake,base.group_system,1,1,1,1

@@ -1,0 +1,98 @@
+###############################################################################
+# Odoo 19 + PostgreSQL 17 — Production Docker Compose
+# teams.onservice.us — OnService Odoo instance
+###############################################################################
+
+services:
+  # ─── PostgreSQL 18 (latest) ────────────────────────────────────────────────
+  odoo-db:
+    image: postgres:18
+    container_name: odoo-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD_FILE: /run/secrets/odoo_pg_pass
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data/pgdata
+      - ./pg-init:/docker-entrypoint-initdb.d:ro
+    secrets:
+      - odoo_pg_pass
+    networks:
+      - odoo-internal
+    # SECURITY: No host port binding — only accessible from Odoo container
+    # If you need to debug, use: docker compose exec odoo-db psql -U odoo
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U odoo -d postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "2"
+    shm_size: 256mb
+    # Security options
+    security_opt:
+      - no-new-privileges:true
+
+  # ─── Odoo 19 (latest) ─────────────────────────────────────────────────────
+  odoo-web:
+    image: odoo:19.0
+    container_name: odoo-web
+    restart: unless-stopped
+    depends_on:
+      odoo-db:
+        condition: service_healthy
+    environment:
+      HOST: odoo-db
+      PORT: "5432"
+      USER: odoo
+      PASSWORD: ***REMOVED***
+    ports:
+      # SECURITY: Bind to 127.0.0.1 ONLY — nginx reverse proxy handles external traffic
+      - "127.0.0.1:8069:8069"
+      - "127.0.0.1:8072:8072"
+    volumes:
+      - odoo-web-data:/var/lib/odoo
+      - ./config:/etc/odoo:ro
+      - ./addons:/mnt/extra-addons:ro
+    networks:
+      - odoo-internal
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8069/web/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: "4"
+    security_opt:
+      - no-new-privileges:true
+
+# ─── Volumes (named, persistent) ─────────────────────────────────────────────
+volumes:
+  odoo-db-data:
+    driver: local
+  odoo-web-data:
+    driver: local
+
+# ─── Secrets (file-based, not in env vars) ───────────────────────────────────
+secrets:
+  odoo_pg_pass:
+    file: .odoo_pg_pass
+
+# ─── Network (internal only, isolated from host network) ─────────────────────
+networks:
+  odoo-internal:
+    driver: bridge
+    internal: false  # needs outbound for email, updates etc.
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
