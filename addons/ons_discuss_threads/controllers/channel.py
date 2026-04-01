@@ -2,7 +2,6 @@
 from markupsafe import Markup
 from werkzeug.exceptions import Forbidden, NotFound
 
-from odoo import _
 from odoo import http
 from odoo.http import request
 from odoo.addons.mail.controllers.discuss.channel import ChannelController

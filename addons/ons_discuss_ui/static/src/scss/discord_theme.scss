@@ -66,7 +66,7 @@ $header-border: #E3E5E8;
 
     // Sub-channel items: restore stock margin-left so SVG connectors align
     &.o-mail-DiscussSidebarChannel-subChannel.o-nonCompact {
-        margin-left: 2rem !important;  // spacer-4 + spacer-2 = 24px + 8px
+        margin-left: map-get($spacers, 4) + map-get($spacers, 2) !important;
         margin-top: 0 !important;
         margin-bottom: 0 !important;
         margin-right: 0.25rem !important;
