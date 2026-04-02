@@ -178,27 +178,50 @@ class Interaction(models.Model):
 
     # ── Customer resolution ─────────────────────────────────────────
     def action_resolve_customer(self):
-        """Try to find an existing partner by phone, or create one."""
+        """Find existing partner by deterministic last-10-digit phone match, or create."""
+        Partner = self.env["res.partner"]
         for rec in self:
             if rec.partner_id:
                 continue
             phone = rec.customer_phone
             if not phone:
                 continue
-            # Normalize to last 10 digits
+            # Normalize to last 10 digits (matches legacy RIGHT(regexp_replace(phone,'[^0-9]','','g'),10))
             digits = re.sub(r"\D", "", phone)
-            if len(digits) >= 10:
-                digits = digits[-10:]
-            partner = self.env["res.partner"].search(
-                ["|", ("phone", "ilike", digits), ("phone_sanitized", "ilike", digits)],
-                limit=1,
+            if len(digits) < 7:
+                continue
+            normalized = digits[-10:]
+
+            # Search phone_sanitized (E.164, most reliable) then verify exact last-10
+            candidates = Partner.search([("phone_sanitized", "like", normalized)])
+            matched = candidates.filtered(
+                lambda p: re.sub(r"\D", "", p.phone_sanitized or "")[-10:] == normalized
             )
-            if partner:
-                rec.partner_id = partner
-            else:
-                rec.partner_id = self.env["res.partner"].create({
+
+            # Fallback: check raw phone for partners without phone_sanitized
+            if not matched:
+                raw_candidates = Partner.search([
+                    ("phone", "like", normalized),
+                    ("phone_sanitized", "=", False),
+                ])
+                matched = raw_candidates.filtered(
+                    lambda p: re.sub(r"\D", "", p.phone or "")[-10:] == normalized
+                )
+
+            if len(matched) == 1:
+                rec.partner_id = matched
+            elif len(matched) == 0:
+                rec.partner_id = Partner.create({
                     "name": rec.customer_name or phone,
                     "phone": phone,
                     "email": rec.customer_email or False,
                     "customer_rank": 1,
                 })
+            else:
+                # Multiple matches — refuse to auto-link, log for manual resolution
+                rec.message_post(
+                    body="Phone match ambiguous: %d partners match '%s'. "
+                         "Please resolve manually." % (len(matched), normalized),
+                    message_type="notification",
+                    subtype_xmlid="mail.mt_note",
+                )

@@ -123,6 +123,69 @@ class TestInteraction(TransactionCase):
         rec.action_resolve_customer()
         self.assertEqual(rec.partner_id, partner)
 
+    def test_resolve_customer_international_prefix(self):
+        """3CX international prefix (001...) should match domestic 10-digit phone."""
+        partner = self.env["res.partner"].create({
+            "name": "International Prefix Test",
+            "phone": "2625559876",
+        })
+        rec = self.env["ons.interaction"].create({
+            "interaction_type": "phone",
+            "customer_phone": "0012625559876",
+        })
+        rec.action_resolve_customer()
+        self.assertEqual(rec.partner_id, partner)
+
+    def test_resolve_customer_formatted_phone(self):
+        """Formatted US phone (262) 555-9877 should match plain 2625559877."""
+        partner = self.env["res.partner"].create({
+            "name": "Formatted Phone Test",
+            "phone": "2625559877",
+        })
+        rec = self.env["ons.interaction"].create({
+            "interaction_type": "phone",
+            "customer_phone": "(262) 555-9877",
+        })
+        rec.action_resolve_customer()
+        self.assertEqual(rec.partner_id, partner)
+
+    def test_resolve_customer_multiple_matches_no_auto_link(self):
+        """Multiple partner matches should NOT auto-link."""
+        self.env["res.partner"].create({
+            "name": "Duplicate A",
+            "phone": "5559998881",
+        })
+        self.env["res.partner"].create({
+            "name": "Duplicate B",
+            "phone": "5559998881",
+        })
+        rec = self.env["ons.interaction"].create({
+            "interaction_type": "phone",
+            "customer_phone": "5559998881",
+        })
+        rec.action_resolve_customer()
+        self.assertFalse(rec.partner_id, "Should NOT auto-link when multiple matches exist")
+
+    def test_resolve_customer_short_number_skipped(self):
+        """Short phone numbers (< 7 digits) should be skipped."""
+        rec = self.env["ons.interaction"].create({
+            "interaction_type": "phone",
+            "customer_phone": "911",
+        })
+        rec.action_resolve_customer()
+        self.assertFalse(rec.partner_id, "Short number should not create partner")
+
+    def test_resolve_customer_already_resolved_skipped(self):
+        """If partner already set, action should skip."""
+        partner = self.env["res.partner"].create({"name": "Already Set"})
+        rec = self.env["ons.interaction"].create({
+            "interaction_type": "phone",
+            "customer_phone": "5550001111",
+            "partner_id": partner.id,
+        })
+        rec.action_resolve_customer()
+        self.assertEqual(rec.partner_id, partner, "Should not change existing partner")
+
     def test_threecx_cdr_unique(self):
         """Duplicate threecx_cdr_id should be rejected."""
         self.env["ons.interaction"].create({
