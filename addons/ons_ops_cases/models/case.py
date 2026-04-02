@@ -75,6 +75,26 @@ class Case(models.Model):
         index=True,
     )
 
+    # ── Relay fields from source interaction (for session tracker) ──
+    call_status = fields.Selection(
+        related="source_interaction_id.call_status",
+        string="Call Status",
+        readonly=False,
+        store=True,
+    )
+    repair_status = fields.Selection(
+        related="source_interaction_id.repair_status",
+        string="Repair Status",
+        readonly=False,
+        store=True,
+    )
+    subject = fields.Char(
+        related="source_interaction_id.subject",
+        string="Subject",
+        readonly=True,
+        store=True,
+    )
+
     # ── Assignment (3 roles) ────────────────────────────────────────
     intake_agent_id = fields.Many2one("res.users", string="Intake Agent", tracking=True, index=True)
     assigned_tech_id = fields.Many2one("res.users", string="Technician", tracking=True, index=True)
@@ -209,6 +229,7 @@ class Case(models.Model):
                         "entered_at": now,
                         "user_id": self.env.uid,
                     })
+                    rec._hook_after_status_change(old_stage, new_stage)
         return super().write(vals)
 
     def _validate_transition(self, from_stage, to_stage):
@@ -274,3 +295,9 @@ class Case(models.Model):
                 "notes": "Reopened by %s" % self.env.user.name,
             })
             super(Case, rec).write({"stage_id": triage.id})
+
+    # ── Connector hooks ─────────────────────────────────────────────
+    def _hook_after_status_change(self, old_stage, new_stage):
+        """Extension point for connectors (Discord notifications, etc.).
+        Override in sub-modules to add side effects on stage transition."""
+        pass

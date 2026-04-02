@@ -34,6 +34,7 @@ Upgrade Safety
     "data": [
         "security/ir.model.access.csv",
         "data/ons_call_driver_data.xml",
+        "data/cron_data.xml",
         "views/interaction_views.xml",
         "views/call_driver_views.xml",
         "views/partner_views.xml",

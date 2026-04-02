@@ -28,7 +28,10 @@
                         <group string="Customer">
                             <field name="partner_id"/>
                             <field name="partner_phone"/>
+                            <field name="subject" readonly="1"/>
                             <field name="primary_driver_id"/>
+                            <field name="call_status"/>
+                            <field name="repair_status"/>
                             <field name="online_session_started"/>
                         </group>
                         <group string="Assignment">
@@ -101,19 +104,24 @@
         <field name="arch" type="xml">
             <list string="Session Tracker"
                   decoration-danger="is_stale"
-                  decoration-warning="needs_attention and not is_stale">
+                  decoration-warning="needs_attention and not is_stale"
+                  decoration-muted="is_closed"
+                  multi_edit="1">
                 <field name="name"/>
                 <field name="partner_id"/>
                 <field name="partner_phone"/>
+                <field name="subject" optional="show"/>
                 <field name="primary_driver_id"/>
+                <field name="call_status" widget="badge" optional="show"/>
+                <field name="repair_status" widget="badge" optional="show"/>
                 <field name="stage_id" widget="badge"/>
                 <field name="assigned_tech_id" widget="many2one_avatar_user"/>
                 <field name="intake_agent_id" widget="many2one_avatar_user" optional="hide"/>
                 <field name="billing_agent_id" widget="many2one_avatar_user" optional="hide"/>
-                <field name="hours_in_pipeline"/>
-                <field name="aging_bucket"/>
-                <field name="online_session_started"/>
-                <field name="needs_attention"/>
+                <field name="hours_in_pipeline" optional="hide"/>
+                <field name="aging_bucket" optional="hide"/>
+                <field name="online_session_started" optional="hide"/>
+                <field name="needs_attention" optional="hide"/>
                 <field name="create_date" string="Opened"/>
             </list>
         </field>
@@ -156,6 +164,8 @@
             <search string="Cases">
                 <field name="name"/>
                 <field name="partner_id"/>
+                <field name="partner_phone"/>
+                <field name="subject"/>
                 <field name="assigned_tech_id"/>
                 <field name="intake_agent_id"/>
                 <field name="billing_agent_id"/>
@@ -170,10 +180,29 @@
                 <filter string="My Billing" name="my_billing"
                         domain="[('billing_agent_id', '=', uid)]"/>
                 <separator/>
+                <!-- Date presets (matching legacy session tracker) -->
+                <filter string="Today" name="filter_today"
+                        domain="[('create_date', '&gt;=', (context_today()).strftime('%%Y-%%m-%%d 00:00:00'))]"/>
+                <filter string="Yesterday" name="filter_yesterday"
+                        domain="[('create_date', '&gt;=', (context_today() - datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d 00:00:00')),
+                                 ('create_date', '&lt;', (context_today()).strftime('%%Y-%%m-%%d 00:00:00'))]"/>
+                <filter string="Last 7 Days" name="filter_7days"
+                        domain="[('create_date', '&gt;=', (context_today() - datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d 00:00:00'))]"/>
+                <filter string="Last 30 Days" name="filter_30days"
+                        domain="[('create_date', '&gt;=', (context_today() - datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d 00:00:00'))]"/>
+                <separator/>
                 <filter string="Needs Attention" name="needs_attention"
                         domain="[('needs_attention', '=', True)]"/>
                 <filter string="Stale (72h+)" name="stale"
                         domain="[('is_stale', '=', True)]"/>
+                <separator/>
+                <!-- Call status filters -->
+                <filter string="In Progress" name="call_in_progress"
+                        domain="[('call_status', '=', 'in_progress')]"/>
+                <filter string="Completed" name="call_completed"
+                        domain="[('call_status', '=', 'completed')]"/>
+                <filter string="Callbacks" name="call_callbacks"
+                        domain="[('call_status', '=', 'set_for_callback')]"/>
                 <separator/>
                 <filter string="0–4 hours" name="aging_0_4"
                         domain="[('aging_bucket', '=', '0_4h')]"/>
@@ -193,6 +222,7 @@
                     <filter string="Technician" name="group_tech" context="{'group_by': 'assigned_tech_id'}"/>
                     <filter string="Intake Agent" name="group_intake" context="{'group_by': 'intake_agent_id'}"/>
                     <filter string="Driver" name="group_driver" context="{'group_by': 'primary_driver_id'}"/>
+                    <filter string="Call Status" name="group_call_status" context="{'group_by': 'call_status'}"/>
                     <filter string="Aging Bucket" name="group_aging" context="{'group_by': 'aging_bucket'}"/>
                     <filter string="Created" name="group_create" context="{'group_by': 'create_date:day'}"/>
                 </group>
