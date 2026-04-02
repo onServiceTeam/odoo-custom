@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Case Form Extension — Billing Tab + Invoice Button
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <record id="view_case_form_inherit_billing" model="ir.ui.view">
+        <field name="name">ons.case.form.inherit.ons_ops_billing</field>
+        <field name="model">ons.case</field>
+        <field name="inherit_id" ref="ons_ops_cases.view_case_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Stat button: Invoice -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_create_invoice" type="object"
+                        class="oe_stat_button" icon="fa-file-text-o"
+                        invisible="invoice_id">
+                    <span>Create Invoice</span>
+                </button>
+                <button type="object" name="action_view_invoice"
+                        class="oe_stat_button" icon="fa-file-text-o"
+                        invisible="not invoice_id">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Invoice</span>
+                    </div>
+                </button>
+            </xpath>
+
+            <!-- Stat button: Plan -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button type="object" name="action_view_plan"
+                        class="oe_stat_button" icon="fa-shield"
+                        invisible="not plan_id">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Plan</span>
+                    </div>
+                </button>
+            </xpath>
+
+            <!-- Add billing tab to the notebook -->
+            <xpath expr="//page[@name='details']" position="before">
+                <page string="Billing" name="billing">
+                    <group>
+                        <group string="Payment">
+                            <field name="payment_status"/>
+                            <field name="payment_amount"/>
+                            <field name="amount_total"/>
+                            <field name="plan_id"/>
+                        </group>
+                        <group string="No Charge"
+                               invisible="payment_status != 'no_charge'">
+                            <field name="no_charge_reason"/>
+                        </group>
+                        <group string="Manual Payment"
+                               invisible="payment_status != 'manual'">
+                            <field name="manual_payment_method"/>
+                            <field name="manual_payment_reference"/>
+                            <field name="manual_payment_date"/>
+                        </group>
+                    </group>
+                    <group string="Invoice">
+                        <field name="invoice_id"/>
+                        <field name="invoice_payment_state"
+                               invisible="not invoice_id"/>
+                    </group>
+                    <field name="case_line_ids">
+                        <list editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="product_id"/>
+                            <field name="description"/>
+                            <field name="quantity"/>
+                            <field name="unit_price"/>
+                            <field name="subtotal"/>
+                        </list>
+                    </field>
+                    <group class="oe_subtotal_footer">
+                        <field name="amount_total" class="oe_subtotal_footer_separator"/>
+                    </group>
+                    <!-- Action buttons -->
+                    <div class="oe_right">
+                        <button name="action_mark_no_charge" string="No Charge"
+                                type="object" class="btn-secondary"
+                                invisible="payment_status not in ('pending',)"/>
+                        <button name="action_record_manual_payment" string="Record Manual Payment"
+                                type="object" class="btn-secondary"
+                                invisible="payment_status not in ('pending', 'invoice_sent')"/>
+                        <button name="action_mark_paid" string="Mark Paid"
+                                type="object" class="btn-primary"
+                                invisible="payment_status not in ('invoice_sent', 'partial')"/>
+                        <button name="action_mark_declined" string="Mark Declined"
+                                type="object" class="btn-danger"
+                                invisible="payment_status not in ('invoice_sent',)"/>
+                    </div>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Case List Extension — add billing columns
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <record id="view_case_list_inherit_billing" model="ir.ui.view">
+        <field name="name">ons.case.list.inherit.ons_ops_billing</field>
+        <field name="model">ons.case</field>
+        <field name="inherit_id" ref="ons_ops_cases.view_case_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='create_date']" position="before">
+                <field name="amount_total" optional="show"/>
+                <field name="payment_status" widget="badge"
+                       decoration-success="payment_status == 'paid'"
+                       decoration-info="payment_status == 'no_charge'"
+                       decoration-warning="payment_status in ('pending', 'invoice_sent')"
+                       decoration-danger="payment_status in ('declined', 'disputed')"
+                       optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Case Search Extension — billing filters
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <record id="view_case_search_inherit_billing" model="ir.ui.view">
+        <field name="name">ons.case.search.inherit.ons_ops_billing</field>
+        <field name="model">ons.case</field>
+        <field name="inherit_id" ref="ons_ops_cases.view_case_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='closed']" position="before">
+                <separator/>
+                <filter string="Pending Payment" name="pending_payment"
+                        domain="[('payment_status', '=', 'pending')]"/>
+                <filter string="Invoice Sent" name="invoice_sent"
+                        domain="[('payment_status', '=', 'invoice_sent')]"/>
+                <filter string="Paid" name="paid"
+                        domain="[('payment_status', '=', 'paid')]"/>
+                <filter string="Declined" name="declined"
+                        domain="[('payment_status', '=', 'declined')]"/>
+                <filter string="No Charge" name="no_charge"
+                        domain="[('payment_status', '=', 'no_charge')]"/>
+            </xpath>
+            <xpath expr="//filter[@name='group_create']" position="after">
+                <filter string="Payment Status" name="group_payment"
+                        context="{'group_by': 'payment_status'}"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

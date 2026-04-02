@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Customer Plan — Form View
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <record id="view_customer_plan_form" model="ir.ui.view">
+        <field name="name">ons.customer.plan.form</field>
+        <field name="model">ons.customer.plan</field>
+        <field name="arch" type="xml">
+            <form string="Customer Plan">
+                <header>
+                    <button name="action_activate" string="Activate"
+                            type="object" class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_mark_expiring" string="Mark Expiring"
+                            type="object" class="btn-warning"
+                            invisible="state != 'active'"/>
+                    <button name="action_expire" string="Expire"
+                            type="object" class="btn-secondary"
+                            invisible="state not in ('active', 'expiring_soon')"/>
+                    <button name="action_cancel" string="Cancel"
+                            type="object" class="btn-danger"
+                            invisible="state in ('expired', 'cancelled')"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,active,expiring_soon,expired"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="display_name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Plan Details">
+                            <field name="partner_id"/>
+                            <field name="product_id"/>
+                            <field name="plan_code"/>
+                            <field name="amount"/>
+                            <field name="term_months"/>
+                        </group>
+                        <group string="Dates">
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="days_until_expiry"/>
+                            <field name="is_expiring_soon"/>
+                            <field name="is_renewable"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Links">
+                            <field name="source_case_id"/>
+                            <field name="source_invoice_id"/>
+                            <field name="renewal_case_id"/>
+                        </group>
+                        <group string="External">
+                            <field name="stripe_subscription_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Customer Plan — List View
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <record id="view_customer_plan_list" model="ir.ui.view">
+        <field name="name">ons.customer.plan.list</field>
+        <field name="model">ons.customer.plan</field>
+        <field name="arch" type="xml">
+            <list string="Customer Plans"
+                  decoration-danger="state == 'expired'"
+                  decoration-warning="state == 'expiring_soon'"
+                  decoration-muted="state == 'cancelled'">
+                <field name="partner_id"/>
+                <field name="plan_code"/>
+                <field name="amount"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="days_until_expiry"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'active'"
+                       decoration-warning="state == 'expiring_soon'"
+                       decoration-danger="state == 'expired'"
+                       decoration-info="state == 'draft'"
+                       decoration-muted="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Customer Plan — Search View
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <record id="view_customer_plan_search" model="ir.ui.view">
+        <field name="name">ons.customer.plan.search</field>
+        <field name="model">ons.customer.plan</field>
+        <field name="arch" type="xml">
+            <search string="Plans">
+                <field name="partner_id"/>
+                <field name="plan_code"/>
+                <field name="stripe_subscription_id"/>
+                <!-- Quick filters -->
+                <filter string="Active" name="filter_active"
+                        domain="[('state', '=', 'active')]"/>
+                <filter string="Expiring Soon" name="filter_expiring"
+                        domain="[('state', '=', 'expiring_soon')]"/>
+                <filter string="Expired" name="filter_expired"
+                        domain="[('state', '=', 'expired')]"/>
+                <filter string="Draft" name="filter_draft"
+                        domain="[('state', '=', 'draft')]"/>
+                <filter string="Cancelled" name="filter_cancelled"
+                        domain="[('state', '=', 'cancelled')]"/>
+                <separator/>
+                <filter string="Renewable" name="filter_renewable"
+                        domain="[('is_renewable', '=', True)]"/>
+                <group colspan="16">
+                    <filter string="State" name="group_state"
+                            context="{'group_by': 'state'}"/>
+                    <filter string="Plan" name="group_plan"
+                            context="{'group_by': 'plan_code'}"/>
+                    <filter string="Customer" name="group_customer"
+                            context="{'group_by': 'partner_id'}"/>
+                    <filter string="End Date" name="group_end"
+                            context="{'group_by': 'end_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Customer Plan — Actions
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <record id="action_customer_plans" model="ir.actions.act_window">
+        <field name="name">Customer Plans</field>
+        <field name="res_model">ons.customer.plan</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_customer_plan_search"/>
+        <field name="context">{'search_default_filter_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No customer plans yet
+            </p>
+        </field>
+    </record>
+
+    <record id="action_renewal_queue" model="ir.actions.act_window">
+        <field name="name">Renewal Queue</field>
+        <field name="res_model">ons.customer.plan</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_customer_plan_search"/>
+        <field name="domain">[('state', 'in', ('expiring_soon', 'expired')), ('is_renewable', '=', True)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No plans need renewal right now
+            </p>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Partner Form Extension — Plans stat button
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <record id="view_partner_form_inherit_billing" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.ons_ops_billing</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_plans" type="object"
+                        class="oe_stat_button" icon="fa-shield"
+                        invisible="plan_count == 0">
+                    <field name="plan_count" widget="statinfo" string="Plans"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

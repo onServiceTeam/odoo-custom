@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ═══ One-Time Service Products ═══ -->
+
+    <record id="product_tmpl_quick_fix" model="product.template">
+        <field name="name">Quick Fix</field>
+        <field name="default_code">QUICK_FIX</field>
+        <field name="type">service</field>
+        <field name="list_price">49.99</field>
+        <field name="categ_id" ref="product_category_one_time"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="ons_product_code">QUICK_FIX</field>
+        <field name="ons_category">one_time</field>
+        <field name="ons_min_price">29.99</field>
+        <field name="ons_max_price">49.99</field>
+    </record>
+
+    <record id="product_tmpl_standard_fix" model="product.template">
+        <field name="name">Standard Fix</field>
+        <field name="default_code">STANDARD_FIX</field>
+        <field name="type">service</field>
+        <field name="list_price">129.99</field>
+        <field name="categ_id" ref="product_category_one_time"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="ons_product_code">STANDARD_FIX</field>
+        <field name="ons_category">one_time</field>
+        <field name="ons_min_price">99.99</field>
+        <field name="ons_max_price">149.99</field>
+    </record>
+
+    <record id="product_tmpl_advanced_repair" model="product.template">
+        <field name="name">Advanced Repair</field>
+        <field name="default_code">ADVANCED_REPAIR</field>
+        <field name="type">service</field>
+        <field name="list_price">149.99</field>
+        <field name="categ_id" ref="product_category_one_time"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="ons_product_code">ADVANCED_REPAIR</field>
+        <field name="ons_category">one_time</field>
+        <field name="ons_min_price">129.99</field>
+        <field name="ons_max_price">199.99</field>
+    </record>
+
+    <record id="product_tmpl_custom_fix" model="product.template">
+        <field name="name">Custom Fix</field>
+        <field name="default_code">CUSTOM_FIX</field>
+        <field name="type">service</field>
+        <field name="list_price">0.00</field>
+        <field name="categ_id" ref="product_category_one_time"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="ons_product_code">CUSTOM_FIX</field>
+        <field name="ons_category">one_time</field>
+    </record>
+
+    <!-- ═══ Support Plan Products ═══ -->
+
+    <record id="product_tmpl_plan_6mo" model="product.template">
+        <field name="name">6-Month Support Plan</field>
+        <field name="default_code">PLAN_6MO</field>
+        <field name="type">service</field>
+        <field name="list_price">249.99</field>
+        <field name="categ_id" ref="product_category_support_plan"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="ons_product_code">PLAN_6MO</field>
+        <field name="ons_category">subscription</field>
+        <field name="ons_is_subscription" eval="True"/>
+        <field name="ons_subscription_months">6</field>
+        <field name="ons_min_price">199.99</field>
+        <field name="ons_max_price">299.99</field>
+    </record>
+
+    <record id="product_tmpl_plan_1yr" model="product.template">
+        <field name="name">1-Year Support Plan</field>
+        <field name="default_code">PLAN_1YR</field>
+        <field name="type">service</field>
+        <field name="list_price">349.99</field>
+        <field name="categ_id" ref="product_category_support_plan"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="ons_product_code">PLAN_1YR</field>
+        <field name="ons_category">subscription</field>
+        <field name="ons_is_subscription" eval="True"/>
+        <field name="ons_subscription_months">12</field>
+        <field name="ons_min_price">299.99</field>
+        <field name="ons_max_price">399.99</field>
+    </record>
+
+    <record id="product_tmpl_plan_2yr" model="product.template">
+        <field name="name">2-Year Support Plan</field>
+        <field name="default_code">PLAN_2YR</field>
+        <field name="type">service</field>
+        <field name="list_price">499.99</field>
+        <field name="categ_id" ref="product_category_support_plan"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="ons_product_code">PLAN_2YR</field>
+        <field name="ons_category">subscription</field>
+        <field name="ons_is_subscription" eval="True"/>
+        <field name="ons_subscription_months">24</field>
+        <field name="ons_min_price">449.99</field>
+        <field name="ons_max_price">599.99</field>
+    </record>
+
+    <!-- ═══ Add-On Products ═══ -->
+
+    <record id="product_tmpl_browser_guard" model="product.template">
+        <field name="name">Browser Guard</field>
+        <field name="default_code">BROWSER_GUARD</field>
+        <field name="type">service</field>
+        <field name="list_price">49.99</field>
+        <field name="categ_id" ref="product_category_addon"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="ons_product_code">BROWSER_GUARD</field>
+        <field name="ons_category">addon</field>
+        <field name="ons_min_price">39.99</field>
+        <field name="ons_max_price">59.99</field>
+    </record>
+
+    <record id="product_tmpl_data_backup" model="product.template">
+        <field name="name">Data Backup Service</field>
+        <field name="default_code">DATA_BACKUP</field>
+        <field name="type">service</field>
+        <field name="list_price">79.99</field>
+        <field name="categ_id" ref="product_category_addon"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="ons_product_code">DATA_BACKUP</field>
+        <field name="ons_category">addon</field>
+        <field name="ons_min_price">59.99</field>
+        <field name="ons_max_price">99.99</field>
+    </record>
+
+    <record id="product_tmpl_additional_payment" model="product.template">
+        <field name="name">Additional Payment</field>
+        <field name="default_code">ADDITIONAL_PAYMENT</field>
+        <field name="type">service</field>
+        <field name="list_price">0.00</field>
+        <field name="categ_id" ref="product_category_addon"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="ons_product_code">ADDITIONAL_PAYMENT</field>
+        <field name="ons_category">addon</field>
+    </record>
+
+    <record id="product_tmpl_small_adjustment" model="product.template">
+        <field name="name">Small Adjustment</field>
+        <field name="default_code">SMALL_ADJUSTMENT</field>
+        <field name="type">service</field>
+        <field name="list_price">0.00</field>
+        <field name="categ_id" ref="product_category_addon"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="ons_product_code">SMALL_ADJUSTMENT</field>
+        <field name="ons_category">addon</field>
+    </record>
+
+</odoo>

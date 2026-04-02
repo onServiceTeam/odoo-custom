@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_case_line_agent,ons.case.line agent,model_ons_case_line,ons_ops_core.group_ops_agent,1,1,1,0
+access_case_line_admin,ons.case.line admin,model_ons_case_line,ons_ops_core.group_ops_admin,1,1,1,1
+access_customer_plan_agent,ons.customer.plan agent,model_ons_customer_plan,ons_ops_core.group_ops_agent,1,1,1,0
+access_customer_plan_manager,ons.customer.plan manager,model_ons_customer_plan,ons_ops_core.group_ops_manager,1,1,1,0
+access_customer_plan_admin,ons.customer.plan admin,model_ons_customer_plan,ons_ops_core.group_ops_admin,1,1,1,1

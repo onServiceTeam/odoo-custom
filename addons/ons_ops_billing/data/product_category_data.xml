@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ═══ Product Categories ═══ -->
+
+    <record id="product_category_one_time" model="product.category">
+        <field name="name">One-Time Service</field>
+    </record>
+
+    <record id="product_category_support_plan" model="product.category">
+        <field name="name">Support Plan</field>
+    </record>
+
+    <record id="product_category_addon" model="product.category">
+        <field name="name">Add-On</field>
+    </record>
+
+</odoo>

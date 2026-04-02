@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══ Billing Queue under Intake & CRM ═══ -->
+
+    <menuitem
+        id="menu_ops_billing_queue"
+        name="Billing Queue"
+        parent="ons_ops_shell.menu_ops_intake_section"
+        action="ons_ops_cases.action_session_tracker"
+        sequence="35"
+    />
+
+    <!-- ═══ Management: Customer Plans + Renewal Queue ═══ -->
+
+    <menuitem
+        id="menu_ops_customer_plans"
+        name="Customer Plans"
+        parent="ons_ops_shell.menu_ops_management_section"
+        action="action_customer_plans"
+        sequence="10"
+    />
+
+    <menuitem
+        id="menu_ops_renewal_queue"
+        name="Renewal Queue"
+        parent="ons_ops_shell.menu_ops_management_section"
+        action="action_renewal_queue"
+        sequence="20"
+    />
+
+    <!-- ═══ Configuration: Product Catalog ═══ -->
+
+    <menuitem
+        id="menu_ops_product_catalog"
+        name="Product Catalog"
+        parent="ons_ops_shell.menu_ops_config_section"
+        action="action_product_catalog"
+        sequence="40"
+    />
+
+</odoo>

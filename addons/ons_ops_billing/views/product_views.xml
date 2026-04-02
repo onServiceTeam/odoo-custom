@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Product Template Form Extension — onService fields
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <record id="view_product_template_form_inherit_billing" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.ons_ops_billing</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='group_general']" position="after">
+                <group string="onService">
+                    <group>
+                        <field name="ons_product_code"/>
+                        <field name="ons_category"/>
+                        <field name="ons_is_subscription"/>
+                        <field name="ons_subscription_months"
+                               invisible="not ons_is_subscription"/>
+                    </group>
+                    <group>
+                        <field name="ons_min_price"/>
+                        <field name="ons_max_price"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Product List Extension — add onService columns
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <record id="view_product_template_list_inherit_billing" model="ir.ui.view">
+        <field name="name">product.template.list.inherit.ons_ops_billing</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='default_code']" position="after">
+                <field name="ons_category" optional="show"/>
+                <field name="ons_is_subscription" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Product Search Extension — filter by onService category
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <record id="view_product_template_search_inherit_billing" model="ir.ui.view">
+        <field name="name">product.template.search.inherit.ons_ops_billing</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <filter string="One-Time" name="filter_one_time"
+                        domain="[('ons_category', '=', 'one_time')]"/>
+                <filter string="Support Plans" name="filter_subscription"
+                        domain="[('ons_category', '=', 'subscription')]"/>
+                <filter string="Add-Ons" name="filter_addon"
+                        domain="[('ons_category', '=', 'addon')]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Product Catalog Action (for Ops Configuration menu)
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <record id="action_product_catalog" model="ir.actions.act_window">
+        <field name="name">Product Catalog</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('ons_product_code', '!=', False)]</field>
+        <field name="context">{'default_type': 'service', 'default_sale_ok': True, 'default_purchase_ok': False}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new service product
+            </p>
+        </field>
+    </record>
+
+</odoo>
