@@ -1,0 +1,37 @@
+<odoo>
+
+    <!-- SMS Threads under Communication section -->
+    <menuitem id="menu_sms_threads"
+        name="SMS Threads"
+        parent="ons_ops_shell.menu_ops_comms_section"
+        action="action_sms_threads"
+        sequence="20"/>
+
+    <!-- Email Threads -->
+    <menuitem id="menu_email_threads"
+        name="Email Threads"
+        parent="ons_ops_shell.menu_ops_comms_section"
+        action="action_email_threads"
+        sequence="30"/>
+
+    <!-- Notification Log -->
+    <menuitem id="menu_notification_log"
+        name="Notification Log"
+        parent="ons_ops_shell.menu_ops_comms_section"
+        action="action_notification_log"
+        sequence="40"/>
+
+    <!-- Configuration items -->
+    <menuitem id="menu_notification_rules"
+        name="Notification Rules"
+        parent="ons_ops_shell.menu_ops_config_section"
+        action="action_notification_rules"
+        sequence="50"/>
+
+    <menuitem id="menu_message_templates"
+        name="Message Templates"
+        parent="ons_ops_shell.menu_ops_config_section"
+        action="action_message_templates"
+        sequence="60"/>
+
+</odoo>

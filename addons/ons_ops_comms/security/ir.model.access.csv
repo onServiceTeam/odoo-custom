@@ -1,0 +1,15 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sms_thread_agent,ons.sms.thread agent,model_ons_sms_thread,ons_ops_core.group_ops_agent,1,1,1,0
+access_sms_thread_admin,ons.sms.thread admin,model_ons_sms_thread,ons_ops_core.group_ops_admin,1,1,1,1
+access_sms_message_agent,ons.sms.message agent,model_ons_sms_message,ons_ops_core.group_ops_agent,1,1,1,0
+access_sms_message_admin,ons.sms.message admin,model_ons_sms_message,ons_ops_core.group_ops_admin,1,1,1,1
+access_email_thread_agent,ons.email.thread agent,model_ons_email_thread,ons_ops_core.group_ops_agent,1,1,1,0
+access_email_thread_admin,ons.email.thread admin,model_ons_email_thread,ons_ops_core.group_ops_admin,1,1,1,1
+access_email_message_agent,ons.email.message agent,model_ons_email_message,ons_ops_core.group_ops_agent,1,1,1,0
+access_email_message_admin,ons.email.message admin,model_ons_email_message,ons_ops_core.group_ops_admin,1,1,1,1
+access_notification_rule_agent,ons.notification.rule agent,model_ons_notification_rule,ons_ops_core.group_ops_agent,1,0,0,0
+access_notification_rule_admin,ons.notification.rule admin,model_ons_notification_rule,ons_ops_core.group_ops_admin,1,1,1,1
+access_notification_log_agent,ons.notification.log agent,model_ons_notification_log,ons_ops_core.group_ops_agent,1,0,0,0
+access_notification_log_admin,ons.notification.log admin,model_ons_notification_log,ons_ops_core.group_ops_admin,1,1,1,1
+access_message_template_agent,ons.message.template agent,model_ons_message_template,ons_ops_core.group_ops_agent,1,0,0,0
+access_message_template_admin,ons.message.template admin,model_ons_message_template,ons_ops_core.group_ops_admin,1,1,1,1

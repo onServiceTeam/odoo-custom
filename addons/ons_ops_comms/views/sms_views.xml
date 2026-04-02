@@ -1,0 +1,109 @@
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SMS Thread — List
+         ═══════════════════════════════════════════════════════════ -->
+    <record id="view_sms_thread_list" model="ir.ui.view">
+        <field name="name">ons.sms.thread.list</field>
+        <field name="model">ons.sms.thread</field>
+        <field name="arch" type="xml">
+            <list string="SMS Threads" default_order="last_message_at desc"
+                  decoration-bf="unread_count > 0">
+                <field name="phone_number"/>
+                <field name="partner_id"/>
+                <field name="case_id" optional="show"/>
+                <field name="dispatch_id" optional="show"/>
+                <field name="unread_count"/>
+                <field name="last_message_preview"/>
+                <field name="last_message_at" widget="datetime"/>
+                <field name="is_active" widget="boolean"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SMS Thread — Form
+         ═══════════════════════════════════════════════════════════ -->
+    <record id="view_sms_thread_form" model="ir.ui.view">
+        <field name="name">ons.sms.thread.form</field>
+        <field name="model">ons.sms.thread</field>
+        <field name="arch" type="xml">
+            <form string="SMS Thread">
+                <header>
+                    <button name="action_mark_read" type="object"
+                        string="Mark All Read" class="btn-secondary"
+                        invisible="unread_count == 0"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Thread Info">
+                            <field name="phone_number"/>
+                            <field name="partner_id"/>
+                            <field name="is_active"/>
+                            <field name="unread_count"/>
+                            <field name="last_message_at"/>
+                        </group>
+                        <group string="Linked Records">
+                            <field name="case_id"/>
+                            <field name="dispatch_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Messages" name="messages">
+                            <field name="message_ids">
+                                <list create="0" edit="0" default_order="create_date desc">
+                                    <field name="direction" widget="badge"
+                                        decoration-info="direction == 'inbound'"
+                                        decoration-success="direction == 'outbound'"/>
+                                    <field name="from_number"/>
+                                    <field name="to_number"/>
+                                    <field name="body"/>
+                                    <field name="status" widget="badge"/>
+                                    <field name="create_date" string="When"/>
+                                    <field name="sent_by_user_id" optional="show"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SMS Thread — Search
+         ═══════════════════════════════════════════════════════════ -->
+    <record id="view_sms_thread_search" model="ir.ui.view">
+        <field name="name">ons.sms.thread.search</field>
+        <field name="model">ons.sms.thread</field>
+        <field name="arch" type="xml">
+            <search string="SMS Threads">
+                <field name="phone_number"/>
+                <field name="partner_id"/>
+                <field name="case_id"/>
+                <field name="dispatch_id"/>
+                <separator/>
+                <filter name="unread" string="Unread" domain="[('unread_count', '>', 0)]"/>
+                <filter name="active_threads" string="Active" domain="[('is_active', '=', True)]"/>
+                <filter name="unlinked" string="Unlinked"
+                    domain="[('case_id', '=', False), ('dispatch_id', '=', False)]"/>
+                <group>
+                    <filter name="group_partner" string="Customer" context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_case" string="Case" context="{'group_by': 'case_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SMS Thread — Action
+         ═══════════════════════════════════════════════════════════ -->
+    <record id="action_sms_threads" model="ir.actions.act_window">
+        <field name="name">SMS Threads</field>
+        <field name="res_model">ons.sms.thread</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_sms_thread_search"/>
+        <field name="context">{'search_default_active_threads': 1}</field>
+    </record>
+
+</odoo>

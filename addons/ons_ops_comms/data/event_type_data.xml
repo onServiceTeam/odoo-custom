@@ -1,0 +1,61 @@
+<odoo noupdate="1">
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Seed: Default notification rules for common events
+         ═══════════════════════════════════════════════════════════ -->
+
+    <record id="rule_case_created" model="ons.notification.rule">
+        <field name="name">Case Created — Chatter</field>
+        <field name="code">case_created_chatter</field>
+        <field name="event_type">case_created</field>
+        <field name="sequence">10</field>
+        <field name="notify_internal_chatter" eval="True"/>
+        <field name="chatter_body">New case created: {{case_name}}</field>
+    </record>
+
+    <record id="rule_dispatch_created" model="ons.notification.rule">
+        <field name="name">Dispatch Created — Chatter</field>
+        <field name="code">dispatch_created_chatter</field>
+        <field name="event_type">dispatch_created</field>
+        <field name="sequence">20</field>
+        <field name="notify_internal_chatter" eval="True"/>
+        <field name="chatter_body">Dispatch {{dispatch_name}} created for case {{case_name}}</field>
+    </record>
+
+    <record id="rule_dispatch_status" model="ons.notification.rule">
+        <field name="name">Dispatch Status Change — Chatter</field>
+        <field name="code">dispatch_status_chatter</field>
+        <field name="event_type">dispatch_status_change</field>
+        <field name="sequence">30</field>
+        <field name="notify_internal_chatter" eval="True"/>
+        <field name="chatter_body">Dispatch status changed to {{new_status}}</field>
+    </record>
+
+    <record id="rule_voice_confirmed" model="ons.notification.rule">
+        <field name="name">Voice Confirmed — Chatter</field>
+        <field name="code">voice_confirmed_chatter</field>
+        <field name="event_type">voice_outcome_confirmed</field>
+        <field name="sequence">40</field>
+        <field name="notify_internal_chatter" eval="True"/>
+        <field name="chatter_body">✅ Customer confirmed appointment via voice call</field>
+    </record>
+
+    <record id="rule_voice_cancelled" model="ons.notification.rule">
+        <field name="name">Voice Cancelled — Chatter</field>
+        <field name="code">voice_cancelled_chatter</field>
+        <field name="event_type">voice_outcome_cancelled</field>
+        <field name="sequence">50</field>
+        <field name="notify_internal_chatter" eval="True"/>
+        <field name="chatter_body">❌ Customer cancelled via voice call. Reason: {{reason}}</field>
+    </record>
+
+    <record id="rule_payment_received" model="ons.notification.rule">
+        <field name="name">Payment Received — Chatter</field>
+        <field name="code">payment_received_chatter</field>
+        <field name="event_type">payment_received</field>
+        <field name="sequence">60</field>
+        <field name="notify_internal_chatter" eval="True"/>
+        <field name="chatter_body">💰 Payment of {{amount}} received</field>
+    </record>
+
+</odoo>

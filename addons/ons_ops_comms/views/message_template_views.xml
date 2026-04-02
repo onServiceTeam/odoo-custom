@@ -1,0 +1,47 @@
+<odoo>
+
+    <record id="view_message_template_list" model="ir.ui.view">
+        <field name="name">ons.message.template.list</field>
+        <field name="model">ons.message.template</field>
+        <field name="arch" type="xml">
+            <list string="Message Templates" editable="bottom">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="channel" widget="badge"/>
+                <field name="subject"/>
+                <field name="is_active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_message_template_form" model="ir.ui.view">
+        <field name="name">ons.message.template.form</field>
+        <field name="model">ons.message.template</field>
+        <field name="arch" type="xml">
+            <form string="Message Template">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="channel"/>
+                            <field name="is_active"/>
+                        </group>
+                        <group>
+                            <field name="subject" invisible="channel != 'email'"/>
+                            <field name="available_variables"/>
+                        </group>
+                    </group>
+                    <field name="body" placeholder="Template body with {{variable}} placeholders..."/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_message_templates" model="ir.actions.act_window">
+        <field name="name">Message Templates</field>
+        <field name="res_model">ons.message.template</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>
