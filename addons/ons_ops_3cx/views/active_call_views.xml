@@ -1,0 +1,63 @@
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Active Calls – List View
+         ═══════════════════════════════════════════════════════════ -->
+    <record id="view_active_call_list" model="ir.ui.view">
+        <field name="name">ons.active.call.list</field>
+        <field name="model">ons.active.call</field>
+        <field name="arch" type="xml">
+            <list string="Active Calls" default_order="started_at desc" create="0" edit="0" delete="0">
+                <field name="caller_number"/>
+                <field name="caller_name"/>
+                <field name="callee_number"/>
+                <field name="callee_name"/>
+                <field name="direction"/>
+                <field name="queue"/>
+                <field name="agent_extension"/>
+                <field name="agent_id"/>
+                <field name="call_state" widget="badge"
+                    decoration-success="call_state == 'answered'"
+                    decoration-warning="call_state == 'ringing'"
+                    decoration-info="call_state == 'on_hold'"/>
+                <field name="started_at" widget="datetime"/>
+                <field name="duration_seconds" string="Duration (s)"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Active Calls – Search View
+         ═══════════════════════════════════════════════════════════ -->
+    <record id="view_active_call_search" model="ir.ui.view">
+        <field name="name">ons.active.call.search</field>
+        <field name="model">ons.active.call</field>
+        <field name="arch" type="xml">
+            <search string="Active Calls">
+                <field name="caller_number"/>
+                <field name="callee_number"/>
+                <field name="agent_id"/>
+                <field name="queue"/>
+                <separator/>
+                <filter name="inbound" string="Inbound" domain="[('direction','=','inbound')]"/>
+                <filter name="outbound" string="Outbound" domain="[('direction','=','outbound')]"/>
+                <group>
+                    <filter name="group_queue" string="Queue" context="{'group_by': 'queue'}"/>
+                    <filter name="group_agent" string="Agent" context="{'group_by': 'agent_id'}"/>
+                    <filter name="group_state" string="State" context="{'group_by': 'call_state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Active Calls – Action
+         ═══════════════════════════════════════════════════════════ -->
+    <record id="action_active_call" model="ir.actions.act_window">
+        <field name="name">Active Calls</field>
+        <field name="res_model">ons.active.call</field>
+        <field name="view_mode">list</field>
+        <field name="search_view_id" ref="view_active_call_search"/>
+    </record>
+
+</odoo>

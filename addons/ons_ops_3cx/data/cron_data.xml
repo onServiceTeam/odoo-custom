@@ -1,0 +1,47 @@
+<odoo noupdate="1">
+
+    <!-- CDR Sync: every 15 minutes -->
+    <record id="cron_sync_cdr" model="ir.cron">
+        <field name="name">3CX: Sync Call Detail Records</field>
+        <field name="model_id" ref="model_ons_call_log"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_sync_from_3cx()</field>
+        <field name="interval_number">15</field>
+        <field name="interval_type">minutes</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <!-- Active Calls: every 1 minute -->
+    <record id="cron_sync_active_calls" model="ir.cron">
+        <field name="name">3CX: Sync Active Calls</field>
+        <field name="model_id" ref="model_ons_active_call"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_sync_active_calls()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <!-- Stale Active Call Cleanup: every 1 hour -->
+    <record id="cron_cleanup_stale_calls" model="ir.cron">
+        <field name="name">3CX: Clean Up Stale Active Calls</field>
+        <field name="model_id" ref="model_ons_active_call"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_cleanup_stale()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <!-- Agent Status: every 1 minute -->
+    <record id="cron_sync_agent_status" model="ir.cron">
+        <field name="name">3CX: Sync Agent Status</field>
+        <field name="model_id" ref="model_ons_agent_status"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_sync_agent_status()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="active" eval="True"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_call_log_agent,ons.call.log agent,model_ons_call_log,ons_ops_core.group_ops_agent,1,1,1,0
+access_call_log_admin,ons.call.log admin,model_ons_call_log,ons_ops_core.group_ops_admin,1,1,1,1
+access_active_call_agent,ons.active.call agent,model_ons_active_call,ons_ops_core.group_ops_agent,1,0,0,0
+access_active_call_admin,ons.active.call admin,model_ons_active_call,ons_ops_core.group_ops_admin,1,1,1,1
+access_agent_status_agent,ons.agent.status agent,model_ons_agent_status,ons_ops_core.group_ops_agent,1,0,0,0
+access_agent_status_admin,ons.agent.status admin,model_ons_agent_status,ons_ops_core.group_ops_admin,1,1,1,1
+access_user_extension_agent,ons.user.extension agent,model_ons_user_extension,ons_ops_core.group_ops_agent,1,0,0,0
+access_user_extension_admin,ons.user.extension admin,model_ons_user_extension,ons_ops_core.group_ops_admin,1,1,1,1

@@ -1,0 +1,162 @@
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Call Log – List View
+         ═══════════════════════════════════════════════════════════ -->
+    <record id="view_call_log_list" model="ir.ui.view">
+        <field name="name">ons.call.log.list</field>
+        <field name="model">ons.call.log</field>
+        <field name="arch" type="xml">
+            <list string="Call Logs" default_order="call_start desc">
+                <field name="call_start" widget="datetime"/>
+                <field name="direction"/>
+                <field name="caller_number"/>
+                <field name="callee_number"/>
+                <field name="customer_number"/>
+                <field name="partner_id"/>
+                <field name="match_status"
+                    decoration-success="match_status == 'matched'"
+                    decoration-warning="match_status == 'ambiguous'"
+                    decoration-info="match_status == 'new_caller'"
+                    widget="badge"/>
+                <field name="queue_name"/>
+                <field name="agent_id"/>
+                <field name="duration_display" string="Duration"/>
+                <field name="disposition"
+                    decoration-success="disposition == 'answered'"
+                    decoration-danger="disposition in ('missed','abandoned')"
+                    widget="badge"/>
+                <field name="has_recording" widget="boolean"/>
+                <field name="interaction_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Call Log – Form View
+         ═══════════════════════════════════════════════════════════ -->
+    <record id="view_call_log_form" model="ir.ui.view">
+        <field name="name">ons.call.log.form</field>
+        <field name="model">ons.call.log</field>
+        <field name="arch" type="xml">
+            <form string="Call Log">
+                <header>
+                    <button name="action_create_interaction" type="object"
+                        string="Create Interaction"
+                        class="btn-primary"
+                        invisible="interaction_id"/>
+                    <button name="action_resolve_partner" type="object"
+                        string="Re-resolve Partner"
+                        class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="display_name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Call Details">
+                            <field name="direction"/>
+                            <field name="disposition"/>
+                            <field name="queue_name"/>
+                            <field name="call_start"/>
+                            <field name="call_end"/>
+                            <field name="duration_display" string="Duration"/>
+                            <field name="talk_duration"/>
+                            <field name="ring_duration"/>
+                            <field name="hold_duration"/>
+                            <field name="wait_duration"/>
+                        </group>
+                        <group string="Parties">
+                            <field name="caller_number"/>
+                            <field name="callee_number"/>
+                            <field name="customer_number"/>
+                            <field name="partner_id"/>
+                            <field name="match_status"/>
+                            <field name="agent_extension"/>
+                            <field name="agent_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Classification">
+                            <field name="caller_type"/>
+                            <field name="customer_type"/>
+                        </group>
+                        <group string="Recording">
+                            <field name="has_recording"/>
+                            <field name="recording_url" invisible="not has_recording" widget="url"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="3CX Identifiers">
+                            <field name="cdr_primary_id"/>
+                            <field name="threecx_call_id"/>
+                        </group>
+                        <group string="Links">
+                            <field name="interaction_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Metadata" invisible="not metadata">
+                            <field name="metadata"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Call Log – Search View
+         ═══════════════════════════════════════════════════════════ -->
+    <record id="view_call_log_search" model="ir.ui.view">
+        <field name="name">ons.call.log.search</field>
+        <field name="model">ons.call.log</field>
+        <field name="arch" type="xml">
+            <search string="Call Logs">
+                <field name="caller_number"/>
+                <field name="callee_number"/>
+                <field name="customer_number"/>
+                <field name="partner_id"/>
+                <field name="agent_id"/>
+                <field name="queue_name"/>
+                <field name="cdr_primary_id"/>
+                <separator/>
+                <filter name="inbound" string="Inbound" domain="[('direction','=','inbound')]"/>
+                <filter name="outbound" string="Outbound" domain="[('direction','=','outbound')]"/>
+                <separator/>
+                <filter name="answered" string="Answered" domain="[('disposition','=','answered')]"/>
+                <filter name="missed" string="Missed" domain="[('disposition','=','missed')]"/>
+                <filter name="abandoned" string="Abandoned" domain="[('disposition','=','abandoned')]"/>
+                <separator/>
+                <filter name="matched" string="Matched" domain="[('match_status','=','matched')]"/>
+                <filter name="new_caller" string="New Caller" domain="[('match_status','=','new_caller')]"/>
+                <filter name="ambiguous" string="Ambiguous" domain="[('match_status','=','ambiguous')]"/>
+                <separator/>
+                <filter name="has_recording" string="Has Recording" domain="[('has_recording','=',True)]"/>
+                <filter name="no_interaction" string="No Interaction" domain="[('interaction_id','=',False)]"/>
+                <separator/>
+                <filter name="today" string="Today" domain="[('call_start','&gt;=', (context_today()).strftime('%%Y-%%m-%%d'))]"/>
+                <group>
+                    <filter name="group_queue" string="Queue" context="{'group_by': 'queue_name'}"/>
+                    <filter name="group_agent" string="Agent" context="{'group_by': 'agent_id'}"/>
+                    <filter name="group_disposition" string="Disposition" context="{'group_by': 'disposition'}"/>
+                    <filter name="group_direction" string="Direction" context="{'group_by': 'direction'}"/>
+                    <filter name="group_match" string="Match Status" context="{'group_by': 'match_status'}"/>
+                    <filter name="group_date" string="Date" context="{'group_by': 'call_start:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Call Log – Action
+         ═══════════════════════════════════════════════════════════ -->
+    <record id="action_call_log" model="ir.actions.act_window">
+        <field name="name">Call Log</field>
+        <field name="res_model">ons.call.log</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_call_log_search"/>
+        <field name="context">{'search_default_today': 1}</field>
+    </record>
+
+</odoo>

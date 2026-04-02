@@ -1,0 +1,40 @@
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Telephony section under Operations
+         ═══════════════════════════════════════════════════════════ -->
+    <menuitem id="menu_ops_telephony_section"
+        name="Telephony"
+        parent="ons_ops_shell.menu_ops_root"
+        groups="ons_ops_core.group_ops_agent"
+        sequence="20"/>
+
+    <!-- Call Log under Telephony -->
+    <menuitem id="menu_call_log"
+        name="Call Log"
+        parent="menu_ops_telephony_section"
+        action="action_call_log"
+        sequence="10"/>
+
+    <!-- Active Calls under Telephony -->
+    <menuitem id="menu_active_calls"
+        name="Active Calls"
+        parent="menu_ops_telephony_section"
+        action="action_active_call"
+        sequence="20"/>
+
+    <!-- Agent Status under Management -->
+    <menuitem id="menu_agent_status"
+        name="Agent Status"
+        parent="ons_ops_shell.menu_ops_management_section"
+        action="action_agent_status"
+        sequence="30"/>
+
+    <!-- Extensions under Configuration -->
+    <menuitem id="menu_extensions"
+        name="Extensions"
+        parent="ons_ops_shell.menu_ops_config_section"
+        action="action_user_extension"
+        sequence="30"/>
+
+</odoo>

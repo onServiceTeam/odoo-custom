@@ -1,0 +1,17 @@
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Interaction – inherit form to add call_log_id
+         ═══════════════════════════════════════════════════════════ -->
+    <record id="view_interaction_form_3cx" model="ir.ui.view">
+        <field name="name">ons.interaction.form.3cx</field>
+        <field name="model">ons.interaction</field>
+        <field name="inherit_id" ref="ons_ops_intake.view_interaction_form"/>
+        <field name="arch" type="xml">
+            <field name="threecx_cdr_id" position="after">
+                <field name="call_log_id"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>
