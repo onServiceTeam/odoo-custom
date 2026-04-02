@@ -10,3 +10,7 @@ build/
 *~
 .DS_Store
 node_modules/
+
+# Server config contains credentials — keep local only
+config/odoo.conf
+config/odoo.conf.bak

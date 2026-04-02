@@ -3,9 +3,8 @@
 db_host = odoo-db
 db_port = 5432
 db_user = odoo
-db_password = ***REMOVED***
+db_password = CHANGE_ME
 db_name = onservice_prod_db
-; Restrict database listing to only the production database
 dbfilter = ^onservice_prod_db$
 list_db = False
 
@@ -14,41 +13,23 @@ addons_path = /mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons
 data_dir = /var/lib/odoo
 
 ; ─── Security ────────────────────────────────────────────────────────────────
-; Master password — required for database management operations
-admin_passwd = ***REMOVED***
+admin_passwd = CHANGE_ME
 
 ; ─── Network / Performance ───────────────────────────────────────────────────
-; Workers: 2 * CPU cores + 1 (we have 8 cores, but Odoo shares with other apps)
 workers = 4
-; Memory limits per worker
 limit_memory_hard = 2684354560
 limit_memory_soft = 2147483648
-; Time limits
 limit_time_cpu = 600
 limit_time_real = 1200
 limit_time_real_cron = 3600
-; Max concurrent cron threads
 max_cron_threads = 1
 
 ; ─── Proxy / Reverse Proxy ───────────────────────────────────────────────────
 proxy_mode = True
-; The longpolling port for websocket/livechat
-; gevent_port = 8072  ; default, handled automatically with workers > 0
 
 ; ─── Logging ─────────────────────────────────────────────────────────────────
 log_level = info
 log_handler = :INFO
 
-; ─── Email (configure after SMTP relay is set up) ────────────────────────────
-; smtp_server = localhost
-; smtp_port = 587
-; smtp_ssl = True
-; smtp_user =
-; smtp_password =
-; email_from = noreply@onservice.us
-
-; ─── Security Hardening ──────────────────────────────────────────────────────
-; Disable XML-RPC if not needed (uncomment in production)
-; xmlrpc = False
-; Server-wide modules
+; ─── Server-wide modules ─────────────────────────────────────────────────────
 server_wide_modules = base,web
