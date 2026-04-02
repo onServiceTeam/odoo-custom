@@ -53,7 +53,7 @@ a `recompute_range(date_from, date_to)` method allows backfill.
 ## Permissions
 
 - **Agent** (`group_ops_agent`): read own `ons.report.agent.daily` only
-  (via record rule `report_date` agent domain).
+  (via record rule `agent_id = user.id`).
 - **Manager** (`group_ops_manager`): read all report models.
 - **Admin** (`group_ops_admin`): full CRUD (for manual recompute/cleanup).
 

@@ -106,7 +106,7 @@
                     </div>
 
                     <!-- Location -->
-                    <div class="mb-3">
+                    <div t-if="dispatch.street or dispatch.city or dispatch.state_id or dispatch.zip" class="mb-3">
                         <strong>Location:</strong>
                         <span t-if="dispatch.street" t-out="dispatch.street"/>
                         <span t-if="dispatch.city">, <t t-out="dispatch.city"/></span>
