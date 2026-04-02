@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Reports section under Management (seq 60)
+         ═══════════════════════════════════════════════════════════════ -->
+    <menuitem
+        id="menu_ops_reports_section"
+        name="Reports"
+        parent="ons_ops_shell.menu_ops_management_section"
+        groups="ons_ops_core.group_ops_manager"
+        sequence="60"
+    />
+
+    <menuitem
+        id="menu_report_agent_daily"
+        name="Agent Daily"
+        parent="menu_ops_reports_section"
+        action="action_report_agent_daily"
+        sequence="10"
+    />
+
+    <menuitem
+        id="menu_report_queue_daily"
+        name="Queue Daily"
+        parent="menu_ops_reports_section"
+        action="action_report_queue_daily"
+        sequence="20"
+    />
+
+    <menuitem
+        id="menu_report_driver_daily"
+        name="Driver Daily"
+        parent="menu_ops_reports_section"
+        action="action_report_driver_daily"
+        sequence="30"
+    />
+
+</odoo>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Record Rule — Agents see only their own agent daily reports
+         ═══════════════════════════════════════════════════════════════ -->
+    <record id="rule_agent_daily_own" model="ir.rule">
+        <field name="name">Agent Daily: own records only</field>
+        <field name="model_id" ref="model_ons_report_agent_daily"/>
+        <field name="groups" eval="[(4, ref('ons_ops_core.group_ops_agent'))]"/>
+        <field name="domain_force">[('agent_id', '=', user.id)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Managers see all — no restrictive rule needed (global read via ACL) -->
+
+</odoo>

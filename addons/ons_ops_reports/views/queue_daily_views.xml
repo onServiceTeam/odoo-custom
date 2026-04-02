@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Queue Daily — List View
+         ═══════════════════════════════════════════════════════════════ -->
+    <record id="view_report_queue_daily_list" model="ir.ui.view">
+        <field name="name">ons.report.queue.daily.list</field>
+        <field name="model">ons.report.queue.daily</field>
+        <field name="arch" type="xml">
+            <list string="Queue Daily Performance" create="0" edit="0" delete="0">
+                <field name="report_date"/>
+                <field name="queue_name"/>
+                <field name="total_calls" sum="Total"/>
+                <field name="answered_calls" sum="Total"/>
+                <field name="missed_calls" sum="Total"/>
+                <field name="avg_talk_duration" avg="Avg"/>
+                <field name="avg_wait_duration" avg="Avg"/>
+                <field name="cases_created" sum="Total"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Queue Daily — Pivot View
+         ═══════════════════════════════════════════════════════════════ -->
+    <record id="view_report_queue_daily_pivot" model="ir.ui.view">
+        <field name="name">ons.report.queue.daily.pivot</field>
+        <field name="model">ons.report.queue.daily</field>
+        <field name="arch" type="xml">
+            <pivot string="Queue Daily — Pivot">
+                <field name="queue_name" type="row"/>
+                <field name="report_date" type="col" interval="week"/>
+                <field name="total_calls" type="measure"/>
+                <field name="answered_calls" type="measure"/>
+                <field name="missed_calls" type="measure"/>
+                <field name="cases_created" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Queue Daily — Graph View
+         ═══════════════════════════════════════════════════════════════ -->
+    <record id="view_report_queue_daily_graph" model="ir.ui.view">
+        <field name="name">ons.report.queue.daily.graph</field>
+        <field name="model">ons.report.queue.daily</field>
+        <field name="arch" type="xml">
+            <graph string="Queue Daily — Chart" type="bar">
+                <field name="queue_name"/>
+                <field name="total_calls" type="measure"/>
+                <field name="answered_calls" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Queue Daily — Search View
+         ═══════════════════════════════════════════════════════════════ -->
+    <record id="view_report_queue_daily_search" model="ir.ui.view">
+        <field name="name">ons.report.queue.daily.search</field>
+        <field name="model">ons.report.queue.daily</field>
+        <field name="arch" type="xml">
+            <search string="Queue Daily Reports">
+                <field name="queue_name"/>
+                <field name="report_date"/>
+                <separator/>
+                <filter name="filter_today" string="Today"
+                        domain="[('report_date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_yesterday" string="Yesterday"
+                        domain="[('report_date', '=', (context_today() - datetime.timedelta(days=1)).strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_this_week" string="This Week"
+                        domain="[('report_date', '>=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_this_month" string="This Month"
+                        domain="[('report_date', '>=', context_today().strftime('%Y-%m-01'))]"/>
+                <separator/>
+                <group>
+                    <filter name="group_queue" string="Queue" context="{'group_by': 'queue_name'}"/>
+                    <filter name="group_date" string="Date" context="{'group_by': 'report_date'}"/>
+                    <filter name="group_week" string="Week" context="{'group_by': 'report_date:week'}"/>
+                    <filter name="group_month" string="Month" context="{'group_by': 'report_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Queue Daily — Action
+         ═══════════════════════════════════════════════════════════════ -->
+    <record id="action_report_queue_daily" model="ir.actions.act_window">
+        <field name="name">Queue Daily Performance</field>
+        <field name="res_model">ons.report.queue.daily</field>
+        <field name="view_mode">list,pivot,graph</field>
+        <field name="search_view_id" ref="view_report_queue_daily_search"/>
+        <field name="context">{'search_default_filter_this_month': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No queue report data yet</p>
+            <p>Reports are generated daily at 05:00 UTC.</p>
+        </field>
+    </record>
+
+</odoo>

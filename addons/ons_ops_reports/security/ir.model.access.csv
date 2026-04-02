@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_report_agent_daily_agent,ons.report.agent.daily agent,model_ons_report_agent_daily,ons_ops_core.group_ops_agent,1,0,0,0
+access_report_agent_daily_manager,ons.report.agent.daily manager,model_ons_report_agent_daily,ons_ops_core.group_ops_manager,1,0,0,0
+access_report_agent_daily_admin,ons.report.agent.daily admin,model_ons_report_agent_daily,ons_ops_core.group_ops_admin,1,1,1,1
+access_report_queue_daily_manager,ons.report.queue.daily manager,model_ons_report_queue_daily,ons_ops_core.group_ops_manager,1,0,0,0
+access_report_queue_daily_admin,ons.report.queue.daily admin,model_ons_report_queue_daily,ons_ops_core.group_ops_admin,1,1,1,1
+access_report_driver_daily_manager,ons.report.driver.daily manager,model_ons_report_driver_daily,ons_ops_core.group_ops_manager,1,0,0,0
+access_report_driver_daily_admin,ons.report.driver.daily admin,model_ons_report_driver_daily,ons_ops_core.group_ops_admin,1,1,1,1
