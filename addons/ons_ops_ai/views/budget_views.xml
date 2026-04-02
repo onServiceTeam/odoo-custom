@@ -1,0 +1,41 @@
+<odoo>
+
+    <record id="view_ai_budget_form" model="ir.ui.view">
+        <field name="name">ons.ai.budget.form</field>
+        <field name="model">ons.ai.budget</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group string="Limits">
+                            <field name="daily_limit"/>
+                            <field name="monthly_limit"/>
+                            <field name="alert_threshold_pct"/>
+                        </group>
+                        <group string="Current Usage">
+                            <field name="daily_spent"/>
+                            <field name="daily_pct" widget="progressbar"/>
+                            <field name="is_over_daily" invisible="1"/>
+                            <field name="is_alert_daily" invisible="1"/>
+                            <field name="monthly_spent"/>
+                            <field name="monthly_pct" widget="progressbar"/>
+                            <field name="is_over_monthly" invisible="1"/>
+                            <field name="is_alert_monthly" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ai_budget" model="ir.actions.act_window">
+        <field name="name">AI Budget</field>
+        <field name="res_model">ons.ai.budget</field>
+        <field name="view_mode">form</field>
+        <field name="res_id" ref="budget_default"/>
+    </record>
+
+</odoo>

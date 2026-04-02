@@ -1,0 +1,51 @@
+<odoo>
+
+    <!-- AI Management section under Management -->
+    <menuitem id="menu_ai_section"
+        name="AI Services"
+        parent="ons_ops_shell.menu_ops_management_section"
+        sequence="30"/>
+
+    <menuitem id="menu_ai_runs"
+        name="Run History"
+        parent="menu_ai_section"
+        action="action_ai_runs"
+        sequence="10"/>
+
+    <menuitem id="menu_ai_budget"
+        name="Budget"
+        parent="menu_ai_section"
+        action="action_ai_budget"
+        sequence="20"/>
+
+    <!-- AI Configuration under config -->
+    <menuitem id="menu_ai_config_section"
+        name="AI Configuration"
+        parent="ons_ops_shell.menu_ops_config_section"
+        sequence="70"/>
+
+    <menuitem id="menu_ai_providers"
+        name="Providers"
+        parent="menu_ai_config_section"
+        action="action_ai_providers"
+        sequence="10"/>
+
+    <menuitem id="menu_ai_models"
+        name="Models"
+        parent="menu_ai_config_section"
+        action="action_ai_models"
+        sequence="20"/>
+
+    <menuitem id="menu_ai_tasks"
+        name="Task Routing"
+        parent="menu_ai_config_section"
+        action="action_ai_tasks"
+        sequence="30"/>
+
+    <menuitem id="menu_ai_prompts"
+        name="Prompt Contracts"
+        parent="menu_ai_config_section"
+        action="action_ai_prompt_templates"
+        sequence="40"/>
+
+</odoo>

@@ -1,0 +1,58 @@
+<odoo>
+
+    <record id="view_ai_model_list" model="ir.ui.view">
+        <field name="name">ons.ai.model.list</field>
+        <field name="model">ons.ai.model</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="model_id"/>
+                <field name="display_name_custom"/>
+                <field name="provider_id"/>
+                <field name="category"/>
+                <field name="pricing_tier"/>
+                <field name="input_cost_per_1k"/>
+                <field name="output_cost_per_1k"/>
+                <field name="context_window"/>
+                <field name="is_available"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ai_model_form" model="ir.ui.view">
+        <field name="name">ons.ai.model.form</field>
+        <field name="model">ons.ai.model</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="model_id"/>
+                            <field name="display_name_custom"/>
+                            <field name="provider_id"/>
+                            <field name="category"/>
+                        </group>
+                        <group>
+                            <field name="pricing_tier"/>
+                            <field name="input_cost_per_1k"/>
+                            <field name="output_cost_per_1k"/>
+                            <field name="max_tokens"/>
+                            <field name="context_window"/>
+                            <field name="is_available"/>
+                        </group>
+                    </group>
+                    <group string="Capabilities">
+                        <field name="capabilities" nolabel="1"
+                            placeholder="One per line: reasoning, fast, cheap, vision"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ai_models" model="ir.actions.act_window">
+        <field name="name">AI Models</field>
+        <field name="res_model">ons.ai.model</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

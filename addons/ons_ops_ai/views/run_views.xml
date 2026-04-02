@@ -1,0 +1,106 @@
+<odoo>
+
+    <record id="view_ai_run_list" model="ir.ui.view">
+        <field name="name">ons.ai.run.list</field>
+        <field name="model">ons.ai.run</field>
+        <field name="arch" type="xml">
+            <list create="0" edit="0" decoration-danger="not success"
+                decoration-warning="model_mismatch">
+                <field name="create_date"/>
+                <field name="task_type"/>
+                <field name="requested_model"/>
+                <field name="actual_model"/>
+                <field name="model_mismatch" column_invisible="1"/>
+                <field name="input_tokens"/>
+                <field name="output_tokens"/>
+                <field name="total_cost"/>
+                <field name="duration_ms"/>
+                <field name="success"/>
+                <field name="user_id"/>
+                <field name="res_model"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ai_run_form" model="ir.ui.view">
+        <field name="name">ons.ai.run.form</field>
+        <field name="model">ons.ai.run</field>
+        <field name="arch" type="xml">
+            <form create="0" edit="0">
+                <sheet>
+                    <group>
+                        <group string="Task">
+                            <field name="task_type"/>
+                            <field name="model_id"/>
+                            <field name="requested_model"/>
+                            <field name="actual_model"/>
+                            <field name="model_mismatch"/>
+                            <field name="prompt_template_id"/>
+                            <field name="prompt_version"/>
+                        </group>
+                        <group string="Metrics">
+                            <field name="input_tokens"/>
+                            <field name="output_tokens"/>
+                            <field name="total_cost"/>
+                            <field name="duration_ms"/>
+                            <field name="success"/>
+                            <field name="user_id"/>
+                            <field name="create_date"/>
+                        </group>
+                    </group>
+                    <group string="Source Record">
+                        <field name="res_model"/>
+                        <field name="res_id"/>
+                    </group>
+                    <notebook>
+                        <page string="Request">
+                            <field name="request_summary" nolabel="1" readonly="1"/>
+                        </page>
+                        <page string="Response">
+                            <field name="response_summary" nolabel="1" readonly="1"/>
+                        </page>
+                        <page string="Error" invisible="success">
+                            <field name="error_message" nolabel="1" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ai_run_search" model="ir.ui.view">
+        <field name="name">ons.ai.run.search</field>
+        <field name="model">ons.ai.run</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="task_type"/>
+                <field name="requested_model"/>
+                <field name="res_model"/>
+                <filter name="success" string="Successful"
+                    domain="[('success', '=', True)]"/>
+                <filter name="failed" string="Failed"
+                    domain="[('success', '=', False)]"/>
+                <filter name="mismatch" string="Model Mismatch"
+                    domain="[('model_mismatch', '=', True)]"/>
+                <separator/>
+                <filter name="today" string="Today"
+                    domain="[('create_date', '>=', (context_today()).strftime('%%Y-%%m-%%d'))]"/>
+                <separator/>
+                <group>
+                    <filter name="group_task_type" string="Task Type"
+                        context="{'group_by': 'task_type'}"/>
+                    <filter name="group_model" string="Model"
+                        context="{'group_by': 'requested_model'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_ai_runs" model="ir.actions.act_window">
+        <field name="name">AI Run History</field>
+        <field name="res_model">ons.ai.run</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_today': 1}</field>
+    </record>
+
+</odoo>

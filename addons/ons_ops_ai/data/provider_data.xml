@@ -1,0 +1,172 @@
+<odoo noupdate="1">
+
+    <!-- Default AI Providers -->
+    <record id="provider_openai" model="ons.ai.provider">
+        <field name="name">openai</field>
+        <field name="display_name_custom">OpenAI</field>
+        <field name="provider_type">chat</field>
+        <field name="api_endpoint">https://api.openai.com/v1/chat/completions</field>
+        <field name="is_active" eval="True"/>
+        <field name="health_status">unknown</field>
+    </record>
+
+    <record id="provider_openai_whisper" model="ons.ai.provider">
+        <field name="name">openai-whisper</field>
+        <field name="display_name_custom">OpenAI Whisper</field>
+        <field name="provider_type">transcription</field>
+        <field name="api_endpoint">https://api.openai.com/v1/audio/transcriptions</field>
+        <field name="is_active" eval="True"/>
+        <field name="health_status">unknown</field>
+    </record>
+
+    <!-- Model Catalog -->
+    <record id="model_gpt4o" model="ons.ai.model">
+        <field name="model_id">gpt-4o</field>
+        <field name="display_name_custom">GPT-4o</field>
+        <field name="provider_id" ref="provider_openai"/>
+        <field name="category">chat</field>
+        <field name="pricing_tier">standard</field>
+        <field name="is_available" eval="True"/>
+        <field name="context_window">128000</field>
+    </record>
+
+    <record id="model_gpt4o_mini" model="ons.ai.model">
+        <field name="model_id">gpt-4o-mini</field>
+        <field name="display_name_custom">GPT-4o Mini</field>
+        <field name="provider_id" ref="provider_openai"/>
+        <field name="category">chat</field>
+        <field name="pricing_tier">budget</field>
+        <field name="is_available" eval="True"/>
+        <field name="context_window">128000</field>
+    </record>
+
+    <record id="model_o1" model="ons.ai.model">
+        <field name="model_id">o1</field>
+        <field name="display_name_custom">o1 (Reasoning)</field>
+        <field name="provider_id" ref="provider_openai"/>
+        <field name="category">reasoning</field>
+        <field name="pricing_tier">premium</field>
+        <field name="is_available" eval="True"/>
+        <field name="context_window">200000</field>
+    </record>
+
+    <record id="model_whisper" model="ons.ai.model">
+        <field name="model_id">gpt-4o-transcribe</field>
+        <field name="display_name_custom">GPT-4o Transcribe</field>
+        <field name="provider_id" ref="provider_openai_whisper"/>
+        <field name="category">transcription</field>
+        <field name="pricing_tier">standard</field>
+        <field name="is_available" eval="True"/>
+    </record>
+
+    <!-- Task → Model Routing -->
+    <record id="task_intake_classification" model="ons.ai.task">
+        <field name="task_type">intake_classification</field>
+        <field name="display_name_custom">Intake Classification</field>
+        <field name="description">Classify interaction into call drivers</field>
+        <field name="model_id" ref="model_gpt4o_mini"/>
+        <field name="temperature">0.2</field>
+        <field name="max_tokens">1000</field>
+        <field name="is_enabled" eval="True"/>
+    </record>
+
+    <record id="task_description_polish" model="ons.ai.task">
+        <field name="task_type">description_polish</field>
+        <field name="display_name_custom">Description Polish</field>
+        <field name="description">Polish agent notes for grammar and clarity</field>
+        <field name="model_id" ref="model_gpt4o_mini"/>
+        <field name="temperature">0.1</field>
+        <field name="max_tokens">1000</field>
+        <field name="is_enabled" eval="True"/>
+    </record>
+
+    <record id="task_polish_and_classify" model="ons.ai.task">
+        <field name="task_type">polish_and_classify</field>
+        <field name="display_name_custom">Polish + Classify (Combined)</field>
+        <field name="description">Single-call polish and classification</field>
+        <field name="model_id" ref="model_gpt4o_mini"/>
+        <field name="temperature">0.2</field>
+        <field name="max_tokens">1500</field>
+        <field name="is_enabled" eval="True"/>
+    </record>
+
+    <record id="task_transcription" model="ons.ai.task">
+        <field name="task_type">transcription</field>
+        <field name="display_name_custom">Audio Transcription</field>
+        <field name="description">Transcribe call recordings</field>
+        <field name="model_id" ref="model_whisper"/>
+        <field name="temperature">0.0</field>
+        <field name="max_tokens">0</field>
+        <field name="is_enabled" eval="True"/>
+    </record>
+
+    <record id="task_diarization" model="ons.ai.task">
+        <field name="task_type">diarization</field>
+        <field name="display_name_custom">Speaker Diarization</field>
+        <field name="description">Label agent vs customer turns in transcript</field>
+        <field name="model_id" ref="model_gpt4o_mini"/>
+        <field name="temperature">0.1</field>
+        <field name="max_tokens">4000</field>
+        <field name="is_enabled" eval="True"/>
+    </record>
+
+    <record id="task_call_grading" model="ons.ai.task">
+        <field name="task_type">call_grading</field>
+        <field name="display_name_custom">QA Call Grading</field>
+        <field name="description">Deterministic v3 engine — AI used for diarization only</field>
+        <field name="model_id" ref="model_gpt4o_mini"/>
+        <field name="temperature">0.1</field>
+        <field name="max_tokens">4000</field>
+        <field name="is_enabled" eval="True"/>
+    </record>
+
+    <record id="task_coaching_insights" model="ons.ai.task">
+        <field name="task_type">coaching_insights</field>
+        <field name="display_name_custom">Coaching Insights</field>
+        <field name="description">Generate coaching feedback using GROW framework</field>
+        <field name="model_id" ref="model_gpt4o"/>
+        <field name="temperature">0.7</field>
+        <field name="max_tokens">2000</field>
+        <field name="is_enabled" eval="True"/>
+    </record>
+
+    <record id="task_ticket_summary" model="ons.ai.task">
+        <field name="task_type">ticket_summary</field>
+        <field name="display_name_custom">Case Summary</field>
+        <field name="description">Generate case summary from interactions</field>
+        <field name="model_id" ref="model_gpt4o_mini"/>
+        <field name="temperature">0.2</field>
+        <field name="max_tokens">600</field>
+        <field name="is_enabled" eval="True"/>
+    </record>
+
+    <record id="task_customer_report" model="ons.ai.task">
+        <field name="task_type">customer_report</field>
+        <field name="display_name_custom">Customer Report</field>
+        <field name="description">Generate customer-facing service report</field>
+        <field name="model_id" ref="model_gpt4o"/>
+        <field name="temperature">0.4</field>
+        <field name="max_tokens">500</field>
+        <field name="is_enabled" eval="True"/>
+    </record>
+
+    <record id="task_copilot_reasoning" model="ons.ai.task">
+        <field name="task_type">copilot_reasoning</field>
+        <field name="display_name_custom">QA Architect Copilot</field>
+        <field name="description">Advanced reasoning for QA architecture</field>
+        <field name="model_id" ref="model_gpt4o"/>
+        <field name="fallback_model_id" ref="model_gpt4o_mini"/>
+        <field name="temperature">0.7</field>
+        <field name="max_tokens">4000</field>
+        <field name="is_enabled" eval="True"/>
+    </record>
+
+    <!-- Default Budget -->
+    <record id="budget_default" model="ons.ai.budget">
+        <field name="name">AI Budget</field>
+        <field name="daily_limit">50.0</field>
+        <field name="monthly_limit">1000.0</field>
+        <field name="alert_threshold_pct">80</field>
+    </record>
+
+</odoo>

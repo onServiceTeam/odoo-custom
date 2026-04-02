@@ -1,0 +1,84 @@
+<odoo>
+
+    <record id="view_ai_prompt_template_list" model="ir.ui.view">
+        <field name="name">ons.ai.prompt.template.list</field>
+        <field name="model">ons.ai.prompt.template</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="task_type"/>
+                <field name="version"/>
+                <field name="is_active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ai_prompt_template_form" model="ir.ui.view">
+        <field name="name">ons.ai.prompt.template.form</field>
+        <field name="model">ons.ai.prompt.template</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_new_version" type="object"
+                        string="Create New Version" class="btn-primary"
+                        invisible="not is_active"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="task_type"/>
+                        </group>
+                        <group>
+                            <field name="version"/>
+                            <field name="is_active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="System Prompt">
+                            <field name="system_prompt" nolabel="1"
+                                placeholder="System message with {{variable}} placeholders"/>
+                        </page>
+                        <page string="User Prompt Template">
+                            <field name="user_prompt_template" nolabel="1"
+                                placeholder="User message template with {{variable}} placeholders"/>
+                        </page>
+                        <page string="Variables">
+                            <field name="available_variables" nolabel="1"
+                                placeholder="Document available variables here"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ai_prompt_template_search" model="ir.ui.view">
+        <field name="name">ons.ai.prompt.template.search</field>
+        <field name="model">ons.ai.prompt.template</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="task_type"/>
+                <filter name="active_only" string="Active"
+                    domain="[('is_active', '=', True)]"/>
+                <separator/>
+                <group>
+                    <filter name="group_task_type" string="Task Type"
+                        context="{'group_by': 'task_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_ai_prompt_templates" model="ir.actions.act_window">
+        <field name="name">Prompt Contracts</field>
+        <field name="res_model">ons.ai.prompt.template</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_active_only': 1}</field>
+    </record>
+
+</odoo>

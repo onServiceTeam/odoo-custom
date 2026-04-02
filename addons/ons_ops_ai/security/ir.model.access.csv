@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ai_provider_agent,ons.ai.provider agent,model_ons_ai_provider,ons_ops_core.group_ops_agent,1,0,0,0
+access_ai_provider_admin,ons.ai.provider admin,model_ons_ai_provider,ons_ops_core.group_ops_admin,1,1,1,1
+access_ai_model_agent,ons.ai.model agent,model_ons_ai_model,ons_ops_core.group_ops_agent,1,0,0,0
+access_ai_model_admin,ons.ai.model admin,model_ons_ai_model,ons_ops_core.group_ops_admin,1,1,1,1
+access_ai_task_agent,ons.ai.task agent,model_ons_ai_task,ons_ops_core.group_ops_agent,1,0,0,0
+access_ai_task_admin,ons.ai.task admin,model_ons_ai_task,ons_ops_core.group_ops_admin,1,1,1,1
+access_ai_prompt_template_agent,ons.ai.prompt.template agent,model_ons_ai_prompt_template,ons_ops_core.group_ops_agent,1,0,0,0
+access_ai_prompt_template_admin,ons.ai.prompt.template admin,model_ons_ai_prompt_template,ons_ops_core.group_ops_admin,1,1,1,1
+access_ai_run_agent,ons.ai.run agent,model_ons_ai_run,ons_ops_core.group_ops_agent,1,1,1,0
+access_ai_run_admin,ons.ai.run admin,model_ons_ai_run,ons_ops_core.group_ops_admin,1,1,1,1
+access_ai_budget_agent,ons.ai.budget agent,model_ons_ai_budget,ons_ops_core.group_ops_agent,1,0,0,0
+access_ai_budget_admin,ons.ai.budget admin,model_ons_ai_budget,ons_ops_core.group_ops_admin,1,1,1,1
