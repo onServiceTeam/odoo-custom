@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Interaction form: "Create Lead" button ── -->
+    <record id="view_interaction_form_inherit_ons_crm" model="ir.ui.view">
+        <field name="name">ons.interaction.form.inherit.ons_ops_crm</field>
+        <field name="model">ons.interaction</field>
+        <field name="inherit_id" ref="ons_ops_intake.view_interaction_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_resolve_customer']" position="after">
+                <button name="action_create_lead" string="Create Lead"
+                        type="object" class="btn-secondary"
+                        invisible="lead_id or state == 'new'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ═══ Menus under Operations → Intake & CRM ═══ -->
+
+    <!-- Override the shell's pipeline menu to use our custom action -->
+    <record id="ons_ops_shell.menu_ops_pipeline" model="ir.ui.menu">
+        <field name="action" ref="action_ops_pipeline"/>
+    </record>
+
+    <!-- Consent under Configuration -->
+    <menuitem
+        id="menu_ops_consent"
+        name="Consent Records"
+        parent="ons_ops_shell.menu_ops_config_section"
+        action="action_consent_list"
+        sequence="30"
+        groups="ons_ops_core.group_ops_manager"
+    />
+
+</odoo>

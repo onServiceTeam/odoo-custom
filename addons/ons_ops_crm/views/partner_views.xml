@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══ Partner — Form Extension: Consent Tab ═══ -->
+    <record id="view_partner_form_inherit_ons_crm" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.ons_ops_crm</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <!-- Consent stat button -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_consents" type="object"
+                        class="oe_stat_button" icon="fa-check-square-o"
+                        invisible="consent_count == 0">
+                    <field name="consent_count" string="Consents" widget="statinfo"/>
+                </button>
+            </xpath>
+
+            <!-- Consent tab in notebook -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Consent" name="consent_records">
+                    <field name="consent_ids" readonly="1">
+                        <list decoration-success="status in ('opted_in', 'double_opted_in')"
+                              decoration-muted="status in ('opted_out', 'revoked')">
+                            <field name="channel"/>
+                            <field name="scope"/>
+                            <field name="status" widget="badge"
+                                   decoration-success="status in ('opted_in', 'double_opted_in')"
+                                   decoration-danger="status in ('opted_out', 'revoked')"
+                                   decoration-info="status == 'pending'"/>
+                            <field name="capture_source"/>
+                            <field name="opted_in_at"/>
+                            <field name="create_date"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

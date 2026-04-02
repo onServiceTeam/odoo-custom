@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Custom Lost Reasons (replace stock defaults contextually) -->
+        <record id="lost_reason_customer_declined" model="crm.lost.reason">
+            <field name="name">Customer Declined Service</field>
+        </record>
+        <record id="lost_reason_too_expensive" model="crm.lost.reason">
+            <field name="name">Too Expensive</field>
+        </record>
+        <record id="lost_reason_competitor" model="crm.lost.reason">
+            <field name="name">Went to Competitor</field>
+        </record>
+        <record id="lost_reason_self_resolved" model="crm.lost.reason">
+            <field name="name">Issue Self-Resolved</field>
+        </record>
+        <record id="lost_reason_no_response" model="crm.lost.reason">
+            <field name="name">No Response / Unreachable</field>
+        </record>
+        <record id="lost_reason_not_serviceable" model="crm.lost.reason">
+            <field name="name">Not Serviceable</field>
+        </record>
+        <record id="lost_reason_duplicate" model="crm.lost.reason">
+            <field name="name">Duplicate Lead</field>
+        </record>
+
+    </data>
+</odoo>

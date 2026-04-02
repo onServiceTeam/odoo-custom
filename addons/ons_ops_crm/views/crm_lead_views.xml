@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══ CRM Lead — Form Extension ═══ -->
+    <record id="view_crm_lead_form_inherit_ons_crm" model="ir.ui.view">
+        <field name="name">crm.lead.form.inherit.ons_ops_crm</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Add Promote to Nurture and Mark Declined buttons -->
+            <xpath expr="//header" position="inside">
+                <button name="action_promote_to_nurture" string="Promote to Nurture"
+                        type="object" class="btn-secondary"
+                        invisible="lead_type == 'nurture' or not active"/>
+                <button name="action_mark_declined" string="Mark Declined"
+                        type="object" class="btn-link text-danger"
+                        invisible="decline_date or not active"
+                        confirm="Mark this lead as declined?"/>
+            </xpath>
+
+            <!-- Add onService fields tab in notebook -->
+            <xpath expr="//notebook" position="inside">
+                <page string="onService" name="ons_crm">
+                    <group>
+                        <group string="Lead Classification">
+                            <field name="lead_type"/>
+                            <field name="caller_relationship"/>
+                            <field name="primary_driver_id"/>
+                            <field name="is_nurture_eligible" readonly="1"/>
+                            <field name="is_convertible" readonly="1"/>
+                        </group>
+                        <group string="Callback &amp; Decline">
+                            <field name="callback_requested"/>
+                            <field name="callback_preferred_time"
+                                   invisible="not callback_requested"/>
+                            <field name="decline_date"/>
+                            <field name="declined_reason"
+                                   invisible="not decline_date"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ═══ CRM Lead — Tree Extension ═══ -->
+    <record id="view_crm_lead_tree_inherit_ons_crm" model="ir.ui.view">
+        <field name="name">crm.lead.tree.inherit.ons_ops_crm</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_leads"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="lead_type" optional="show" widget="badge"/>
+                <field name="primary_driver_id" optional="hide"/>
+                <field name="callback_requested" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ═══ CRM Lead — Search Extension ═══ -->
+    <record id="view_crm_lead_search_inherit_ons_crm" model="ir.ui.view">
+        <field name="name">crm.lead.search.inherit.ons_ops_crm</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_crm_case_leads_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <separator/>
+                <filter name="filter_service_leads" string="Service Leads"
+                        domain="[('lead_type', '=', 'service_lead')]"/>
+                <filter name="filter_callbacks" string="Callback Requests"
+                        domain="[('lead_type', '=', 'callback_request')]"/>
+                <filter name="filter_nurture" string="Nurture"
+                        domain="[('lead_type', '=', 'nurture')]"/>
+                <filter name="filter_declined" string="Declined"
+                        domain="[('decline_date', '!=', False)]"/>
+                <filter name="filter_convertible" string="Convertible"
+                        domain="[('is_convertible', '=', True)]"/>
+                <separator/>
+                <filter name="group_lead_type" string="Lead Type"
+                        context="{'group_by': 'lead_type'}"/>
+                <filter name="group_caller" string="Caller Relationship"
+                        context="{'group_by': 'caller_relationship'}"/>
+                <filter name="group_driver" string="Primary Driver"
+                        context="{'group_by': 'primary_driver_id'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ═══ CRM Lead — Operations Pipeline Action ═══ -->
+    <record id="action_ops_pipeline" model="ir.actions.act_window">
+        <field name="name">Lead Pipeline</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('type', '=', 'lead')]</field>
+        <field name="context">{
+            'default_type': 'lead',
+            'search_default_filter_service_leads': 1,
+        }</field>
+        <field name="search_view_id" ref="view_crm_lead_search_inherit_ons_crm"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No leads in the pipeline
+            </p>
+            <p>Leads are created from classified interactions or manually.</p>
+        </field>
+    </record>
+
+</odoo>

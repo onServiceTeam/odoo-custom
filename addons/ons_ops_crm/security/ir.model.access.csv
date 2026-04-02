@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_consent_agent,ons.contact.consent agent,model_ons_contact_consent,ons_ops_core.group_ops_agent,1,1,1,0
+access_consent_manager,ons.contact.consent manager,model_ons_contact_consent,ons_ops_core.group_ops_manager,1,1,1,0
+access_consent_admin,ons.contact.consent admin,model_ons_contact_consent,ons_ops_core.group_ops_admin,1,1,1,0

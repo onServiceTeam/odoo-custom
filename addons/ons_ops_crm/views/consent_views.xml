@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══ Consent — Tree ═══ -->
+    <record id="view_consent_tree" model="ir.ui.view">
+        <field name="name">ons.contact.consent.tree</field>
+        <field name="model">ons.contact.consent</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="status in ('opted_out', 'revoked')"
+                  decoration-success="status in ('opted_in', 'double_opted_in')"
+                  decoration-info="status == 'pending'">
+                <field name="partner_id"/>
+                <field name="channel"/>
+                <field name="scope"/>
+                <field name="status" widget="badge"
+                       decoration-success="status in ('opted_in', 'double_opted_in')"
+                       decoration-info="status == 'pending'"
+                       decoration-danger="status in ('opted_out', 'revoked')"/>
+                <field name="capture_source"/>
+                <field name="captured_by_id" widget="many2one_avatar_user"/>
+                <field name="opted_in_at" optional="hide"/>
+                <field name="confirmed_at" optional="hide"/>
+                <field name="opted_out_at" optional="hide"/>
+                <field name="create_date" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══ Consent — Form ═══ -->
+    <record id="view_consent_form" model="ir.ui.view">
+        <field name="name">ons.contact.consent.form</field>
+        <field name="model">ons.contact.consent</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_opt_in" string="Opt In"
+                            type="object" class="btn-primary"
+                            invisible="status != 'pending'"/>
+                    <button name="action_confirm" string="Confirm (Double Opt-In)"
+                            type="object" class="btn-primary"
+                            invisible="status != 'opted_in'"/>
+                    <button name="action_opt_out" string="Opt Out"
+                            type="object" class="btn-warning"
+                            invisible="status in ('opted_out', 'revoked')"
+                            confirm="Record opt-out for this consent?"/>
+                    <button name="action_revoke" string="Revoke"
+                            type="object" class="btn-danger"
+                            invisible="status == 'revoked'"
+                            groups="ons_ops_core.group_ops_admin"
+                            confirm="Revoke and archive this consent record?"/>
+                    <field name="status" widget="statusbar"
+                           statusbar_visible="pending,opted_in,double_opted_in"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Consent Details">
+                            <field name="partner_id"/>
+                            <field name="channel"/>
+                            <field name="scope"/>
+                            <field name="capture_source"/>
+                            <field name="captured_by_id" widget="many2one_avatar_user"/>
+                            <field name="interaction_id"/>
+                        </group>
+                        <group string="Timestamps">
+                            <field name="opted_in_at"/>
+                            <field name="confirmed_at"/>
+                            <field name="opted_out_at"/>
+                            <field name="revoked_at"/>
+                        </group>
+                    </group>
+                    <group string="Evidence">
+                        <field name="evidence" nolabel="1"
+                               placeholder="Notes or proof of how consent was obtained..."/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══ Consent — Search ═══ -->
+    <record id="view_consent_search" model="ir.ui.view">
+        <field name="name">ons.contact.consent.search</field>
+        <field name="model">ons.contact.consent</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id"/>
+                <field name="channel"/>
+                <field name="scope"/>
+                <separator/>
+                <filter name="filter_active_opt_in" string="Active Opt-In"
+                        domain="[('status', 'in', ('opted_in', 'double_opted_in'))]"/>
+                <filter name="filter_pending" string="Pending"
+                        domain="[('status', '=', 'pending')]"/>
+                <filter name="filter_opted_out" string="Opted Out"
+                        domain="[('status', 'in', ('opted_out', 'revoked'))]"/>
+                <separator/>
+                <filter name="filter_email" string="Email"
+                        domain="[('channel', '=', 'email')]"/>
+                <filter name="filter_sms" string="SMS"
+                        domain="[('channel', '=', 'sms')]"/>
+                <filter name="filter_phone" string="Phone"
+                        domain="[('channel', '=', 'phone')]"/>
+                <separator/>
+                <filter name="filter_marketing" string="Marketing"
+                        domain="[('scope', '=', 'marketing')]"/>
+                <filter name="filter_operational" string="Operational"
+                        domain="[('scope', '=', 'operational')]"/>
+                <separator/>
+                <filter name="filter_archived" string="Archived"
+                        domain="[('active', '=', False)]"/>
+                <group colspan="16">
+                    <filter name="group_partner" string="Customer"
+                            context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_channel" string="Channel"
+                            context="{'group_by': 'channel'}"/>
+                    <filter name="group_scope" string="Scope"
+                            context="{'group_by': 'scope'}"/>
+                    <filter name="group_status" string="Status"
+                            context="{'group_by': 'status'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ═══ Consent — Action ═══ -->
+    <record id="action_consent_list" model="ir.actions.act_window">
+        <field name="name">Consent Records</field>
+        <field name="res_model">ons.contact.consent</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_consent_search"/>
+        <field name="context">{'search_default_filter_active_opt_in': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No consent records yet
+            </p>
+            <p>Track customer opt-in and opt-out across email, SMS, and phone channels.</p>
+        </field>
+    </record>
+
+</odoo>
