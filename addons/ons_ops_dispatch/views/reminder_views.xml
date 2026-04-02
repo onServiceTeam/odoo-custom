@@ -1,0 +1,16 @@
+<odoo>
+    <record id="view_reminder_list" model="ir.ui.view">
+        <field name="name">ons.dispatch.reminder.list</field>
+        <field name="model">ons.dispatch.reminder</field>
+        <field name="arch" type="xml">
+            <list string="Reminders">
+                <field name="dispatch_id"/>
+                <field name="minutes_before"/>
+                <field name="scheduled_for" widget="datetime"/>
+                <field name="sent" widget="boolean"/>
+                <field name="sent_at"/>
+                <field name="retry_count"/>
+            </list>
+        </field>
+    </record>
+</odoo>

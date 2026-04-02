@@ -1,0 +1,38 @@
+<odoo noupdate="1">
+    <record id="cl_tech_called" model="ons.dispatch.checklist.config">
+        <field name="name">Call Onsite Technician</field>
+        <field name="code">tech_called</field>
+        <field name="sequence">10</field>
+        <field name="is_required" eval="True"/>
+    </record>
+    <record id="cl_customer_contacted" model="ons.dispatch.checklist.config">
+        <field name="name">Contact Customer</field>
+        <field name="code">customer_contacted</field>
+        <field name="sequence">20</field>
+        <field name="is_required" eval="True"/>
+    </record>
+    <record id="cl_address_verified" model="ons.dispatch.checklist.config">
+        <field name="name">Verify Address</field>
+        <field name="code">address_verified</field>
+        <field name="sequence">30</field>
+        <field name="is_required" eval="True"/>
+    </record>
+    <record id="cl_schedule_confirmed" model="ons.dispatch.checklist.config">
+        <field name="name">Confirm Schedule</field>
+        <field name="code">schedule_confirmed</field>
+        <field name="sequence">40</field>
+        <field name="is_required" eval="True"/>
+    </record>
+    <record id="cl_payment_discussed" model="ons.dispatch.checklist.config">
+        <field name="name">Discuss Payment</field>
+        <field name="code">payment_discussed</field>
+        <field name="sequence">50</field>
+        <field name="is_required" eval="False"/>
+    </record>
+    <record id="cl_special_instructions" model="ons.dispatch.checklist.config">
+        <field name="name">Special Instructions</field>
+        <field name="code">special_instructions</field>
+        <field name="sequence">60</field>
+        <field name="is_required" eval="False"/>
+    </record>
+</odoo>

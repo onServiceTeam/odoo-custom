@@ -1,0 +1,21 @@
+<odoo>
+    <record id="view_voice_call_list" model="ir.ui.view">
+        <field name="name">ons.dispatch.voice.call.list</field>
+        <field name="model">ons.dispatch.voice.call</field>
+        <field name="arch" type="xml">
+            <list string="Voice Calls">
+                <field name="dispatch_id"/>
+                <field name="call_type"/>
+                <field name="target_phone"/>
+                <field name="target_type"/>
+                <field name="status" widget="badge"/>
+                <field name="outcome" widget="badge"
+                    decoration-success="outcome == 'confirmed'"
+                    decoration-danger="outcome == 'cancelled'"
+                    decoration-warning="outcome == 'reschedule_requested'"/>
+                <field name="queued_at"/>
+                <field name="attempt_number"/>
+            </list>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,32 @@
+<odoo noupdate="1">
+    <record id="reason_schedule" model="ons.dispatch.cancellation.reason">
+        <field name="name">Schedule Conflict</field>
+        <field name="code">CUST_SCHEDULE</field>
+        <field name="dtmf_key">1</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="reason_not_needed" model="ons.dispatch.cancellation.reason">
+        <field name="name">No Longer Needed</field>
+        <field name="code">CUST_NOT_NEEDED</field>
+        <field name="dtmf_key">2</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="reason_alternative" model="ons.dispatch.cancellation.reason">
+        <field name="name">Found Another Service</field>
+        <field name="code">CUST_ALTERNATIVE</field>
+        <field name="dtmf_key">3</field>
+        <field name="sequence">30</field>
+    </record>
+    <record id="reason_cost" model="ons.dispatch.cancellation.reason">
+        <field name="name">Cost Concerns</field>
+        <field name="code">CUST_COST</field>
+        <field name="dtmf_key">4</field>
+        <field name="sequence">40</field>
+    </record>
+    <record id="reason_other" model="ons.dispatch.cancellation.reason">
+        <field name="name">Other Reason</field>
+        <field name="code">CUST_OTHER</field>
+        <field name="dtmf_key">5</field>
+        <field name="sequence">50</field>
+    </record>
+</odoo>

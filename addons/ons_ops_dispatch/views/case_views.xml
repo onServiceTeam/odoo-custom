@@ -1,0 +1,26 @@
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Case form — add dispatch button and smart button
+         ═══════════════════════════════════════════════════════════ -->
+    <record id="view_case_form_dispatch" model="ir.ui.view">
+        <field name="name">ons.case.form.dispatch</field>
+        <field name="model">ons.case</field>
+        <field name="inherit_id" ref="ons_ops_cases.view_case_form"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button name="action_view_dispatches" type="object"
+                    class="oe_stat_button" icon="fa-truck"
+                    invisible="dispatch_count == 0">
+                    <field name="dispatch_count" string="Dispatches" widget="statinfo"/>
+                </button>
+                <button name="action_create_dispatch" type="object"
+                    class="oe_stat_button" icon="fa-plus"
+                    invisible="dispatch_count > 0">
+                    <span>Create Dispatch</span>
+                </button>
+            </div>
+        </field>
+    </record>
+
+</odoo>

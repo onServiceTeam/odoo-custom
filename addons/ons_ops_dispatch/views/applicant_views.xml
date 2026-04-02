@@ -1,0 +1,20 @@
+<odoo>
+    <record id="view_applicant_list" model="ir.ui.view">
+        <field name="name">ons.dispatch.applicant.list</field>
+        <field name="model">ons.dispatch.applicant</field>
+        <field name="arch" type="xml">
+            <list string="Applicants">
+                <field name="dispatch_id"/>
+                <field name="worker_name"/>
+                <field name="worker_rating"/>
+                <field name="proposed_rate"/>
+                <field name="status" widget="badge"
+                    decoration-success="status == 'accepted'"
+                    decoration-warning="status == 'pending'"
+                    decoration-danger="status == 'rejected'"/>
+                <field name="applied_at"/>
+                <field name="reviewed_by" optional="show"/>
+            </list>
+        </field>
+    </record>
+</odoo>

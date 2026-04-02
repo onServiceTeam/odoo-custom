@@ -1,0 +1,261 @@
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Dispatch – List View
+         ═══════════════════════════════════════════════════════════ -->
+    <record id="view_dispatch_list" model="ir.ui.view">
+        <field name="name">ons.dispatch.list</field>
+        <field name="model">ons.dispatch</field>
+        <field name="arch" type="xml">
+            <list string="Dispatches" default_order="create_date desc"
+                  decoration-danger="dispatch_status == 'cancelled'"
+                  decoration-muted="dispatch_status == 'voided'"
+                  decoration-success="dispatch_status == 'completed'">
+                <field name="name"/>
+                <field name="title"/>
+                <field name="partner_id"/>
+                <field name="case_id" optional="show"/>
+                <field name="status_id" widget="badge"/>
+                <field name="dispatch_status" column_invisible="True"/>
+                <field name="assigned_worker_name" optional="show"/>
+                <field name="scheduled_start" widget="datetime"/>
+                <field name="city"/>
+                <field name="budget" widget="monetary" optional="hide"/>
+                <field name="needs_action" widget="boolean" optional="hide"/>
+                <field name="checklist_progress" widget="progressbar" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Dispatch – Form View
+         ═══════════════════════════════════════════════════════════ -->
+    <record id="view_dispatch_form" model="ir.ui.view">
+        <field name="name">ons.dispatch.form</field>
+        <field name="model">ons.dispatch</field>
+        <field name="arch" type="xml">
+            <form string="Dispatch">
+                <header>
+                    <button name="action_send" type="object" string="Send to Marketplace"
+                        class="btn-primary"
+                        invisible="dispatch_status != 'draft'"/>
+                    <button name="action_approve" type="object" string="Approve"
+                        class="btn-primary"
+                        invisible="dispatch_status != 'pending_approval'"
+                        groups="ons_ops_core.group_ops_manager"/>
+                    <button name="action_confirm" type="object" string="Confirm"
+                        class="btn-primary"
+                        invisible="dispatch_status != 'assigned'"/>
+                    <button name="action_start" type="object" string="Start Work"
+                        invisible="dispatch_status != 'confirmed'"/>
+                    <button name="action_complete" type="object" string="Complete"
+                        class="btn-primary"
+                        invisible="dispatch_status != 'in_progress'"/>
+                    <field name="status_id" widget="statusbar"
+                        statusbar_visible="draft,sent,assigned,confirmed,in_progress,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Job Details">
+                            <field name="title"/>
+                            <field name="case_id"/>
+                            <field name="partner_id"/>
+                            <field name="description"/>
+                            <field name="special_instructions"/>
+                        </group>
+                        <group string="Schedule &amp; Pricing">
+                            <field name="scheduled_start"/>
+                            <field name="scheduled_end"/>
+                            <field name="customer_timezone"/>
+                            <field name="budget"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="pricing_type"/>
+                            <field name="payment_terms"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Location">
+                            <field name="location_type"/>
+                            <field name="street"/>
+                            <field name="street2"/>
+                            <field name="city"/>
+                            <field name="state_id"/>
+                            <field name="zip"/>
+                            <field name="country_id"/>
+                            <field name="address_validated" readonly="1"/>
+                        </group>
+                        <group string="On-Site Contact">
+                            <field name="contact_first_name"/>
+                            <field name="contact_last_name"/>
+                            <field name="contact_phone"/>
+                            <field name="contact_extension"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Assignment">
+                            <field name="assigned_worker_name" readonly="1"/>
+                            <field name="assigned_worker_id" readonly="1" groups="ons_ops_core.group_ops_admin"/>
+                            <field name="wm_assignment_id" readonly="1" groups="ons_ops_core.group_ops_admin"/>
+                        </group>
+                        <group string="Approval" invisible="not requires_approval">
+                            <field name="requires_approval"/>
+                            <field name="approved_by" readonly="1"/>
+                            <field name="approved_at" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Checklist" name="checklist">
+                            <field name="checklist_ids">
+                                <list editable="bottom">
+                                    <field name="name" readonly="1"/>
+                                    <field name="is_required" readonly="1"/>
+                                    <field name="completed" widget="boolean_toggle"/>
+                                    <field name="completed_by" readonly="1"/>
+                                    <field name="completed_at" readonly="1"/>
+                                    <field name="notes"/>
+                                </list>
+                            </field>
+                            <field name="checklist_progress" widget="progressbar"/>
+                        </page>
+                        <page string="Applicants" name="applicants"
+                              badge="pending_applicant_count">
+                            <field name="applicant_ids">
+                                <list>
+                                    <field name="worker_name"/>
+                                    <field name="worker_rating"/>
+                                    <field name="proposed_rate"/>
+                                    <field name="status" widget="badge"
+                                        decoration-success="status == 'accepted'"
+                                        decoration-warning="status == 'pending'"
+                                        decoration-danger="status == 'rejected'"/>
+                                    <field name="applied_at"/>
+                                    <field name="worker_notes" optional="show"/>
+                                    <button name="action_accept" type="object" string="Accept"
+                                        class="btn-success btn-sm"
+                                        invisible="status != 'pending'"/>
+                                    <button name="action_reject" type="object" string="Reject"
+                                        class="btn-outline-danger btn-sm"
+                                        invisible="status != 'pending'"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Reminders" name="reminders">
+                            <field name="reminder_ids">
+                                <list>
+                                    <field name="minutes_before"/>
+                                    <field name="scheduled_for" widget="datetime"/>
+                                    <field name="sent" widget="boolean"/>
+                                    <field name="sent_at"/>
+                                    <field name="discord_sent" optional="hide"/>
+                                    <field name="sms_sent" optional="hide"/>
+                                    <field name="email_sent" optional="hide"/>
+                                    <field name="retry_count"/>
+                                    <field name="error_message" optional="hide"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Voice Calls" name="voice_calls">
+                            <field name="voice_call_ids">
+                                <list>
+                                    <field name="call_type"/>
+                                    <field name="target_phone"/>
+                                    <field name="target_type"/>
+                                    <field name="status" widget="badge"/>
+                                    <field name="outcome" widget="badge"
+                                        decoration-success="outcome == 'confirmed'"
+                                        decoration-danger="outcome == 'cancelled'"
+                                        decoration-warning="outcome == 'reschedule_requested'"/>
+                                    <field name="queued_at"/>
+                                    <field name="duration_seconds" optional="show"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Activity Log" name="activity_log">
+                            <field name="activity_log_ids">
+                                <list create="0" edit="0">
+                                    <field name="create_date" string="When"/>
+                                    <field name="event_type"/>
+                                    <field name="description"/>
+                                    <field name="user_id"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Cancellation / Void" name="cancel_void"
+                              invisible="dispatch_status not in ('cancelled', 'voided')">
+                            <group>
+                                <field name="cancellation_reason_id" readonly="1"/>
+                                <field name="cancellation_reason" readonly="1"/>
+                                <field name="void_reason" readonly="1"/>
+                                <field name="cancelled_at" readonly="1"/>
+                                <field name="voided_at" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Dispatch – Search View
+         ═══════════════════════════════════════════════════════════ -->
+    <record id="view_dispatch_search" model="ir.ui.view">
+        <field name="name">ons.dispatch.search</field>
+        <field name="model">ons.dispatch</field>
+        <field name="arch" type="xml">
+            <search string="Dispatches">
+                <field name="name"/>
+                <field name="title"/>
+                <field name="partner_id"/>
+                <field name="case_id"/>
+                <field name="assigned_worker_name"/>
+                <field name="city"/>
+                <separator/>
+                <filter name="draft" string="Draft" domain="[('dispatch_status','=','draft')]"/>
+                <filter name="active_dispatches" string="Active"
+                    domain="[('dispatch_status','in',['draft','pending_approval','sent','has_applicants','assigned'])]"/>
+                <filter name="in_progress" string="In Progress"
+                    domain="[('dispatch_status','in',['confirmed','in_progress'])]"/>
+                <filter name="completed" string="Completed" domain="[('dispatch_status','=','completed')]"/>
+                <filter name="cancelled" string="Cancelled" domain="[('dispatch_status','=','cancelled')]"/>
+                <separator/>
+                <filter name="needs_action" string="Needs Action" domain="[('needs_action','=',True)]"/>
+                <separator/>
+                <filter name="my_dispatches" string="My Dispatches" domain="[('create_uid','=',uid)]"/>
+                <group>
+                    <filter name="group_status" string="Status" context="{'group_by': 'status_id'}"/>
+                    <filter name="group_partner" string="Customer" context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_city" string="City" context="{'group_by': 'city'}"/>
+                    <filter name="group_worker" string="Worker" context="{'group_by': 'assigned_worker_name'}"/>
+                    <filter name="group_date" string="Created" context="{'group_by': 'create_date:week'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Dispatch – Action
+         ═══════════════════════════════════════════════════════════ -->
+    <record id="action_dispatch" model="ir.actions.act_window">
+        <field name="name">Dispatches</field>
+        <field name="res_model">ons.dispatch</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_dispatch_search"/>
+        <field name="context">{'search_default_active_dispatches': 1}</field>
+    </record>
+
+    <record id="action_dispatch_needs_action" model="ir.actions.act_window">
+        <field name="name">Needs Action</field>
+        <field name="res_model">ons.dispatch</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_dispatch_search"/>
+        <field name="context">{'search_default_needs_action': 1}</field>
+    </record>
+
+</odoo>

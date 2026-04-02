@@ -1,0 +1,19 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dispatch_agent,ons.dispatch agent,model_ons_dispatch,ons_ops_core.group_ops_agent,1,1,1,0
+access_dispatch_admin,ons.dispatch admin,model_ons_dispatch,ons_ops_core.group_ops_admin,1,1,1,1
+access_dispatch_status_agent,ons.dispatch.status agent,model_ons_dispatch_status,ons_ops_core.group_ops_agent,1,0,0,0
+access_dispatch_status_admin,ons.dispatch.status admin,model_ons_dispatch_status,ons_ops_core.group_ops_admin,1,1,1,1
+access_applicant_agent,ons.dispatch.applicant agent,model_ons_dispatch_applicant,ons_ops_core.group_ops_agent,1,1,1,0
+access_applicant_admin,ons.dispatch.applicant admin,model_ons_dispatch_applicant,ons_ops_core.group_ops_admin,1,1,1,1
+access_checklist_config_agent,ons.dispatch.checklist.config agent,model_ons_dispatch_checklist_config,ons_ops_core.group_ops_agent,1,0,0,0
+access_checklist_config_admin,ons.dispatch.checklist.config admin,model_ons_dispatch_checklist_config,ons_ops_core.group_ops_admin,1,1,1,1
+access_checklist_item_agent,ons.dispatch.checklist.item agent,model_ons_dispatch_checklist_item,ons_ops_core.group_ops_agent,1,1,0,0
+access_checklist_item_admin,ons.dispatch.checklist.item admin,model_ons_dispatch_checklist_item,ons_ops_core.group_ops_admin,1,1,1,1
+access_reminder_agent,ons.dispatch.reminder agent,model_ons_dispatch_reminder,ons_ops_core.group_ops_agent,1,1,0,0
+access_reminder_admin,ons.dispatch.reminder admin,model_ons_dispatch_reminder,ons_ops_core.group_ops_admin,1,1,1,1
+access_voice_call_agent,ons.dispatch.voice.call agent,model_ons_dispatch_voice_call,ons_ops_core.group_ops_agent,1,0,0,0
+access_voice_call_admin,ons.dispatch.voice.call admin,model_ons_dispatch_voice_call,ons_ops_core.group_ops_admin,1,1,1,1
+access_cancel_reason_agent,ons.dispatch.cancellation.reason agent,model_ons_dispatch_cancellation_reason,ons_ops_core.group_ops_agent,1,0,0,0
+access_cancel_reason_admin,ons.dispatch.cancellation.reason admin,model_ons_dispatch_cancellation_reason,ons_ops_core.group_ops_admin,1,1,1,1
+access_activity_log_agent,ons.dispatch.activity.log agent,model_ons_dispatch_activity_log,ons_ops_core.group_ops_agent,1,0,0,0
+access_activity_log_admin,ons.dispatch.activity.log admin,model_ons_dispatch_activity_log,ons_ops_core.group_ops_admin,1,1,1,1

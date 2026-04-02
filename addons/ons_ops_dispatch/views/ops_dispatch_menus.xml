@@ -1,0 +1,31 @@
+<odoo>
+
+    <!-- Dispatch section under Operations -->
+    <menuitem id="menu_ops_dispatch_section"
+        name="Dispatch"
+        parent="ons_ops_shell.menu_ops_root"
+        groups="ons_ops_core.group_ops_agent"
+        sequence="40"/>
+
+    <!-- All Dispatches -->
+    <menuitem id="menu_dispatch_all"
+        name="All Dispatches"
+        parent="menu_ops_dispatch_section"
+        action="action_dispatch"
+        sequence="10"/>
+
+    <!-- Needs Action -->
+    <menuitem id="menu_dispatch_needs_action"
+        name="Needs Action"
+        parent="menu_ops_dispatch_section"
+        action="action_dispatch_needs_action"
+        sequence="20"/>
+
+    <!-- Checklist Config under Configuration -->
+    <menuitem id="menu_checklist_config"
+        name="Dispatch Checklist"
+        parent="ons_ops_shell.menu_ops_config_section"
+        action="action_checklist_config"
+        sequence="40"/>
+
+</odoo>

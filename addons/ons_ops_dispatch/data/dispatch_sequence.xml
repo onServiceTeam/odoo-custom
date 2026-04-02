@@ -1,0 +1,8 @@
+<odoo noupdate="1">
+    <record id="seq_dispatch" model="ir.sequence">
+        <field name="name">Dispatch</field>
+        <field name="code">ons.dispatch</field>
+        <field name="prefix">DSP-</field>
+        <field name="padding">5</field>
+    </record>
+</odoo>
