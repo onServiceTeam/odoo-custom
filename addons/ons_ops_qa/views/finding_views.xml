@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         QA Finding — List View
+         ═══════════════════════════════════════════════════════════════ -->
+    <record id="view_qa_finding_list" model="ir.ui.view">
+        <field name="name">ons.qa.finding.list</field>
+        <field name="model">ons.qa.finding</field>
+        <field name="arch" type="xml">
+            <list string="QA Findings" editable="bottom">
+                <field name="result_id" readonly="1"/>
+                <field name="phase"/>
+                <field name="rule_key"/>
+                <field name="rule_name"/>
+                <field name="finding_type"/>
+                <field name="severity" widget="badge"
+                    decoration-danger="severity == 'critical'"
+                    decoration-warning="severity == 'high'"/>
+                <field name="status" widget="badge"
+                    decoration-success="status == 'hit'"
+                    decoration-danger="status == 'missed'"
+                    decoration-warning="status == 'needs_review'"/>
+                <field name="points_earned"/>
+                <field name="points_possible"/>
+                <field name="evidence_quote" optional="hide"/>
+                <field name="needs_human_review" widget="boolean"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         QA Finding — Form View
+         ═══════════════════════════════════════════════════════════════ -->
+    <record id="view_qa_finding_form" model="ir.ui.view">
+        <field name="name">ons.qa.finding.form</field>
+        <field name="model">ons.qa.finding</field>
+        <field name="arch" type="xml">
+            <form string="QA Finding">
+                <sheet>
+                    <group>
+                        <group string="Classification">
+                            <field name="result_id"/>
+                            <field name="rule_key"/>
+                            <field name="rule_name"/>
+                            <field name="phase"/>
+                            <field name="finding_type"/>
+                            <field name="severity"/>
+                            <field name="status"/>
+                        </group>
+                        <group string="Scoring">
+                            <field name="points_earned"/>
+                            <field name="points_possible"/>
+                            <field name="needs_human_review"/>
+                        </group>
+                    </group>
+                    <group string="Evidence">
+                        <field name="evidence_quote"/>
+                        <field name="evidence_speaker"/>
+                        <field name="evidence_start_ms"/>
+                        <field name="evidence_end_ms"/>
+                    </group>
+                    <group string="Verification">
+                        <field name="verified_by"/>
+                        <field name="verified_at"/>
+                        <field name="verification_notes"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_qa_finding_list" model="ir.actions.act_window">
+        <field name="name">QA Findings</field>
+        <field name="res_model">ons.qa.finding</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

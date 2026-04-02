@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         QA Section under Management (Manager+)
+         ═══════════════════════════════════════════════════════════════ -->
+    <menuitem id="menu_qa_section"
+              name="QA"
+              parent="ons_ops_shell.menu_ops_management_section"
+              sequence="20"
+              groups="ons_ops_core.group_ops_manager"/>
+
+    <menuitem id="menu_qa_evaluations"
+              name="Evaluations"
+              parent="menu_qa_section"
+              action="action_qa_result_all"
+              sequence="10"/>
+
+    <menuitem id="menu_qa_review_queue"
+              name="Review Queue"
+              parent="menu_qa_section"
+              action="action_qa_review_queue"
+              sequence="20"/>
+
+    <menuitem id="menu_qa_coaching"
+              name="Coaching"
+              parent="menu_qa_section"
+              action="action_qa_coaching"
+              sequence="30"/>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Agent self-service: My Pending Acknowledgements
+         ═══════════════════════════════════════════════════════════════ -->
+    <menuitem id="menu_qa_my_pending"
+              name="My QA Pending"
+              parent="ons_ops_shell.menu_ops_dashboard"
+              action="action_qa_pending_ack"
+              sequence="20"
+              groups="ons_ops_core.group_ops_agent"/>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         QA Config Section under Configuration (Admin)
+         ═══════════════════════════════════════════════════════════════ -->
+    <menuitem id="menu_qa_config_section"
+              name="QA Configuration"
+              parent="ons_ops_shell.menu_ops_config_section"
+              sequence="60"
+              groups="ons_ops_core.group_ops_admin"/>
+
+    <menuitem id="menu_qa_rules"
+              name="Rules"
+              parent="menu_qa_config_section"
+              action="action_qa_rule"
+              sequence="10"/>
+
+    <menuitem id="menu_qa_call_types"
+              name="Call Types"
+              parent="menu_qa_config_section"
+              action="action_qa_call_type"
+              sequence="20"/>
+
+</odoo>

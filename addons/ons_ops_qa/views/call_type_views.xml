@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         QA Call Type — List View
+         ═══════════════════════════════════════════════════════════════ -->
+    <record id="view_qa_call_type_list" model="ir.ui.view">
+        <field name="name">ons.qa.call.type.list</field>
+        <field name="model">ons.qa.call.type</field>
+        <field name="arch" type="xml">
+            <list string="QA Call Types">
+                <field name="key"/>
+                <field name="name"/>
+                <field name="phases"/>
+                <field name="detection_priority"/>
+                <field name="rule_count"/>
+                <field name="is_active" widget="boolean"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         QA Call Type — Form View
+         ═══════════════════════════════════════════════════════════════ -->
+    <record id="view_qa_call_type_form" model="ir.ui.view">
+        <field name="name">ons.qa.call.type.form</field>
+        <field name="model">ons.qa.call.type</field>
+        <field name="arch" type="xml">
+            <form string="QA Call Type">
+                <sheet>
+                    <group>
+                        <group string="Identity">
+                            <field name="key"/>
+                            <field name="name"/>
+                            <field name="is_active"/>
+                            <field name="detection_priority"/>
+                        </group>
+                        <group string="Structure">
+                            <field name="phases" placeholder="call_control,opening,foundations,session_start,verification,upsell"/>
+                            <field name="phase_weights_json" placeholder='{"call_control": 15, "opening": 10}'/>
+                        </group>
+                    </group>
+                    <group string="Description">
+                        <field name="description"/>
+                    </group>
+                    <notebook>
+                        <page string="Rule Mappings" name="rules">
+                            <field name="rule_ids">
+                                <list editable="bottom">
+                                    <field name="rule_id"/>
+                                    <field name="phase"/>
+                                    <field name="applicability"/>
+                                    <field name="points_override"/>
+                                    <field name="is_active" widget="boolean"/>
+                                    <field name="sequence"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_qa_call_type" model="ir.actions.act_window">
+        <field name="name">QA Call Types</field>
+        <field name="res_model">ons.qa.call.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         QA Call Type Rule — Action (standalone)
+         ═══════════════════════════════════════════════════════════════ -->
+    <record id="action_qa_call_type_rule" model="ir.actions.act_window">
+        <field name="name">Call Type Rules</field>
+        <field name="res_model">ons.qa.call.type.rule</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

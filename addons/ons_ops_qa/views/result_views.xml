@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         QA Result — List View
+         ═══════════════════════════════════════════════════════════════ -->
+    <record id="view_qa_result_list" model="ir.ui.view">
+        <field name="name">ons.qa.result.list</field>
+        <field name="model">ons.qa.result</field>
+        <field name="arch" type="xml">
+            <list string="QA Evaluations" default_order="create_date desc"
+                  decoration-danger="auto_fail"
+                  decoration-warning="state == 'disputed'"
+                  decoration-muted="state == 'acknowledged'">
+                <field name="create_date" string="Date"/>
+                <field name="call_log_id"/>
+                <field name="agent_id" widget="many2one_avatar_user"/>
+                <field name="call_type_id"/>
+                <field name="effective_score" string="Score" widget="float"/>
+                <field name="auto_fail" widget="boolean"/>
+                <field name="state" widget="badge"
+                    decoration-info="state in ('draft','graded')"
+                    decoration-warning="state in ('in_review','disputed')"
+                    decoration-success="state == 'acknowledged'"
+                    decoration-primary="state in ('reviewed','ack_pending')"/>
+                <field name="evaluator_id" widget="many2one_avatar_user" optional="hide"/>
+                <field name="override_score" optional="hide"/>
+                <field name="needs_human_review" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         QA Result — Form View
+         ═══════════════════════════════════════════════════════════════ -->
+    <record id="view_qa_result_form" model="ir.ui.view">
+        <field name="name">ons.qa.result.form</field>
+        <field name="model">ons.qa.result</field>
+        <field name="arch" type="xml">
+            <form string="QA Evaluation">
+                <header>
+                    <button name="action_send_to_review" string="Send to Review"
+                            type="object" class="btn-secondary"
+                            invisible="state not in ('graded', 'ack_pending')"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,graded,ack_pending,acknowledged"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_findings" type="object"
+                                class="oe_stat_button" icon="fa-search">
+                            <field name="finding_count" widget="statinfo" string="Findings"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>QA #<field name="id" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Call">
+                            <field name="call_log_id"/>
+                            <field name="agent_id"/>
+                            <field name="call_type_id"/>
+                            <field name="interaction_id" readonly="1"/>
+                            <field name="case_id" readonly="1"/>
+                        </group>
+                        <group string="Score">
+                            <field name="final_score"/>
+                            <field name="effective_score" readonly="1"/>
+                            <field name="auto_fail"/>
+                            <field name="score_cap" invisible="not auto_fail"/>
+                            <field name="needs_human_review"/>
+                            <field name="evaluator_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Summaries" name="summaries">
+                            <group>
+                                <field name="operational_summary"/>
+                                <field name="coaching_summary"/>
+                                <field name="auto_fail_reasons" invisible="not auto_fail"/>
+                                <field name="human_review_reasons" invisible="not needs_human_review"/>
+                            </group>
+                        </page>
+                        <page string="Findings" name="findings">
+                            <field name="finding_ids">
+                                <list editable="bottom">
+                                    <field name="phase"/>
+                                    <field name="rule_key"/>
+                                    <field name="rule_name"/>
+                                    <field name="finding_type"/>
+                                    <field name="severity" widget="badge"
+                                        decoration-danger="severity == 'critical'"
+                                        decoration-warning="severity == 'high'"
+                                        decoration-info="severity == 'medium'"/>
+                                    <field name="status" widget="badge"
+                                        decoration-success="status == 'hit'"
+                                        decoration-danger="status == 'missed'"
+                                        decoration-warning="status == 'needs_review'"/>
+                                    <field name="points_earned"/>
+                                    <field name="points_possible"/>
+                                    <field name="needs_human_review" widget="boolean"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Evidence" name="evidence">
+                            <field name="finding_ids" readonly="1">
+                                <list>
+                                    <field name="rule_name"/>
+                                    <field name="evidence_quote"/>
+                                    <field name="evidence_speaker"/>
+                                    <field name="evidence_start_ms"/>
+                                    <field name="evidence_end_ms"/>
+                                    <field name="verified_by"/>
+                                    <field name="verified_at"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Review" name="review">
+                            <group>
+                                <field name="reviewed_by"/>
+                                <field name="reviewed_at"/>
+                                <field name="override_score"/>
+                                <field name="review_notes"/>
+                            </group>
+                        </page>
+                        <page string="Acknowledgement" name="ack">
+                            <group>
+                                <field name="acknowledged_at"/>
+                                <field name="dispute_reason"/>
+                            </group>
+                        </page>
+                        <page string="Scoring Detail (JSON)" name="json_detail">
+                            <group>
+                                <field name="phase_scores_json"/>
+                                <field name="rule_results_json"/>
+                                <field name="global_violations_json"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         QA Result — Search View
+         ═══════════════════════════════════════════════════════════════ -->
+    <record id="view_qa_result_search" model="ir.ui.view">
+        <field name="name">ons.qa.result.search</field>
+        <field name="model">ons.qa.result</field>
+        <field name="arch" type="xml">
+            <search string="QA Evaluations">
+                <field name="agent_id"/>
+                <field name="evaluator_id"/>
+                <field name="call_type_id"/>
+                <filter name="filter_review" string="Needs Review"
+                        domain="[('state', 'in', ['in_review', 'disputed'])]"/>
+                <filter name="filter_ack_pending" string="Awaiting Ack"
+                        domain="[('state', '=', 'ack_pending')]"/>
+                <filter name="filter_auto_fail" string="Auto-Fail"
+                        domain="[('auto_fail', '=', True)]"/>
+                <filter name="filter_acknowledged" string="Acknowledged"
+                        domain="[('state', '=', 'acknowledged')]"/>
+                <separator/>
+                <filter name="filter_today" string="Today"
+                        domain="[('create_date', '>=', (context_today()).strftime('%%Y-%%m-%%d'))]"/>
+                <filter name="filter_this_week" string="This Week"
+                        domain="[('create_date', '>=', (context_today() - datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d'))]"/>
+                <separator/>
+                <group>
+                    <filter name="group_agent" context="{'group_by': 'agent_id'}"/>
+                    <filter name="group_state" context="{'group_by': 'state'}"/>
+                    <filter name="group_call_type" context="{'group_by': 'call_type_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         QA Result — Actions
+         ═══════════════════════════════════════════════════════════════ -->
+    <record id="action_qa_result_all" model="ir.actions.act_window">
+        <field name="name">QA Evaluations</field>
+        <field name="res_model">ons.qa.result</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_qa_result_search"/>
+        <field name="context">{'search_default_filter_today': 1}</field>
+    </record>
+
+    <record id="action_qa_review_queue" model="ir.actions.act_window">
+        <field name="name">Review Queue</field>
+        <field name="res_model">ons.qa.result</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_qa_result_search"/>
+        <field name="domain">[('state', 'in', ['in_review', 'disputed'])]</field>
+    </record>
+
+    <record id="action_qa_pending_ack" model="ir.actions.act_window">
+        <field name="name">Pending Acknowledgements</field>
+        <field name="res_model">ons.qa.result</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_qa_result_search"/>
+        <field name="domain">[('state', '=', 'ack_pending'), ('agent_id', '=', uid)]</field>
+    </record>
+
+</odoo>

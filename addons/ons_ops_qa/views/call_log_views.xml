@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Call Log — Inherit Form to add QA stat button
+         ═══════════════════════════════════════════════════════════════ -->
+    <record id="view_call_log_form_inherit_qa" model="ir.ui.view">
+        <field name="name">ons.call.log.form.qa</field>
+        <field name="model">ons.call.log</field>
+        <field name="inherit_id" ref="ons_ops_3cx.view_call_log_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_title')]" position="before">
+                <div class="oe_button_box" name="button_box">
+                    <button class="oe_stat_button" icon="fa-check-circle"
+                            type="object" name="action_view_qa_results">
+                        <field name="qa_result_count" widget="statinfo" string="QA Results"/>
+                    </button>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

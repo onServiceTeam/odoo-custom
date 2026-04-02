@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         QA Coaching — List View
+         ═══════════════════════════════════════════════════════════════ -->
+    <record id="view_qa_coaching_list" model="ir.ui.view">
+        <field name="name">ons.qa.coaching.list</field>
+        <field name="model">ons.qa.coaching</field>
+        <field name="arch" type="xml">
+            <list string="Coaching" default_order="create_date desc">
+                <field name="create_date" string="Date"/>
+                <field name="agent_id" widget="many2one_avatar_user"/>
+                <field name="result_id"/>
+                <field name="priority" widget="badge"
+                    decoration-danger="priority == 'critical'"
+                    decoration-warning="priority == 'high'"
+                    decoration-info="priority == 'medium'"/>
+                <field name="quality" optional="hide"/>
+                <field name="state" widget="badge"
+                    decoration-info="state == 'draft'"
+                    decoration-success="state in ('published','acknowledged')"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         QA Coaching — Form View
+         ═══════════════════════════════════════════════════════════════ -->
+    <record id="view_qa_coaching_form" model="ir.ui.view">
+        <field name="name">ons.qa.coaching.form</field>
+        <field name="model">ons.qa.coaching</field>
+        <field name="arch" type="xml">
+            <form string="Coaching">
+                <header>
+                    <button name="action_publish" string="Publish"
+                            type="object" class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_acknowledge_coaching" string="I Acknowledge"
+                            type="object" class="btn-primary"
+                            invisible="state != 'published'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Context">
+                            <field name="result_id"/>
+                            <field name="agent_id"/>
+                            <field name="priority"/>
+                            <field name="quality"/>
+                            <field name="ai_run_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Summary" name="summary">
+                            <field name="summary" placeholder="2-4 sentence coaching summary..."/>
+                        </page>
+                        <page string="Strengths" name="strengths">
+                            <field name="strengths_json" placeholder='[{"title": "...", "evidence": "..."}]'/>
+                        </page>
+                        <page string="Improvements" name="improvements">
+                            <field name="improvements_json" placeholder='[{"title": "...", "evidence": "...", "what_to_do_next_time": "..."}]'/>
+                        </page>
+                        <page string="Action Steps" name="action_steps">
+                            <field name="action_steps_json" placeholder='[{"description": "...", "how_to_practice": "...", "success_criteria": "..."}]'/>
+                        </page>
+                        <page string="Example Phrases" name="phrases">
+                            <field name="example_phrases_json" placeholder='[{"situation": "...", "instead_of": "...", "try_this": "..."}]'/>
+                        </page>
+                        <page string="Manager Notes" name="manager_notes">
+                            <field name="manager_notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_qa_coaching" model="ir.actions.act_window">
+        <field name="name">Coaching</field>
+        <field name="res_model">ons.qa.coaching</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

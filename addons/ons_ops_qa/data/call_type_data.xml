@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         QA Call Types — seeded from legacy qa_call_types_v3
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <record id="call_type_first_time_intake" model="ons.qa.call.type">
+        <field name="key">first_time_intake</field>
+        <field name="name">First-Time Intake</field>
+        <field name="description">New caller, no prior history. Full intake flow expected.</field>
+        <field name="phases">call_control,opening,foundations,session_start,verification,upsell</field>
+        <field name="phase_weights_json">{"call_control": 15, "opening": 10, "foundations": 20, "session_start": 15, "verification": 20, "upsell": 20}</field>
+        <field name="detection_priority">100</field>
+        <field name="is_active" eval="True"/>
+    </record>
+
+    <record id="call_type_callback" model="ons.qa.call.type">
+        <field name="key">callback</field>
+        <field name="name">Callback</field>
+        <field name="description">Return call to existing customer/lead.</field>
+        <field name="phases">call_control,opening,foundations,session_start,verification</field>
+        <field name="phase_weights_json">{"call_control": 15, "opening": 15, "foundations": 20, "session_start": 25, "verification": 25}</field>
+        <field name="detection_priority">90</field>
+        <field name="is_active" eval="True"/>
+    </record>
+
+    <record id="call_type_verification" model="ons.qa.call.type">
+        <field name="key">verification</field>
+        <field name="name">Verification</field>
+        <field name="description">Post-service verification call.</field>
+        <field name="phases">call_control,opening,verification,closing</field>
+        <field name="phase_weights_json">{"call_control": 15, "opening": 15, "verification": 50, "closing": 20}</field>
+        <field name="detection_priority">80</field>
+        <field name="is_active" eval="True"/>
+    </record>
+
+    <record id="call_type_billing" model="ons.qa.call.type">
+        <field name="key">billing</field>
+        <field name="name">Billing</field>
+        <field name="description">Billing inquiry or payment call.</field>
+        <field name="phases">call_control,opening,billing_handling,closing</field>
+        <field name="phase_weights_json">{"call_control": 15, "opening": 15, "billing_handling": 50, "closing": 20}</field>
+        <field name="detection_priority">70</field>
+        <field name="is_active" eval="True"/>
+    </record>
+
+    <record id="call_type_subscription" model="ons.qa.call.type">
+        <field name="key">subscription</field>
+        <field name="name">Subscription</field>
+        <field name="description">Subscriber retention or renewal call.</field>
+        <field name="phases">call_control,opening,retention,upsell,closing</field>
+        <field name="phase_weights_json">{"call_control": 15, "opening": 10, "retention": 35, "upsell": 25, "closing": 15}</field>
+        <field name="detection_priority">60</field>
+        <field name="is_active" eval="True"/>
+    </record>
+
+    <record id="call_type_transfer" model="ons.qa.call.type">
+        <field name="key">transfer</field>
+        <field name="name">Transfer</field>
+        <field name="description">Call transferred between agents.</field>
+        <field name="phases">call_control,opening,handoff</field>
+        <field name="phase_weights_json">{"call_control": 30, "opening": 30, "handoff": 40}</field>
+        <field name="detection_priority">50</field>
+        <field name="is_active" eval="True"/>
+    </record>
+
+    <record id="call_type_voicemail" model="ons.qa.call.type">
+        <field name="key">voicemail</field>
+        <field name="name">Voicemail</field>
+        <field name="description">Voicemail left. Minimal QA scope.</field>
+        <field name="phases">voicemail_quality</field>
+        <field name="phase_weights_json">{"voicemail_quality": 100}</field>
+        <field name="detection_priority">40</field>
+        <field name="is_active" eval="True"/>
+    </record>
+
+    <record id="call_type_outbound" model="ons.qa.call.type">
+        <field name="key">outbound</field>
+        <field name="name">Outbound</field>
+        <field name="description">Outbound agent-initiated call.</field>
+        <field name="phases">call_control,purpose,handling,closing</field>
+        <field name="phase_weights_json">{"call_control": 15, "purpose": 25, "handling": 40, "closing": 20}</field>
+        <field name="detection_priority">30</field>
+        <field name="is_active" eval="True"/>
+    </record>
+
+</odoo>

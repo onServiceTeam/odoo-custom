@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_qa_result_agent,ons.qa.result agent,model_ons_qa_result,ons_ops_core.group_ops_agent,1,1,0,0
+access_qa_result_manager,ons.qa.result manager,model_ons_qa_result,ons_ops_core.group_ops_manager,1,1,1,0
+access_qa_result_admin,ons.qa.result admin,model_ons_qa_result,ons_ops_core.group_ops_admin,1,1,1,1
+access_qa_finding_agent,ons.qa.finding agent,model_ons_qa_finding,ons_ops_core.group_ops_agent,1,0,0,0
+access_qa_finding_manager,ons.qa.finding manager,model_ons_qa_finding,ons_ops_core.group_ops_manager,1,1,1,0
+access_qa_finding_admin,ons.qa.finding admin,model_ons_qa_finding,ons_ops_core.group_ops_admin,1,1,1,1
+access_qa_coaching_agent,ons.qa.coaching agent,model_ons_qa_coaching,ons_ops_core.group_ops_agent,1,1,0,0
+access_qa_coaching_manager,ons.qa.coaching manager,model_ons_qa_coaching,ons_ops_core.group_ops_manager,1,1,1,0
+access_qa_coaching_admin,ons.qa.coaching admin,model_ons_qa_coaching,ons_ops_core.group_ops_admin,1,1,1,1
+access_qa_rule_agent,ons.qa.rule agent,model_ons_qa_rule,ons_ops_core.group_ops_agent,1,0,0,0
+access_qa_rule_admin,ons.qa.rule admin,model_ons_qa_rule,ons_ops_core.group_ops_admin,1,1,1,1
+access_qa_call_type_agent,ons.qa.call.type agent,model_ons_qa_call_type,ons_ops_core.group_ops_agent,1,0,0,0
+access_qa_call_type_admin,ons.qa.call.type admin,model_ons_qa_call_type,ons_ops_core.group_ops_admin,1,1,1,1
+access_qa_call_type_rule_agent,ons.qa.call.type.rule agent,model_ons_qa_call_type_rule,ons_ops_core.group_ops_agent,1,0,0,0
+access_qa_call_type_rule_admin,ons.qa.call.type.rule admin,model_ons_qa_call_type_rule,ons_ops_core.group_ops_admin,1,1,1,1

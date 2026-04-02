@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         QA Rule — List View
+         ═══════════════════════════════════════════════════════════════ -->
+    <record id="view_qa_rule_list" model="ir.ui.view">
+        <field name="name">ons.qa.rule.list</field>
+        <field name="model">ons.qa.rule</field>
+        <field name="arch" type="xml">
+            <list string="QA Rules" editable="bottom">
+                <field name="key"/>
+                <field name="name"/>
+                <field name="phase"/>
+                <field name="rule_type"/>
+                <field name="check_type"/>
+                <field name="points"/>
+                <field name="penalty_points"/>
+                <field name="is_auto_fail" widget="boolean"/>
+                <field name="score_cap" invisible="not is_auto_fail"/>
+                <field name="is_active" widget="boolean"/>
+                <field name="display_order"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         QA Rule — Form View
+         ═══════════════════════════════════════════════════════════════ -->
+    <record id="view_qa_rule_form" model="ir.ui.view">
+        <field name="name">ons.qa.rule.form</field>
+        <field name="model">ons.qa.rule</field>
+        <field name="arch" type="xml">
+            <form string="QA Rule">
+                <sheet>
+                    <group>
+                        <group string="Identity">
+                            <field name="key"/>
+                            <field name="name"/>
+                            <field name="phase"/>
+                            <field name="is_active"/>
+                        </group>
+                        <group string="Scoring">
+                            <field name="rule_type"/>
+                            <field name="check_type"/>
+                            <field name="points"/>
+                            <field name="penalty_points"/>
+                            <field name="is_auto_fail"/>
+                            <field name="score_cap" invisible="not is_auto_fail"/>
+                            <field name="display_order"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Coaching" name="coaching">
+                            <group>
+                                <field name="coaching_text"/>
+                                <field name="coaching_examples"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         QA Rule — Search View
+         ═══════════════════════════════════════════════════════════════ -->
+    <record id="view_qa_rule_search" model="ir.ui.view">
+        <field name="name">ons.qa.rule.search</field>
+        <field name="model">ons.qa.rule</field>
+        <field name="arch" type="xml">
+            <search string="QA Rules">
+                <field name="key"/>
+                <field name="name"/>
+                <field name="phase"/>
+                <filter name="filter_active" string="Active" domain="[('is_active', '=', True)]"/>
+                <filter name="filter_auto_fail" string="Auto-Fail" domain="[('is_auto_fail', '=', True)]"/>
+                <separator/>
+                <group>
+                    <filter name="group_phase" context="{'group_by': 'phase'}"/>
+                    <filter name="group_rule_type" context="{'group_by': 'rule_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_qa_rule" model="ir.actions.act_window">
+        <field name="name">QA Rules</field>
+        <field name="res_model">ons.qa.rule</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_qa_rule_search"/>
+        <field name="context">{'search_default_filter_active': 1}</field>
+    </record>
+
+</odoo>

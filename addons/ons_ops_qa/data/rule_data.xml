@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         QA Global Rules — seeded from legacy qa_global_rules_v3
+         key categories: banned_word, banned_phrase, policy,
+                         call_control, required, forbidden
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <!-- ── Auto-fail: banned words ────────────────────────────── -->
+    <record id="rule_banned_remote" model="ons.qa.rule">
+        <field name="key">banned_remote_access</field>
+        <field name="name">Banned: Remote Access Language</field>
+        <field name="rule_type">forbidden</field>
+        <field name="check_type">phrase_present</field>
+        <field name="phase">opening</field>
+        <field name="points">0</field>
+        <field name="penalty_points">5</field>
+        <field name="is_auto_fail" eval="True"/>
+        <field name="score_cap">40</field>
+        <field name="coaching_text">Never say "remote", "remotely", or "access your computer" to the customer.</field>
+        <field name="coaching_examples">Bad: "I'll remotely access your computer." Good: "I'll start an online session."</field>
+        <field name="is_active" eval="True"/>
+        <field name="display_order">1</field>
+    </record>
+
+    <record id="rule_banned_location" model="ons.qa.rule">
+        <field name="key">location_state_county</field>
+        <field name="name">Banned: Discussing Location</field>
+        <field name="rule_type">forbidden</field>
+        <field name="check_type">phrase_present</field>
+        <field name="phase">opening</field>
+        <field name="points">0</field>
+        <field name="penalty_points">3</field>
+        <field name="is_auto_fail" eval="False"/>
+        <field name="coaching_text">Do not reference the customer's state, city, or county unless they bring it up first.</field>
+        <field name="is_active" eval="True"/>
+        <field name="display_order">2</field>
+    </record>
+
+    <record id="rule_weak_permission" model="ons.qa.rule">
+        <field name="key">weak_permission_language</field>
+        <field name="name">Weak Permission Language</field>
+        <field name="rule_type">forbidden</field>
+        <field name="check_type">phrase_present</field>
+        <field name="phase">session_start</field>
+        <field name="points">0</field>
+        <field name="penalty_points">2</field>
+        <field name="is_auto_fail" eval="False"/>
+        <field name="coaching_text">Avoid "is it okay if" or "would you mind if". Use confident direction: "Here's what we'll do."</field>
+        <field name="coaching_examples">Bad: "Would you mind if I…" Good: "Here's what we'll do next."</field>
+        <field name="is_active" eval="True"/>
+        <field name="display_order">3</field>
+    </record>
+
+    <!-- ── Required: opening behaviors ────────────────────────── -->
+    <record id="rule_greeting_proper" model="ons.qa.rule">
+        <field name="key">greeting_proper</field>
+        <field name="name">Proper Greeting</field>
+        <field name="rule_type">required</field>
+        <field name="check_type">phrase_present</field>
+        <field name="phase">opening</field>
+        <field name="points">3</field>
+        <field name="penalty_points">0</field>
+        <field name="is_auto_fail" eval="False"/>
+        <field name="coaching_text">Start every call with the full company greeting.</field>
+        <field name="is_active" eval="True"/>
+        <field name="display_order">10</field>
+    </record>
+
+    <record id="rule_name_capture" model="ons.qa.rule">
+        <field name="key">name_capture</field>
+        <field name="name">Customer Name Capture</field>
+        <field name="rule_type">required</field>
+        <field name="check_type">phrase_present</field>
+        <field name="phase">opening</field>
+        <field name="points">2</field>
+        <field name="penalty_points">0</field>
+        <field name="is_auto_fail" eval="False"/>
+        <field name="coaching_text">Always ask for and confirm the customer's name.</field>
+        <field name="is_active" eval="True"/>
+        <field name="display_order">11</field>
+    </record>
+
+    <record id="rule_issue_identification" model="ons.qa.rule">
+        <field name="key">issue_identification</field>
+        <field name="name">Issue Identification</field>
+        <field name="rule_type">required</field>
+        <field name="check_type">phrase_present</field>
+        <field name="phase">foundations</field>
+        <field name="points">5</field>
+        <field name="penalty_points">0</field>
+        <field name="is_auto_fail" eval="False"/>
+        <field name="coaching_text">Clearly identify and confirm the customer's issue before proceeding.</field>
+        <field name="is_active" eval="True"/>
+        <field name="display_order">20</field>
+    </record>
+
+    <record id="rule_session_pitch" model="ons.qa.rule">
+        <field name="key">session_pitch</field>
+        <field name="name">Online Session Pitch</field>
+        <field name="rule_type">required</field>
+        <field name="check_type">phrase_present</field>
+        <field name="phase">session_start</field>
+        <field name="points">4</field>
+        <field name="penalty_points">0</field>
+        <field name="is_auto_fail" eval="False"/>
+        <field name="coaching_text">Pitch the online session clearly, explaining the benefit.</field>
+        <field name="is_active" eval="True"/>
+        <field name="display_order">30</field>
+    </record>
+
+    <record id="rule_verification_complete" model="ons.qa.rule">
+        <field name="key">verification_complete</field>
+        <field name="name">Verification Completed</field>
+        <field name="rule_type">required</field>
+        <field name="check_type">manual</field>
+        <field name="phase">verification</field>
+        <field name="points">5</field>
+        <field name="penalty_points">0</field>
+        <field name="is_auto_fail" eval="False"/>
+        <field name="coaching_text">Complete verification steps: confirm fix, ask if anything else.</field>
+        <field name="is_active" eval="True"/>
+        <field name="display_order">40</field>
+    </record>
+
+    <!-- ── Call control ──────────────────────────────────────── -->
+    <record id="rule_talk_time_ratio" model="ons.qa.rule">
+        <field name="key">talk_time_ratio</field>
+        <field name="name">Agent Talk Time Ratio</field>
+        <field name="rule_type">call_control</field>
+        <field name="check_type">talk_time</field>
+        <field name="phase">call_control</field>
+        <field name="points">3</field>
+        <field name="penalty_points">2</field>
+        <field name="is_auto_fail" eval="False"/>
+        <field name="coaching_text">Agent should talk 40-60% of the time. Too much or too little indicates control issues.</field>
+        <field name="is_active" eval="True"/>
+        <field name="display_order">50</field>
+    </record>
+
+    <record id="rule_dead_air" model="ons.qa.rule">
+        <field name="key">dead_air_control</field>
+        <field name="name">Dead Air Control</field>
+        <field name="rule_type">call_control</field>
+        <field name="check_type">talk_time</field>
+        <field name="phase">call_control</field>
+        <field name="points">2</field>
+        <field name="penalty_points">1</field>
+        <field name="is_auto_fail" eval="False"/>
+        <field name="coaching_text">Avoid extended silence. Fill pauses with status updates.</field>
+        <field name="is_active" eval="True"/>
+        <field name="display_order">51</field>
+    </record>
+
+</odoo>
