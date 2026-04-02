@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_case_portal,ons.case portal,ons_ops_cases.model_ons_case,base.group_portal,1,0,0,0
+access_case_stage_portal,ons.case.stage portal,ons_ops_cases.model_ons_case_stage,base.group_portal,1,0,0,0
+access_case_line_portal,ons.case.line portal,ons_ops_billing.model_ons_case_line,base.group_portal,1,0,0,0
+access_customer_plan_portal,ons.customer.plan portal,ons_ops_billing.model_ons_customer_plan,base.group_portal,1,0,0,0
+access_dispatch_portal,ons.dispatch portal,ons_ops_dispatch.model_ons_dispatch,base.group_portal,1,0,0,0
+access_dispatch_status_portal,ons.dispatch.status portal,ons_ops_dispatch.model_ons_dispatch_status,base.group_portal,1,0,0,0
+access_consent_portal,ons.contact.consent portal,ons_ops_crm.model_ons_contact_consent,base.group_portal,1,0,0,0

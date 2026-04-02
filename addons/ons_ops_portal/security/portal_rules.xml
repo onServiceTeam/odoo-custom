@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ─── Case: portal user sees own partner's cases ───────── -->
+    <record id="rule_portal_case_own" model="ir.rule">
+        <field name="name">Portal: own cases</field>
+        <field name="model_id" ref="ons_ops_cases.model_ons_case"/>
+        <field name="domain_force">
+            [('partner_id', 'child_of', [user.commercial_partner_id.id])]
+        </field>
+        <field name="groups" eval="[
+            Command.link(ref('base.group_portal')),
+        ]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- ─── Case Line: indirect via case partner ─────────────── -->
+    <record id="rule_portal_case_line_own" model="ir.rule">
+        <field name="name">Portal: own case lines</field>
+        <field name="model_id" ref="ons_ops_billing.model_ons_case_line"/>
+        <field name="domain_force">
+            [('case_id.partner_id', 'child_of', [user.commercial_partner_id.id])]
+        </field>
+        <field name="groups" eval="[
+            Command.link(ref('base.group_portal')),
+        ]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- ─── Customer Plan: own plans ─────────────────────────── -->
+    <record id="rule_portal_plan_own" model="ir.rule">
+        <field name="name">Portal: own plans</field>
+        <field name="model_id" ref="ons_ops_billing.model_ons_customer_plan"/>
+        <field name="domain_force">
+            [('partner_id', 'child_of', [user.commercial_partner_id.id])]
+        </field>
+        <field name="groups" eval="[
+            Command.link(ref('base.group_portal')),
+        ]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- ─── Dispatch: own dispatches ─────────────────────────── -->
+    <record id="rule_portal_dispatch_own" model="ir.rule">
+        <field name="name">Portal: own dispatches</field>
+        <field name="model_id" ref="ons_ops_dispatch.model_ons_dispatch"/>
+        <field name="domain_force">
+            [('partner_id', 'child_of', [user.commercial_partner_id.id])]
+        </field>
+        <field name="groups" eval="[
+            Command.link(ref('base.group_portal')),
+        ]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- ─── Consent: own consent records ─────────────────────── -->
+    <record id="rule_portal_consent_own" model="ir.rule">
+        <field name="name">Portal: own consent records</field>
+        <field name="model_id" ref="ons_ops_crm.model_ons_contact_consent"/>
+        <field name="domain_force">
+            [('partner_id', 'child_of', [user.commercial_partner_id.id])]
+        </field>
+        <field name="groups" eval="[
+            Command.link(ref('base.group_portal')),
+        ]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+</odoo>

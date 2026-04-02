@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Dispatch list
+         ═══════════════════════════════════════════════════════════ -->
+    <template id="portal_my_dispatches" name="My Dispatches">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Dispatches</t>
+            </t>
+
+            <t t-if="not dispatches">
+                <p class="alert alert-warning">
+                    There are no onsite service visits on record.
+                </p>
+            </t>
+
+            <t t-if="dispatches" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Reference</th>
+                        <th>Title</th>
+                        <th>Scheduled</th>
+                        <th>Status</th>
+                        <th class="text-center">Progress</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="dispatches" t-as="d">
+                        <tr>
+                            <td>
+                                <a t-attf-href="/my/dispatches/#{d.id}" t-att-title="d.name">
+                                    <t t-out="d.name"/>
+                                </a>
+                            </td>
+                            <td><t t-out="d.title"/></td>
+                            <td>
+                                <span t-if="d.scheduled_start" t-field="d.scheduled_start"
+                                      t-options='{"widget": "datetime", "format": "MMM dd, yyyy HH:mm"}'/>
+                                <span t-else="" class="text-muted">Not scheduled</span>
+                            </td>
+                            <td>
+                                <span t-if="d.is_terminal" class="badge text-bg-success">Completed</span>
+                                <span t-else="" class="badge text-bg-info">
+                                    <t t-out="d.status_id.name"/>
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <span t-if="d.checklist_progress" t-out="'%.0f%%' % d.checklist_progress"/>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Dispatch detail
+         ═══════════════════════════════════════════════════════════ -->
+    <template id="portal_dispatch_detail" name="Dispatch Detail">
+        <t t-call="portal.portal_layout">
+
+            <div class="card mt-3">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        <t t-out="dispatch.name"/>
+                    </h4>
+                    <span t-if="dispatch.is_terminal" class="badge text-bg-success fs-6">Completed</span>
+                    <span t-else="" class="badge text-bg-info fs-6">
+                        <t t-out="dispatch.status_id.name"/>
+                    </span>
+                </div>
+                <div class="card-body">
+
+                    <div t-if="dispatch.title" class="mb-3">
+                        <h6><t t-out="dispatch.title"/></h6>
+                    </div>
+
+                    <div t-if="dispatch.description" class="mb-3">
+                        <strong>Details:</strong>
+                        <p class="text-muted" t-out="dispatch.description"/>
+                    </div>
+
+                    <!-- Schedule -->
+                    <div class="row mb-3">
+                        <div class="col-md-6" t-if="dispatch.scheduled_start">
+                            <strong>Scheduled Start:</strong>
+                            <span t-field="dispatch.scheduled_start"
+                                  t-options='{"widget": "datetime", "format": "MMM dd, yyyy HH:mm"}'/>
+                        </div>
+                        <div class="col-md-6" t-if="dispatch.scheduled_end">
+                            <strong>Scheduled End:</strong>
+                            <span t-field="dispatch.scheduled_end"
+                                  t-options='{"widget": "datetime", "format": "MMM dd, yyyy HH:mm"}'/>
+                        </div>
+                    </div>
+
+                    <!-- Worker -->
+                    <div t-if="dispatch.assigned_worker_name" class="mb-3">
+                        <strong>Technician:</strong>
+                        <span t-out="dispatch.assigned_worker_name"/>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="mb-3">
+                        <strong>Location:</strong>
+                        <span t-if="dispatch.street" t-out="dispatch.street"/>
+                        <span t-if="dispatch.city">, <t t-out="dispatch.city"/></span>
+                        <span t-if="dispatch.state_id">, <t t-out="dispatch.state_id.name"/></span>
+                        <span t-if="dispatch.zip"> <t t-out="dispatch.zip"/></span>
+                    </div>
+
+                    <!-- Progress -->
+                    <div t-if="dispatch.checklist_progress" class="mb-3">
+                        <strong>Progress:</strong>
+                        <div class="progress mt-1" style="height: 20px;">
+                            <div class="progress-bar"
+                                 role="progressbar"
+                                 t-attf-style="width: #{dispatch.checklist_progress}%"
+                                 t-att-aria-valuenow="dispatch.checklist_progress"
+                                 aria-valuemin="0"
+                                 aria-valuemax="100">
+                                <t t-out="'%.0f%%' % dispatch.checklist_progress"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Timestamps -->
+                    <div class="row mb-3">
+                        <div class="col-md-4" t-if="dispatch.confirmed_at">
+                            <strong>Confirmed:</strong>
+                            <span t-field="dispatch.confirmed_at"
+                                  t-options='{"widget": "datetime", "format": "MMM dd HH:mm"}'/>
+                        </div>
+                        <div class="col-md-4" t-if="dispatch.completed_at">
+                            <strong>Completed:</strong>
+                            <span t-field="dispatch.completed_at"
+                                  t-options='{"widget": "datetime", "format": "MMM dd HH:mm"}'/>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <a href="/my/dispatches" class="btn btn-secondary btn-sm">← Back to Dispatches</a>
+            </div>
+
+        </t>
+    </template>
+
+</odoo>

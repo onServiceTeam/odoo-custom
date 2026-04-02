@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Plan list
+         ═══════════════════════════════════════════════════════════ -->
+    <template id="portal_my_plans" name="My Plans">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Plans</t>
+            </t>
+
+            <t t-if="not plans">
+                <p class="alert alert-warning">
+                    You have no subscription plans on file.
+                </p>
+            </t>
+
+            <t t-if="plans" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Plan</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="plans" t-as="p">
+                        <tr>
+                            <td>
+                                <a t-attf-href="/my/plans/#{p.id}" t-att-title="p.display_name">
+                                    <t t-out="p.product_id.name"/>
+                                </a>
+                            </td>
+                            <td><span t-field="p.start_date"/></td>
+                            <td><span t-field="p.end_date"/></td>
+                            <td>
+                                <span t-out="'$%.2f' % p.amount"/>
+                            </td>
+                            <td>
+                                <span t-if="p.state == 'active'" class="badge text-bg-success">Active</span>
+                                <span t-elif="p.state == 'expiring_soon'" class="badge text-bg-warning">Expiring Soon</span>
+                                <span t-elif="p.state == 'expired'" class="badge text-bg-danger">Expired</span>
+                                <span t-elif="p.state == 'cancelled'" class="badge text-bg-secondary">Cancelled</span>
+                                <span t-else="" class="badge text-bg-info"><t t-out="p.state"/></span>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Plan detail
+         ═══════════════════════════════════════════════════════════ -->
+    <template id="portal_plan_detail" name="Plan Detail">
+        <t t-call="portal.portal_layout">
+
+            <div class="card mt-3">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        <t t-out="plan.product_id.name"/>
+                    </h4>
+                    <span t-if="plan.state == 'active'" class="badge text-bg-success fs-6">Active</span>
+                    <span t-elif="plan.state == 'expiring_soon'" class="badge text-bg-warning fs-6">Expiring Soon</span>
+                    <span t-elif="plan.state == 'expired'" class="badge text-bg-danger fs-6">Expired</span>
+                    <span t-elif="plan.state == 'cancelled'" class="badge text-bg-secondary fs-6">Cancelled</span>
+                    <span t-else="" class="badge text-bg-info fs-6"><t t-out="plan.state"/></span>
+                </div>
+                <div class="card-body">
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Plan Code:</strong>
+                            <span t-out="plan.plan_code"/>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Amount:</strong>
+                            <span t-out="'$%.2f' % plan.amount"/>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <strong>Term:</strong>
+                            <span t-out="plan.term_months"/> months
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Start Date:</strong>
+                            <span t-field="plan.start_date"/>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>End Date:</strong>
+                            <span t-field="plan.end_date"/>
+                        </div>
+                    </div>
+
+                    <div t-if="plan.is_expiring_soon" class="alert alert-warning">
+                        <strong>Heads up!</strong> This plan expires in
+                        <span t-out="plan.days_until_expiry"/> days.
+                        Please contact us to discuss renewal options.
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <a href="/my/plans" class="btn btn-secondary btn-sm">← Back to Plans</a>
+            </div>
+
+        </t>
+    </template>
+
+</odoo>

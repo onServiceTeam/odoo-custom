@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Home page — service category badges
+         ═══════════════════════════════════════════════════════════ -->
+    <template id="portal_my_home_ons"
+              name="onService Portal Entries"
+              inherit_id="portal.portal_my_home"
+              customize_show="True"
+              priority="40">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <t t-set="portal_service_category_enable" t-value="True"/>
+        </xpath>
+        <div id="portal_service_category" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Cases</t>
+                <t t-set="url" t-value="'/my/cases'"/>
+                <t t-set="text">View your service cases</t>
+                <t t-set="placeholder_count" t-value="'case_count'"/>
+            </t>
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Plans</t>
+                <t t-set="url" t-value="'/my/plans'"/>
+                <t t-set="text">View your subscription plans</t>
+                <t t-set="placeholder_count" t-value="'plan_count'"/>
+            </t>
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Dispatches</t>
+                <t t-set="url" t-value="'/my/dispatches'"/>
+                <t t-set="text">View your onsite visits</t>
+                <t t-set="placeholder_count" t-value="'dispatch_count'"/>
+            </t>
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Communication Preferences</t>
+                <t t-set="url" t-value="'/my/consent'"/>
+                <t t-set="text">Manage email and SMS preferences</t>
+                <t t-set="config_card" t-value="True"/>
+            </t>
+        </div>
+    </template>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Breadcrumbs
+         ═══════════════════════════════════════════════════════════ -->
+    <template id="portal_breadcrumbs_ons"
+              name="onService Breadcrumbs"
+              inherit_id="portal.portal_breadcrumbs"
+              priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+
+            <!-- Cases -->
+            <li t-if="page_name == 'cases'"
+                class="breadcrumb-item active">
+                Cases
+            </li>
+            <li t-if="page_name == 'case'"
+                t-attf-class="breadcrumb-item #{'active' if not case else ''}">
+                <a t-if="case" href="/my/cases">Cases</a>
+                <t t-else="">Cases</t>
+            </li>
+            <li t-if="page_name == 'case' and case"
+                class="breadcrumb-item active">
+                <t t-out="case.name"/>
+            </li>
+
+            <!-- Plans -->
+            <li t-if="page_name == 'plans'"
+                class="breadcrumb-item active">
+                Plans
+            </li>
+            <li t-if="page_name == 'plan'"
+                t-attf-class="breadcrumb-item #{'active' if not plan else ''}">
+                <a t-if="plan" href="/my/plans">Plans</a>
+                <t t-else="">Plans</t>
+            </li>
+            <li t-if="page_name == 'plan' and plan"
+                class="breadcrumb-item active">
+                <t t-out="plan.display_name"/>
+            </li>
+
+            <!-- Dispatches -->
+            <li t-if="page_name == 'dispatches'"
+                class="breadcrumb-item active">
+                Dispatches
+            </li>
+            <li t-if="page_name == 'dispatch'"
+                t-attf-class="breadcrumb-item #{'active' if not dispatch else ''}">
+                <a t-if="dispatch" href="/my/dispatches">Dispatches</a>
+                <t t-else="">Dispatches</t>
+            </li>
+            <li t-if="page_name == 'dispatch' and dispatch"
+                class="breadcrumb-item active">
+                <t t-out="dispatch.name"/>
+            </li>
+
+            <!-- Consent -->
+            <li t-if="page_name == 'consent'"
+                class="breadcrumb-item active">
+                Communication Preferences
+            </li>
+
+        </xpath>
+    </template>
+
+</odoo>

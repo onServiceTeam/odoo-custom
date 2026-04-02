@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Case list
+         ═══════════════════════════════════════════════════════════ -->
+    <template id="portal_my_cases" name="My Cases">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Cases</t>
+            </t>
+
+            <t t-if="not cases">
+                <p class="alert alert-warning">
+                    There are currently no service cases for your account.
+                </p>
+            </t>
+
+            <t t-if="cases" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Reference</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th class="text-end">Amount</th>
+                        <th>Payment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="cases" t-as="c">
+                        <tr>
+                            <td>
+                                <a t-attf-href="/my/cases/#{c.id}" t-att-title="c.name">
+                                    <t t-out="c.name"/>
+                                </a>
+                            </td>
+                            <td><span t-field="c.create_date" t-options='{"widget": "date"}'/></td>
+                            <td>
+                                <span t-if="c.is_closed" class="badge text-bg-secondary">Closed</span>
+                                <span t-elif="c.is_won" class="badge text-bg-success">Completed</span>
+                                <span t-else="" class="badge text-bg-info">
+                                    <t t-out="c.stage_id.name"/>
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                <span t-if="c.amount_total"
+                                      t-out="'$%.2f' % c.amount_total"/>
+                            </td>
+                            <td>
+                                <span t-if="c.payment_status == 'paid'" class="badge text-bg-success">Paid</span>
+                                <span t-elif="c.payment_status == 'no_charge'" class="badge text-bg-secondary">No Charge</span>
+                                <span t-elif="c.payment_status" class="badge text-bg-warning">
+                                    <t t-out="c.payment_status"/>
+                                </span>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Case detail
+         ═══════════════════════════════════════════════════════════ -->
+    <template id="portal_case_detail" name="Case Detail">
+        <t t-call="portal.portal_layout">
+
+            <div class="card mt-3">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        <t t-out="case.name"/>
+                    </h4>
+                    <span t-if="case.is_closed" class="badge text-bg-secondary fs-6">Closed</span>
+                    <span t-elif="case.is_won" class="badge text-bg-success fs-6">Completed</span>
+                    <span t-else="" class="badge text-bg-info fs-6">
+                        <t t-out="case.stage_id.name"/>
+                    </span>
+                </div>
+                <div class="card-body">
+
+                    <!-- Overview -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Opened:</strong>
+                            <span t-field="case.create_date" t-options='{"widget": "date"}'/>
+                        </div>
+                        <div class="col-md-6" t-if="case.next_action">
+                            <strong>Next Action:</strong>
+                            <span t-out="case.next_action"/>
+                            <span t-if="case.next_action_at" class="text-muted ms-1">
+                                (<span t-field="case.next_action_at" t-options='{"widget": "date"}'/>)
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Issue -->
+                    <div t-if="case.issue_description" class="mb-3">
+                        <h6>Issue Description</h6>
+                        <p class="text-muted" t-out="case.issue_description"/>
+                    </div>
+
+                    <!-- Customer Report (AI-generated) -->
+                    <div t-if="case.customer_report" class="mb-3">
+                        <h6>Service Report</h6>
+                        <div class="bg-light p-3 rounded" t-out="case.customer_report"/>
+                    </div>
+
+                    <!-- Billing lines -->
+                    <t t-if="case.case_line_ids">
+                        <h6>Service Items</h6>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th class="text-center">Qty</th>
+                                    <th class="text-end">Price</th>
+                                    <th class="text-end">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="case.case_line_ids" t-as="line">
+                                    <tr>
+                                        <td>
+                                            <t t-out="line.product_id.name"/>
+                                            <small t-if="line.description" class="d-block text-muted">
+                                                <t t-out="line.description"/>
+                                            </small>
+                                        </td>
+                                        <td class="text-center"><t t-out="line.quantity"/></td>
+                                        <td class="text-end">
+                                        <span t-out="'$%.2f' % line.unit_price"/>
+                                        </td>
+                                        <td class="text-end">
+                                        <span t-out="'$%.2f' % line.subtotal"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="text-end fw-bold">Total</td>
+                                    <td class="text-end fw-bold">
+                                        <span t-out="'$%.2f' % case.amount_total"/>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </t>
+
+                    <!-- Payment status -->
+                    <div t-if="case.payment_status" class="mb-3">
+                        <strong>Payment Status:</strong>
+                        <span t-if="case.payment_status == 'paid'" class="badge text-bg-success">Paid</span>
+                        <span t-elif="case.payment_status == 'no_charge'" class="badge text-bg-secondary">No Charge</span>
+                        <span t-else="" class="badge text-bg-warning"><t t-out="case.payment_status"/></span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <a href="/my/cases" class="btn btn-secondary btn-sm">← Back to Cases</a>
+            </div>
+
+        </t>
+    </template>
+
+</odoo>
