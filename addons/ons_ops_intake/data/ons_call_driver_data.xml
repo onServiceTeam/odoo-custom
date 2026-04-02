@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- Sequence for ons.interaction -->
+    <record id="seq_interaction" model="ir.sequence">
+        <field name="name">Interaction Sequence</field>
+        <field name="code">ons.interaction</field>
+        <field name="prefix">INT-%(y)s%(month)s%(day)s-</field>
+        <field name="padding">4</field>
+    </record>
+
+    <!-- ═══ Boot &amp; Startup ═══ -->
+    <record id="driver_boot_no_os" model="ons.call.driver">
+        <field name="code">BOOT_NO_OS</field>
+        <field name="name">No Operating System Found</field>
+        <field name="category">boot_startup</field>
+        <field name="sort_order">10</field>
+        <field name="description">Computer fails to boot, shows "no operating system found" or "boot device not found".</field>
+        <field name="coaching_priority">high</field>
+    </record>
+    <record id="driver_boot_auto_repair" model="ons.call.driver">
+        <field name="code">BOOT_AUTOMATIC_REPAIR_LOOP</field>
+        <field name="name">Automatic Repair Loop</field>
+        <field name="category">boot_startup</field>
+        <field name="sort_order">20</field>
+    </record>
+    <record id="driver_boot_bitlocker" model="ons.call.driver">
+        <field name="code">BOOT_BITLOCKER_LOCKED</field>
+        <field name="name">BitLocker Locked</field>
+        <field name="category">boot_startup</field>
+        <field name="sort_order">30</field>
+    </record>
+    <record id="driver_boot_bsod" model="ons.call.driver">
+        <field name="code">BOOT_BLUE_SCREEN</field>
+        <field name="name">Blue Screen of Death</field>
+        <field name="category">boot_startup</field>
+        <field name="sort_order">40</field>
+    </record>
+    <record id="driver_boot_black_screen" model="ons.call.driver">
+        <field name="code">BOOT_BLACK_SCREEN_CURSOR</field>
+        <field name="name">Black Screen with Cursor</field>
+        <field name="category">boot_startup</field>
+        <field name="sort_order">50</field>
+    </record>
+    <record id="driver_boot_restart_loop" model="ons.call.driver">
+        <field name="code">BOOT_RESTART_LOOP</field>
+        <field name="name">Restart Loop</field>
+        <field name="category">boot_startup</field>
+        <field name="sort_order">60</field>
+    </record>
+    <record id="driver_boot_slow_startup" model="ons.call.driver">
+        <field name="code">BOOT_SLOW_STARTUP</field>
+        <field name="name">Slow Startup</field>
+        <field name="category">boot_startup</field>
+        <field name="sort_order">70</field>
+    </record>
+
+    <!-- ═══ Security ═══ -->
+    <record id="driver_hacked_popup_scam" model="ons.call.driver">
+        <field name="code">HACKED_POPUP_SCAM</field>
+        <field name="name">Popup Scam</field>
+        <field name="category">security</field>
+        <field name="sort_order">10</field>
+        <field name="coaching_priority">critical</field>
+    </record>
+    <record id="driver_hacked_remote_control" model="ons.call.driver">
+        <field name="code">HACKED_REMOTE_CONTROL</field>
+        <field name="name">Remote Control / Unauthorized Access</field>
+        <field name="category">security</field>
+        <field name="sort_order">20</field>
+        <field name="coaching_priority">critical</field>
+    </record>
+    <record id="driver_hacked_bank_risk" model="ons.call.driver">
+        <field name="code">HACKED_BANK_RISK</field>
+        <field name="name">Bank Account at Risk</field>
+        <field name="category">security</field>
+        <field name="sort_order">30</field>
+        <field name="coaching_priority">critical</field>
+    </record>
+    <record id="driver_hacked_email" model="ons.call.driver">
+        <field name="code">HACKED_EMAIL_COMPROMISED</field>
+        <field name="name">Email Account Compromised</field>
+        <field name="category">security</field>
+        <field name="sort_order">40</field>
+        <field name="coaching_priority">high</field>
+    </record>
+    <record id="driver_hacked_virus_warning" model="ons.call.driver">
+        <field name="code">HACKED_VIRUS_WARNING</field>
+        <field name="name">Virus / Malware Warning</field>
+        <field name="category">security</field>
+        <field name="sort_order">50</field>
+    </record>
+    <record id="driver_hacked_post_scam" model="ons.call.driver">
+        <field name="code">HACKED_POST_SCAM_CLEANUP</field>
+        <field name="name">Post-Scam Cleanup</field>
+        <field name="category">security</field>
+        <field name="sort_order">60</field>
+        <field name="coaching_priority">high</field>
+    </record>
+
+    <!-- ═══ Performance ═══ -->
+    <record id="driver_perf_slow" model="ons.call.driver">
+        <field name="code">PERF_SLOW_GENERAL</field>
+        <field name="name">Slow Computer (General)</field>
+        <field name="category">performance</field>
+        <field name="sort_order">10</field>
+    </record>
+    <record id="driver_perf_freezing" model="ons.call.driver">
+        <field name="code">PERF_FREEZING_LOCKUPS</field>
+        <field name="name">Freezing / Lockups</field>
+        <field name="category">performance</field>
+        <field name="sort_order">20</field>
+    </record>
+    <record id="driver_perf_cpu_fan" model="ons.call.driver">
+        <field name="code">PERF_HIGH_CPU_FAN_NOISE</field>
+        <field name="name">High CPU / Fan Noise</field>
+        <field name="category">performance</field>
+        <field name="sort_order">30</field>
+    </record>
+
+    <!-- ═══ Network ═══ -->
+    <record id="driver_net_no_internet" model="ons.call.driver">
+        <field name="code">NET_NO_INTERNET_SINGLE_DEVICE</field>
+        <field name="name">No Internet (Single Device)</field>
+        <field name="category">network</field>
+        <field name="sort_order">10</field>
+    </record>
+    <record id="driver_net_wifi_dropping" model="ons.call.driver">
+        <field name="code">NET_WIFI_DROPPING</field>
+        <field name="name">WiFi Dropping</field>
+        <field name="category">network</field>
+        <field name="sort_order">20</field>
+    </record>
+    <record id="driver_net_router_setup" model="ons.call.driver">
+        <field name="code">NET_ROUTER_MODEM_SETUP</field>
+        <field name="name">Router / Modem Setup</field>
+        <field name="category">network</field>
+        <field name="sort_order">30</field>
+    </record>
+
+    <!-- ═══ Printer ═══ -->
+    <record id="driver_printer_offline" model="ons.call.driver">
+        <field name="code">PRINTER_OFFLINE</field>
+        <field name="name">Printer Offline</field>
+        <field name="category">printer</field>
+        <field name="sort_order">10</field>
+    </record>
+    <record id="driver_printer_queue" model="ons.call.driver">
+        <field name="code">PRINTER_QUEUE_STUCK</field>
+        <field name="name">Print Queue Stuck</field>
+        <field name="category">printer</field>
+        <field name="sort_order">20</field>
+    </record>
+    <record id="driver_printer_setup" model="ons.call.driver">
+        <field name="code">PRINTER_NEW_SETUP</field>
+        <field name="name">New Printer Setup</field>
+        <field name="category">printer</field>
+        <field name="sort_order">30</field>
+    </record>
+
+    <!-- ═══ Email ═══ -->
+    <record id="driver_email_outlook" model="ons.call.driver">
+        <field name="code">EMAIL_OUTLOOK_NOT_OPENING</field>
+        <field name="name">Outlook Not Opening</field>
+        <field name="category">email</field>
+        <field name="sort_order">10</field>
+    </record>
+    <record id="driver_email_password" model="ons.call.driver">
+        <field name="code">EMAIL_PASSWORD_PROMPTS</field>
+        <field name="name">Repeated Password Prompts</field>
+        <field name="category">email</field>
+        <field name="sort_order">20</field>
+    </record>
+
+    <!-- ═══ Account ═══ -->
+    <record id="driver_acct_windows" model="ons.call.driver">
+        <field name="code">ACCT_WINDOWS_LOGIN</field>
+        <field name="name">Windows Login Issue</field>
+        <field name="category">account</field>
+        <field name="sort_order">10</field>
+    </record>
+    <record id="driver_acct_microsoft" model="ons.call.driver">
+        <field name="code">ACCT_MICROSOFT_ACCOUNT</field>
+        <field name="name">Microsoft Account Issue</field>
+        <field name="category">account</field>
+        <field name="sort_order">20</field>
+    </record>
+    <record id="driver_acct_2fa" model="ons.call.driver">
+        <field name="code">ACCT_TWO_FACTOR_AUTH</field>
+        <field name="name">Two-Factor Authentication</field>
+        <field name="category">account</field>
+        <field name="sort_order">30</field>
+    </record>
+
+    <!-- ═══ Billing (meta) ═══ -->
+    <record id="driver_billing_question" model="ons.call.driver">
+        <field name="code">BILLING_QUESTION</field>
+        <field name="name">Billing Question</field>
+        <field name="category">billing</field>
+        <field name="sort_order">10</field>
+    </record>
+    <record id="driver_billing_refund" model="ons.call.driver">
+        <field name="code">BILLING_REFUND_REQUEST</field>
+        <field name="name">Refund Request</field>
+        <field name="category">billing</field>
+        <field name="sort_order">20</field>
+    </record>
+
+</odoo>

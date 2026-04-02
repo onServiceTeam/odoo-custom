@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══ Interaction — Tree ═══ -->
+    <record id="view_interaction_tree" model="ir.ui.view">
+        <field name="name">ons.interaction.tree</field>
+        <field name="model">ons.interaction</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="state == 'completed'"
+                  decoration-info="state == 'new'"
+                  decoration-warning="state == 'classified'"
+                  multi_edit="1">
+                <field name="name"/>
+                <field name="call_start" widget="datetime"/>
+                <field name="interaction_type"/>
+                <field name="direction" optional="show"/>
+                <field name="partner_id"/>
+                <field name="customer_phone" optional="hide"/>
+                <field name="agent_id" widget="many2one_avatar_user"/>
+                <field name="primary_driver_id" optional="show"/>
+                <field name="disposition" optional="show"/>
+                <field name="duration_display" string="Duration" optional="show"/>
+                <field name="session_path" optional="hide"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'new'"
+                       decoration-warning="state == 'classified'"
+                       decoration-success="state == 'completed'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══ Interaction — Form ═══ -->
+    <record id="view_interaction_form" model="ir.ui.view">
+        <field name="name">ons.interaction.form</field>
+        <field name="model">ons.interaction</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_classify" string="Classify"
+                            type="object" class="btn-primary"
+                            invisible="state != 'new'"/>
+                    <button name="action_assign" string="Assign"
+                            type="object" class="btn-primary"
+                            invisible="state not in ('new', 'classified')"/>
+                    <button name="action_complete" string="Complete"
+                            type="object" class="btn-success"
+                            invisible="state == 'completed'"/>
+                    <button name="action_resolve_customer" string="Resolve Customer"
+                            type="object" class="btn-secondary"
+                            invisible="partner_id"/>
+                    <button name="action_reset_to_new" string="Reset"
+                            type="object" class="btn-link"
+                            invisible="state == 'new'"
+                            groups="ons_ops_core.group_ops_manager"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="new,classified,assigned,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Contact">
+                            <field name="interaction_type"/>
+                            <field name="direction"/>
+                            <field name="partner_id"/>
+                            <field name="customer_name"/>
+                            <field name="customer_phone" widget="phone"/>
+                            <field name="customer_email" widget="email"/>
+                            <field name="caller_type"/>
+                            <field name="customer_type"/>
+                        </group>
+                        <group string="Call Details">
+                            <field name="agent_id" widget="many2one_avatar_user"/>
+                            <field name="queue_name"/>
+                            <field name="call_start"/>
+                            <field name="call_end"/>
+                            <field name="duration_display"/>
+                            <field name="talk_duration"/>
+                            <field name="disposition"/>
+                            <field name="has_recording"/>
+                            <field name="recording_url" widget="url"
+                                   invisible="not has_recording"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Classification">
+                            <field name="primary_driver_id"/>
+                            <field name="secondary_driver_ids" widget="many2many_tags"/>
+                            <field name="urgency"/>
+                            <field name="session_path"/>
+                            <field name="ai_confidence" invisible="not ai_confidence"/>
+                        </group>
+                        <group string="Attribution">
+                            <field name="assisting_agent_id" widget="many2one_avatar_user"/>
+                            <field name="billing_agent_id" widget="many2one_avatar_user"/>
+                            <field name="lead_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Issue" name="issue">
+                            <field name="subject" placeholder="Brief subject..."/>
+                            <field name="issue_description" placeholder="Detailed description..."/>
+                        </page>
+                        <page string="Transcript" name="transcript"
+                              invisible="not transcript">
+                            <group>
+                                <field name="transcript_status"/>
+                            </group>
+                            <field name="transcript" readonly="1"/>
+                        </page>
+                        <page string="Identifiers" name="identifiers"
+                              groups="ons_ops_core.group_ops_admin">
+                            <group>
+                                <field name="threecx_cdr_id"/>
+                                <field name="legacy_discord_thread_id"/>
+                                <field name="legacy_odoo_ticket_id"/>
+                                <field name="ai_classification_raw"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══ Interaction — Search ═══ -->
+    <record id="view_interaction_search" model="ir.ui.view">
+        <field name="name">ons.interaction.search</field>
+        <field name="model">ons.interaction</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="customer_phone"/>
+                <field name="customer_name"/>
+                <field name="partner_id"/>
+                <field name="agent_id"/>
+                <field name="primary_driver_id"/>
+                <separator/>
+                <filter name="filter_today" string="Today" date="call_start"/>
+                <separator/>
+                <filter name="filter_new" string="New"
+                        domain="[('state', '=', 'new')]"/>
+                <filter name="filter_classified" string="Classified"
+                        domain="[('state', '=', 'classified')]"/>
+                <filter name="filter_assigned" string="Assigned"
+                        domain="[('state', '=', 'assigned')]"/>
+                <filter name="filter_completed" string="Completed"
+                        domain="[('state', '=', 'completed')]"/>
+                <separator/>
+                <filter name="filter_phone" string="Phone"
+                        domain="[('interaction_type', '=', 'phone')]"/>
+                <filter name="filter_inbound" string="Inbound"
+                        domain="[('direction', '=', 'inbound')]"/>
+                <separator/>
+                <filter name="filter_my" string="My Interactions"
+                        domain="[('agent_id', '=', uid)]"/>
+                <group colspan="16">
+                    <filter name="group_state" string="State"
+                            context="{'group_by': 'state'}"/>
+                    <filter name="group_agent" string="Agent"
+                            context="{'group_by': 'agent_id'}"/>
+                    <filter name="group_driver" string="Primary Driver"
+                            context="{'group_by': 'primary_driver_id'}"/>
+                    <filter name="group_type" string="Type"
+                            context="{'group_by': 'interaction_type'}"/>
+                    <filter name="group_date" string="Date"
+                            context="{'group_by': 'call_start:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ═══ Interaction — Action ═══ -->
+    <record id="action_interaction_list" model="ir.actions.act_window">
+        <field name="name">Interactions</field>
+        <field name="res_model">ons.interaction</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_interaction_search"/>
+        <field name="context">{'search_default_filter_today': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Log a new interaction
+            </p>
+            <p>Track every customer contact — phone, email, SMS, or web form.</p>
+        </field>
+    </record>
+
+    <!-- ═══ Menus under Operations → Intake & CRM ═══ -->
+    <menuitem
+        id="menu_ops_interactions"
+        name="Interactions"
+        parent="ons_ops_shell.menu_ops_intake_section"
+        action="action_interaction_list"
+        sequence="5"
+    />
+
+</odoo>

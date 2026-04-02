@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_call_driver_agent,ons.call.driver agent,model_ons_call_driver,ons_ops_core.group_ops_agent,1,0,0,0
+access_call_driver_manager,ons.call.driver manager,model_ons_call_driver,ons_ops_core.group_ops_manager,1,1,1,0
+access_call_driver_admin,ons.call.driver admin,model_ons_call_driver,ons_ops_core.group_ops_admin,1,1,1,1
+access_interaction_agent,ons.interaction agent,model_ons_interaction,ons_ops_core.group_ops_agent,1,1,1,0
+access_interaction_admin,ons.interaction admin,model_ons_interaction,ons_ops_core.group_ops_admin,1,1,1,1

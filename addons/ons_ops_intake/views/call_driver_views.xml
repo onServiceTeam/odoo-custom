@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══ Call Driver — Tree ═══ -->
+    <record id="view_call_driver_tree" model="ir.ui.view">
+        <field name="name">ons.call.driver.tree</field>
+        <field name="model">ons.call.driver</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="category"/>
+                <field name="coaching_priority" optional="show"
+                       decoration-danger="coaching_priority == 'critical'"
+                       decoration-warning="coaching_priority == 'high'"/>
+                <field name="requires_callback" optional="hide"/>
+                <field name="requires_onsite" optional="hide"/>
+                <field name="is_upsell_opportunity" optional="hide"/>
+                <field name="interaction_count" string="# Interactions"/>
+                <field name="active" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══ Call Driver — Form ═══ -->
+    <record id="view_call_driver_form" model="ir.ui.view">
+        <field name="name">ons.call.driver.form</field>
+        <field name="model">ons.call.driver</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_interactions" type="object"
+                                class="oe_stat_button" icon="fa-phone">
+                            <field name="interaction_count" widget="statinfo" string="Interactions"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger"
+                            invisible="active"/>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="category"/>
+                            <field name="sort_order"/>
+                        </group>
+                        <group>
+                            <field name="coaching_priority"/>
+                            <field name="expected_resolution_minutes"/>
+                            <field name="requires_callback"/>
+                            <field name="requires_onsite"/>
+                            <field name="is_upsell_opportunity"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description" name="description">
+                            <field name="description" placeholder="What this call driver covers..."/>
+                        </page>
+                        <page string="Handling" name="handling">
+                            <field name="handling_instructions" placeholder="Step-by-step for agents..."/>
+                        </page>
+                        <page string="AI Detection" name="ai_detection">
+                            <group>
+                                <field name="common_phrases" placeholder="One per line..."/>
+                                <field name="detection_keywords" placeholder="One per line..."/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══ Call Driver — Search ═══ -->
+    <record id="view_call_driver_search" model="ir.ui.view">
+        <field name="name">ons.call.driver.search</field>
+        <field name="model">ons.call.driver</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="code"/>
+                <field name="name"/>
+                <filter name="filter_critical" string="Critical"
+                        domain="[('coaching_priority', '=', 'critical')]"/>
+                <filter name="filter_high" string="High Priority"
+                        domain="[('coaching_priority', '=', 'high')]"/>
+                <separator/>
+                <filter name="filter_callback" string="Requires Callback"
+                        domain="[('requires_callback', '=', True)]"/>
+                <filter name="filter_onsite" string="Requires Onsite"
+                        domain="[('requires_onsite', '=', True)]"/>
+                <separator/>
+                <filter name="filter_archived" string="Archived"
+                        domain="[('active', '=', False)]"/>
+                <group colspan="16">
+                    <filter name="group_category" string="Category"
+                            context="{'group_by': 'category'}"/>
+                    <filter name="group_priority" string="Priority"
+                            context="{'group_by': 'coaching_priority'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ═══ Call Driver — Action ═══ -->
+    <record id="action_call_driver" model="ir.actions.act_window">
+        <field name="name">Call Drivers</field>
+        <field name="res_model">ons.call.driver</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_call_driver_search"/>
+        <field name="context">{'search_default_group_category': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a call driver code
+            </p>
+            <p>Call drivers classify the reason a customer is contacting support.</p>
+        </field>
+    </record>
+
+    <!-- ═══ Call Driver — Menu (under Configuration) ═══ -->
+    <menuitem
+        id="menu_ops_call_drivers"
+        name="Call Drivers"
+        parent="ons_ops_shell.menu_ops_config_section"
+        action="action_call_driver"
+        sequence="10"
+    />
+
+</odoo>
