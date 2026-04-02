@@ -25,8 +25,9 @@ class CrmLead(models.Model):
                 "Lead is not convertible. Ensure it has a partner, a service-ready "
                 "interaction, no decline date, and is not already won."
             )
-        # Find interaction via reverse relation (interaction.lead_id → this lead)
-        interaction = self.env["ons.interaction"].search(
+        # Find interaction — prefer the forward link on the lead, fall back
+        # to the reverse relation (interaction.lead_id → this lead).
+        interaction = self.interaction_id or self.env["ons.interaction"].search(
             [("lead_id", "=", self.id)], limit=1, order="id desc"
         )
         Case = self.env["ons.case"]
