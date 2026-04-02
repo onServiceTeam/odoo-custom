@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══ Menus under Operations → Intake & CRM ═══ -->
+
+    <menuitem
+        id="menu_ops_session_tracker"
+        name="Session Tracker"
+        parent="ons_ops_shell.menu_ops_intake_section"
+        action="action_session_tracker"
+        sequence="30"
+    />
+
+    <menuitem
+        id="menu_ops_cases_kanban"
+        name="Cases"
+        parent="ons_ops_shell.menu_ops_intake_section"
+        action="action_case_kanban"
+        sequence="25"
+    />
+
+    <!-- ═══ Configuration: Case Stages ═══ -->
+
+    <menuitem
+        id="menu_ops_case_stages"
+        name="Case Stages"
+        parent="ons_ops_shell.menu_ops_config_section"
+        action="action_case_stage_config"
+        sequence="20"
+    />
+
+</odoo>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="seq_case" model="ir.sequence">
+        <field name="name">Case Sequence</field>
+        <field name="code">ons.case</field>
+        <field name="prefix">CASE-%(y)s%(month)s-</field>
+        <field name="padding">4</field>
+    </record>
+</odoo>

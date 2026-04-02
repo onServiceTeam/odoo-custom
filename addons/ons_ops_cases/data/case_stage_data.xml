@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- 12 canonical pipeline stages matching legacy v_customer_pipeline -->
+
+    <record id="stage_intake_submitted" model="ons.case.stage">
+        <field name="name">Intake Submitted</field>
+        <field name="code">intake_submitted</field>
+        <field name="sequence">1</field>
+        <field name="color">1</field>
+    </record>
+
+    <record id="stage_triage_in_progress" model="ons.case.stage">
+        <field name="name">Triage In Progress</field>
+        <field name="code">triage_in_progress</field>
+        <field name="sequence">2</field>
+        <field name="color">2</field>
+    </record>
+
+    <record id="stage_callback_scheduled" model="ons.case.stage">
+        <field name="name">Callback Scheduled</field>
+        <field name="code">callback_scheduled</field>
+        <field name="sequence">3</field>
+        <field name="color">3</field>
+    </record>
+
+    <record id="stage_online_session_started" model="ons.case.stage">
+        <field name="name">Online Session Started</field>
+        <field name="code">online_session_started</field>
+        <field name="sequence">4</field>
+        <field name="color">4</field>
+    </record>
+
+    <record id="stage_handoff_to_assisting" model="ons.case.stage">
+        <field name="name">Handoff to Assisting</field>
+        <field name="code">handoff_to_assisting</field>
+        <field name="sequence">5</field>
+        <field name="color">5</field>
+    </record>
+
+    <record id="stage_repair_in_progress" model="ons.case.stage">
+        <field name="name">Repair In Progress</field>
+        <field name="code">repair_in_progress</field>
+        <field name="sequence">6</field>
+        <field name="color">6</field>
+    </record>
+
+    <record id="stage_ready_for_verification" model="ons.case.stage">
+        <field name="name">Ready for Verification</field>
+        <field name="code">ready_for_verification</field>
+        <field name="sequence">7</field>
+        <field name="color">7</field>
+    </record>
+
+    <record id="stage_billing_in_progress" model="ons.case.stage">
+        <field name="name">Billing In Progress</field>
+        <field name="code">billing_in_progress</field>
+        <field name="sequence">8</field>
+        <field name="color">8</field>
+    </record>
+
+    <record id="stage_paid" model="ons.case.stage">
+        <field name="name">Paid</field>
+        <field name="code">paid</field>
+        <field name="sequence">9</field>
+        <field name="color">10</field>
+    </record>
+
+    <record id="stage_closed_won" model="ons.case.stage">
+        <field name="name">Closed — Won</field>
+        <field name="code">closed_won</field>
+        <field name="sequence">10</field>
+        <field name="is_closed" eval="True"/>
+        <field name="is_won" eval="True"/>
+        <field name="fold" eval="True"/>
+        <field name="color">10</field>
+    </record>
+
+    <record id="stage_closed_lost" model="ons.case.stage">
+        <field name="name">Closed — Lost</field>
+        <field name="code">closed_lost</field>
+        <field name="sequence">11</field>
+        <field name="is_closed" eval="True"/>
+        <field name="fold" eval="True"/>
+        <field name="color">1</field>
+    </record>
+
+    <record id="stage_onsite_dispatched" model="ons.case.stage">
+        <field name="name">Onsite Dispatched</field>
+        <field name="code">onsite_dispatched</field>
+        <field name="sequence">12</field>
+        <field name="color">9</field>
+    </record>
+
+</odoo>

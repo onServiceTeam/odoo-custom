@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Case Form View
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <record id="view_case_form" model="ir.ui.view">
+        <field name="name">ons.case.form</field>
+        <field name="model">ons.case</field>
+        <field name="arch" type="xml">
+            <form string="Service Case">
+                <header>
+                    <field name="stage_id" widget="statusbar"
+                           options="{'clickable': '1'}"
+                           domain="[('fold', '=', False)]"/>
+                    <button name="action_reopen" string="Reopen"
+                            type="object" class="btn-secondary"
+                            invisible="not is_closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Customer">
+                            <field name="partner_id"/>
+                            <field name="partner_phone"/>
+                            <field name="primary_driver_id"/>
+                            <field name="online_session_started"/>
+                        </group>
+                        <group string="Assignment">
+                            <field name="intake_agent_id"/>
+                            <field name="assigned_tech_id"/>
+                            <field name="billing_agent_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Aging">
+                            <field name="hours_in_pipeline"/>
+                            <field name="aging_bucket"/>
+                            <field name="is_stale"/>
+                            <field name="needs_attention"/>
+                        </group>
+                        <group string="Next Steps">
+                            <field name="next_action"/>
+                            <field name="next_action_at"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Details" name="details">
+                            <group>
+                                <field name="issue_description"/>
+                                <field name="summary"/>
+                            </group>
+                        </page>
+                        <page string="Links" name="links">
+                            <group>
+                                <field name="source_interaction_id"/>
+                                <field name="lead_id"/>
+                            </group>
+                            <field name="interaction_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="interaction_type"/>
+                                    <field name="state"/>
+                                    <field name="call_start"/>
+                                    <field name="primary_driver_id"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Stage History" name="stage_history">
+                            <field name="stage_history_ids" readonly="1">
+                                <list>
+                                    <field name="stage_id"/>
+                                    <field name="entered_at"/>
+                                    <field name="exited_at"/>
+                                    <field name="duration_hours"/>
+                                    <field name="user_id"/>
+                                    <field name="is_override"/>
+                                    <field name="notes"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Case List / Session Tracker View
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <record id="view_case_list" model="ir.ui.view">
+        <field name="name">ons.case.list</field>
+        <field name="model">ons.case</field>
+        <field name="arch" type="xml">
+            <list string="Session Tracker"
+                  decoration-danger="is_stale"
+                  decoration-warning="needs_attention and not is_stale">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="partner_phone"/>
+                <field name="primary_driver_id"/>
+                <field name="stage_id" widget="badge"/>
+                <field name="assigned_tech_id" widget="many2one_avatar_user"/>
+                <field name="intake_agent_id" widget="many2one_avatar_user" optional="hide"/>
+                <field name="billing_agent_id" widget="many2one_avatar_user" optional="hide"/>
+                <field name="hours_in_pipeline"/>
+                <field name="aging_bucket"/>
+                <field name="online_session_started"/>
+                <field name="needs_attention"/>
+                <field name="create_date" string="Opened"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Case Kanban View
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <record id="view_case_kanban" model="ir.ui.view">
+        <field name="name">ons.case.kanban</field>
+        <field name="model">ons.case</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="stage_id" class="o_kanban_small_column">
+                <templates>
+                    <t t-name="card">
+                        <field name="partner_id"/>
+                        <field name="primary_driver_id"/>
+                        <div class="d-flex justify-content-between">
+                            <field name="assigned_tech_id" widget="many2one_avatar_user"/>
+                            <field name="aging_bucket" widget="badge"/>
+                        </div>
+                        <div class="text-muted small">
+                            <field name="hours_in_pipeline" string="Hours"/> h
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Case Search
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <record id="view_case_search" model="ir.ui.view">
+        <field name="name">ons.case.search</field>
+        <field name="model">ons.case</field>
+        <field name="arch" type="xml">
+            <search string="Cases">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="assigned_tech_id"/>
+                <field name="intake_agent_id"/>
+                <field name="billing_agent_id"/>
+                <field name="primary_driver_id"/>
+                <!-- Quick filters -->
+                <filter string="Active Cases" name="active_cases"
+                        domain="[('is_closed', '=', False)]"/>
+                <filter string="My Intake" name="my_intake"
+                        domain="[('intake_agent_id', '=', uid)]"/>
+                <filter string="My Repairs" name="my_repairs"
+                        domain="[('assigned_tech_id', '=', uid)]"/>
+                <filter string="My Billing" name="my_billing"
+                        domain="[('billing_agent_id', '=', uid)]"/>
+                <separator/>
+                <filter string="Needs Attention" name="needs_attention"
+                        domain="[('needs_attention', '=', True)]"/>
+                <filter string="Stale (72h+)" name="stale"
+                        domain="[('is_stale', '=', True)]"/>
+                <separator/>
+                <filter string="0–4 hours" name="aging_0_4"
+                        domain="[('aging_bucket', '=', '0_4h')]"/>
+                <filter string="4–24 hours" name="aging_4_24"
+                        domain="[('aging_bucket', '=', '4_24h')]"/>
+                <filter string="1–2 days" name="aging_24_48"
+                        domain="[('aging_bucket', '=', '24_48h')]"/>
+                <filter string="2–3 days" name="aging_48_72"
+                        domain="[('aging_bucket', '=', '48_72h')]"/>
+                <filter string="3+ days" name="aging_72_plus"
+                        domain="[('aging_bucket', '=', '72h_plus')]"/>
+                <separator/>
+                <filter string="Closed" name="closed"
+                        domain="[('is_closed', '=', True)]"/>
+                <group colspan="16">
+                    <filter string="Stage" name="group_stage" context="{'group_by': 'stage_id'}"/>
+                    <filter string="Technician" name="group_tech" context="{'group_by': 'assigned_tech_id'}"/>
+                    <filter string="Intake Agent" name="group_intake" context="{'group_by': 'intake_agent_id'}"/>
+                    <filter string="Driver" name="group_driver" context="{'group_by': 'primary_driver_id'}"/>
+                    <filter string="Aging Bucket" name="group_aging" context="{'group_by': 'aging_bucket'}"/>
+                    <filter string="Created" name="group_create" context="{'group_by': 'create_date:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Window Actions
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <!-- Session Tracker (default: active cases, list first) -->
+    <record id="action_session_tracker" model="ir.actions.act_window">
+        <field name="name">Session Tracker</field>
+        <field name="res_model">ons.case</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="search_view_id" ref="view_case_search"/>
+        <field name="context">{'search_default_active_cases': 1}</field>
+    </record>
+
+    <!-- Cases — kanban first -->
+    <record id="action_case_kanban" model="ir.actions.act_window">
+        <field name="name">Cases</field>
+        <field name="res_model">ons.case</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="view_case_search"/>
+        <field name="context">{'search_default_active_cases': 1}</field>
+    </record>
+
+    <!-- Stage history popup -->
+    <record id="action_case_stage_history" model="ir.actions.act_window">
+        <field name="name">Stage History</field>
+        <field name="res_model">ons.case.stage.history</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('case_id', '=', active_id)]</field>
+    </record>
+
+    <!-- ═══ Inherited views ═══ -->
+
+    <!-- CRM Lead form: "Convert to Case" button -->
+    <record id="view_crm_lead_form_inherit_cases" model="ir.ui.view">
+        <field name="name">crm.lead.form.inherit.ons_ops_cases</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_convert_to_case"
+                        type="object" class="oe_stat_button" icon="fa-briefcase"
+                        invisible="case_id">
+                    <span>Convert to Case</span>
+                </button>
+                <button type="object" name="action_convert_to_case"
+                        class="oe_stat_button" icon="fa-briefcase"
+                        invisible="not case_id">
+                    <field name="case_id" widget="statinfo" string="Case"/>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='phone']" position="after">
+                <field name="case_id" readonly="1" invisible="not case_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Interaction form: "Create Case" button -->
+    <record id="view_interaction_form_inherit_cases" model="ir.ui.view">
+        <field name="name">ons.interaction.form.inherit.ons_ops_cases</field>
+        <field name="model">ons.interaction</field>
+        <field name="inherit_id" ref="ons_ops_intake.view_interaction_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_resolve_customer']" position="after">
+                <button name="action_create_case" string="Create Case"
+                        type="object" class="btn-primary"
+                        invisible="case_id or state == 'new' or session_path in ('no_session', 'not_applicable') or not partner_id"/>
+            </xpath>
+            <xpath expr="//field[@name='lead_id']" position="after">
+                <field name="case_id" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

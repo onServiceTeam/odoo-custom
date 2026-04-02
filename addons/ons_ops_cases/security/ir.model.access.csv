@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_case_stage_agent,ons.case.stage agent,model_ons_case_stage,ons_ops_core.group_ops_agent,1,0,0,0
+access_case_stage_admin,ons.case.stage admin,model_ons_case_stage,ons_ops_core.group_ops_admin,1,1,1,1
+access_case_agent,ons.case agent,model_ons_case,ons_ops_core.group_ops_agent,1,1,1,0
+access_case_admin,ons.case admin,model_ons_case,ons_ops_core.group_ops_admin,1,1,1,1
+access_case_stage_history_agent,ons.case.stage.history agent,model_ons_case_stage_history,ons_ops_core.group_ops_agent,1,0,0,0
+access_case_stage_history_manager,ons.case.stage.history manager,model_ons_case_stage_history,ons_ops_core.group_ops_manager,1,1,1,0
+access_case_stage_history_admin,ons.case.stage.history admin,model_ons_case_stage_history,ons_ops_core.group_ops_admin,1,1,1,1
