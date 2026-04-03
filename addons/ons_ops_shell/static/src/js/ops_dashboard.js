@@ -15,6 +15,7 @@
 import { Component, useState, onWillStart } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
+import { user } from "@web/core/user";
 
 export class OpsDashboard extends Component {
     static template = "ons_ops_shell.OpsDashboard";
@@ -23,10 +24,10 @@ export class OpsDashboard extends Component {
     setup() {
         this.orm = useService("orm");
         this.action = useService("action");
-        this.user = useService("user");
+        this.user = user;
 
         this.state = useState({
-            userName: this.user.name || "",
+            userName: user.name || "",
             customerCount: 0,
             leadCount: 0,
             activityCount: 0,
