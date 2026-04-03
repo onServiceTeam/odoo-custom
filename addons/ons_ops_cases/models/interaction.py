@@ -8,7 +8,6 @@ SESSION_STAGE_MAP = {
     "session_now": "online_session_started",
     "callback": "callback_scheduled",
     "onsite_queue": "onsite_dispatched",
-    "session_scheduled": "callback_scheduled",
 }
 
 
@@ -23,7 +22,7 @@ class Interaction(models.Model):
         for rec in self:
             if rec.case_id:
                 continue
-            if rec.session_path in ("no_session", "not_applicable"):
+            if rec.session_path == "no_session":
                 continue
             if not rec.partner_id:
                 continue
@@ -72,7 +71,7 @@ class Interaction(models.Model):
                 case.stage_id = target_stage
 
         # If callback, create a reminder activity on the case
-        if self.session_path in ("callback", "session_scheduled") and self.callback_time:
+        if self.session_path == "callback" and self.callback_time:
             case.activity_schedule(
                 "mail.mail_activity_data_call",
                 date_deadline=self.callback_time.date(),
@@ -99,7 +98,7 @@ class Interaction(models.Model):
             raise UserError("This interaction already has a case: %s" % self.case_id.name)
         if self.state not in ("classified", "assigned", "completed"):
             raise UserError("Interaction must be classified before creating a case.")
-        if self.session_path in ("no_session", "not_applicable"):
+        if self.session_path == "no_session":
             raise UserError("This interaction path does not qualify for a case.")
         if not self.partner_id:
             raise UserError("A customer must be resolved before creating a case.")

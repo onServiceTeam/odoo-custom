@@ -14,8 +14,6 @@ SESSION_PATH_REPAIR_MAP = {
     "session_now": "online_session",
     "callback": "not_started",
     "onsite_queue": "requires_onsite",
-    "session_scheduled": "not_started",
-    "not_applicable": "not_applicable",
 }
 
 # Terminal call statuses — trigger auto-completion
@@ -88,12 +86,20 @@ class Interaction(models.Model):
     )
 
     # ── Agent attribution ───────────────────────────────────────────
-    agent_id = fields.Many2one("res.users", string="Intake Agent", tracking=True, index=True)
-    assisting_agent_id = fields.Many2one("res.users", string="Technician")
-    billing_agent_id = fields.Many2one("res.users", string="Billing Agent")
+    agent_id = fields.Many2one("res.users", string="Phone Technician", tracking=True, index=True)
+    assisting_agent_id = fields.Many2one("res.users", string="Assisting Technician")
+    billing_agent_id = fields.Many2one("res.users", string="Verification & Billing Tech (VBT)")
 
     # ── Call details ────────────────────────────────────────────────
-    queue_name = fields.Char(string="3CX Queue")
+    queue_name = fields.Selection(
+        [
+            ("first_time_caller", "First Time Caller"),
+            ("returning_caller", "Returning Caller"),
+            ("questions_billing", "Questions & Billing"),
+            ("callback", "Callback"),
+        ],
+        string="Inbound Queue",
+    )
     call_start = fields.Datetime(tracking=True)
     call_end = fields.Datetime()
     call_duration = fields.Integer(string="Duration (s)", help="Total call duration in seconds")
@@ -148,19 +154,18 @@ class Interaction(models.Model):
     issue_description = fields.Text(tracking=True)
     subject = fields.Char()
     urgency = fields.Selection(
-        [("low", "Low"), ("medium", "Medium"), ("high", "High")],
+        [("low", "Low"), ("medium", "Medium"), ("high", "High"), ("urgent", "Urgent")],
         default="medium",
     )
     session_path = fields.Selection(
         [
-            ("no_session", "No Session"),
-            ("session_now", "Session Now"),
-            ("callback", "Callback"),
-            ("onsite_queue", "Onsite Queue"),
-            ("session_scheduled", "Session Scheduled"),
-            ("not_applicable", "N/A"),
+            ("no_session", "Troubleshooting / No Online Session Yet"),
+            ("session_now", "Online Session Started"),
+            ("callback", "Callback Scheduled"),
+            ("onsite_queue", "Sent to Onsite Queue"),
         ],
         default="no_session",
+        required=True,
     )
 
     # ── Session / Callback / Onsite ─────────────────────────────────
@@ -170,12 +175,12 @@ class Interaction(models.Model):
     callback_time = fields.Datetime()
     callback_timezone = fields.Selection(
         [
-            ("US/Eastern", "Eastern"),
-            ("US/Central", "Central"),
-            ("US/Mountain", "Mountain"),
-            ("US/Pacific", "Pacific"),
-            ("US/Alaska", "Alaska"),
-            ("US/Hawaii", "Hawaii"),
+            ("US/Eastern", "Eastern (ET)"),
+            ("US/Central", "Central (CT)"),
+            ("US/Mountain", "Mountain (MT)"),
+            ("US/Pacific", "Pacific (PT)"),
+            ("US/Hawaii", "Hawaii (HT)"),
+            ("Asia/Manila", "Manila (PHT)"),
         ],
         default="US/Eastern",
     )
@@ -269,7 +274,7 @@ class Interaction(models.Model):
         """Set repair_status, online_session_started, callback_requested based on path."""
         self.repair_status = SESSION_PATH_REPAIR_MAP.get(self.session_path, "not_started")
         self.online_session_started = self.session_path == "session_now"
-        self.callback_requested = self.session_path in ("callback", "session_scheduled")
+        self.callback_requested = self.session_path == "callback"
         if self.session_path == "session_now" and not self.session_start_time:
             self.session_start_time = fields.Datetime.now()
 
@@ -307,6 +312,10 @@ class Interaction(models.Model):
         # 2. Auto-fill agent to current user if not set
         if not self.agent_id:
             self.agent_id = self.env.uid
+
+        # 3. Auto-fill VBT to current user if not set (matches legacy auto-default)
+        if not self.billing_agent_id:
+            self.billing_agent_id = self.env.uid
 
         # 3. Connector hook — subclasses / external modules can extend
         self._hook_after_intake()

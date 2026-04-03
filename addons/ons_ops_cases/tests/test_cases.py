@@ -96,9 +96,9 @@ class TestCaseCreation(TransactionCase):
         with self.assertRaises(UserError):
             interaction.action_create_case()
 
-    def test_case_from_interaction_not_applicable_rejected(self):
-        """not_applicable interaction should not create a case."""
-        interaction = self._create_interaction(session_path="not_applicable")
+    def test_case_from_interaction_no_session_rejected(self):
+        """no_session interaction should not create a case."""
+        interaction = self._create_interaction(session_path="no_session")
         with self.assertRaises(UserError):
             interaction.action_create_case()
 

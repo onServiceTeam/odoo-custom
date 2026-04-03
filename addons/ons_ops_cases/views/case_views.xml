@@ -295,7 +295,7 @@
             <xpath expr="//button[@name='action_resolve_customer']" position="after">
                 <button name="action_create_case" string="Create Case"
                         type="object" class="btn-primary"
-                        invisible="case_id or state == 'new' or session_path in ('no_session', 'not_applicable') or not partner_id"/>
+                        invisible="case_id or state == 'new' or session_path == 'no_session' or not partner_id"/>
             </xpath>
             <xpath expr="//field[@name='lead_id']" position="after">
                 <field name="case_id" readonly="1"/>

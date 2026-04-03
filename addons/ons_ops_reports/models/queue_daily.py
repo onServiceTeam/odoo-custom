@@ -110,11 +110,14 @@ class ReportQueueDaily(models.Model):
         vals["avg_wait_duration"] = row[4]
 
         # Cases created from interactions that came through this queue
+        # call_log.queue_name is raw string, interaction.queue_name is selection key
+        # Join via call_log_id link instead
         cr.execute("""
             SELECT COUNT(DISTINCT c.id)
             FROM ons_case c
             JOIN ons_interaction i ON i.id = c.source_interaction_id
-            WHERE i.queue_name = %s AND c.create_date::date = %s
+            JOIN ons_call_log cl ON cl.id = i.call_log_id
+            WHERE cl.queue_name = %s AND c.create_date::date = %s
         """, (queue_name, report_date))
         vals["cases_created"] = cr.fetchone()[0]
 

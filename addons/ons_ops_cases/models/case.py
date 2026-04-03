@@ -96,9 +96,9 @@ class Case(models.Model):
     )
 
     # ── Assignment (3 roles) ────────────────────────────────────────
-    intake_agent_id = fields.Many2one("res.users", string="Intake Agent", tracking=True, index=True)
-    assigned_tech_id = fields.Many2one("res.users", string="Technician", tracking=True, index=True)
-    billing_agent_id = fields.Many2one("res.users", string="Billing Agent", tracking=True)
+    intake_agent_id = fields.Many2one("res.users", string="Phone Technician", tracking=True, index=True)
+    assigned_tech_id = fields.Many2one("res.users", string="Assisting Technician", tracking=True, index=True)
+    billing_agent_id = fields.Many2one("res.users", string="Verification & Billing Tech (VBT)", tracking=True)
 
     # ── Details ─────────────────────────────────────────────────────
     issue_description = fields.Text(tracking=True)

@@ -4,6 +4,14 @@ import re
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
+# 3CX queue name → interaction queue_name Selection key
+QUEUE_NAME_MAP = {
+    "First Time Caller": "first_time_caller",
+    "Returning Caller": "returning_caller",
+    "Questions & Billing": "questions_billing",
+    "Callback": "callback",
+}
+
 
 class CallLog(models.Model):
     _name = "ons.call.log"
@@ -208,7 +216,7 @@ class CallLog(models.Model):
             "call_end": self.call_end,
             "call_duration": self.call_duration,
             "talk_duration": self.talk_duration,
-            "queue_name": self.queue_name,
+            "queue_name": QUEUE_NAME_MAP.get(self.queue_name, False),
             "disposition": self.disposition if self.disposition in ("answered", "missed", "abandoned", "voicemail", "no_answer") else False,
             "has_recording": self.has_recording,
             "recording_url": self.recording_url,

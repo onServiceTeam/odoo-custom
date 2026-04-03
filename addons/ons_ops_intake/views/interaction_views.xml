@@ -63,95 +63,162 @@
                         <h1><field name="name" readonly="1"/></h1>
                     </div>
 
-                    <!-- ─── Section 1: Call Story (subject + description prominent) ─── -->
+                    <!-- ═══ SECTION 1: CALL STORY ═══ -->
+                    <!-- Matches legacy section 1 — subject + description are THE primary fields -->
                     <group string="Call Story">
-                        <field name="subject" placeholder="Brief subject — what does the customer need?"
+                        <field name="subject"
+                               placeholder="Brief subject — what does the customer need? (required)"
+                               required="1"
                                class="fw-bold"/>
                         <field name="issue_description"
-                               placeholder="Detailed description of the issue, steps taken, etc."
-                               widget="text"/>
+                               placeholder="Detailed description of the issue, steps taken, customer's words, troubleshooting attempted... (min 40 characters recommended)"
+                               widget="text"
+                               required="1"/>
                     </group>
 
-                    <!-- ─── Section 2: Customer (phone auto-lookup, partner link) ─── -->
-                    <group>
-                        <group string="Customer">
+                    <!-- ═══ SECTION 2: CUSTOMER LINKING ═══ -->
+                    <!-- Matches legacy section 2 — phone triggers auto-lookup -->
+                    <group string="Customer">
+                        <group>
                             <field name="customer_phone" widget="phone"
-                                   placeholder="Enter phone to auto-lookup..."/>
-                            <field name="partner_id"/>
-                            <field name="customer_name" placeholder="Name as stated by caller"/>
-                            <field name="customer_email" widget="email"/>
-                            <field name="caller_type"/>
-                            <field name="customer_type"/>
+                                   string="Contact Number"
+                                   placeholder="Enter phone to auto-lookup..."
+                                   required="1"/>
+                            <field name="partner_id" string="Linked Customer"/>
+                            <field name="customer_name"
+                                   string="Name"
+                                   placeholder="Name as stated by caller"/>
+                            <field name="customer_email" widget="email"
+                                   string="Email"/>
                         </group>
+                        <group>
+                            <field name="caller_type" required="1"/>
+                            <field name="customer_type" required="1"/>
+                        </group>
+                    </group>
 
-                        <!-- ─── Section 3: Call Details ─── -->
-                        <group string="Call Details">
+                    <!-- ═══ SECTION 3: CALL DETAILS ═══ -->
+                    <!-- Matches legacy section 4 — queue, caller/customer type, call status -->
+                    <group string="Call Details">
+                        <group>
+                            <field name="queue_name"
+                                   string="Inbound Queue"
+                                   required="1"/>
+                            <field name="call_status" required="1"/>
+                        </group>
+                        <group>
                             <field name="interaction_type"/>
                             <field name="direction"/>
-                            <field name="queue_name"/>
-                            <field name="call_status"/>
                             <field name="urgency"/>
-                            <field name="disposition"/>
-                            <field name="call_start"/>
-                            <field name="call_end" invisible="not call_end"/>
-                            <field name="duration_display" invisible="not call_duration"/>
                         </group>
                     </group>
 
-                    <!-- ─── Section 4: Session Intent (conditional sub-sections) ─── -->
+                    <!-- ═══ SECTION 4: SESSION INTENT ═══ -->
+                    <!-- Matches legacy section 5 — radio buttons with conditional sub-fields -->
                     <group string="Session Intent">
                         <group>
-                            <field name="session_path" widget="radio"/>
-                            <field name="repair_status"/>
+                            <field name="session_path" widget="radio" required="1"/>
                         </group>
                         <group>
-                            <!-- Session Now details -->
-                            <field name="online_session_started"
-                                   invisible="session_path != 'session_now'"/>
+                            <!-- Session Now → auto-populated start time -->
                             <field name="session_start_time"
+                                   string="Session Start Time"
                                    invisible="session_path != 'session_now'"/>
-                            <!-- Callback details -->
-                            <field name="callback_requested"
-                                   invisible="session_path not in ('callback', 'session_scheduled')"/>
+                            <!-- Callback → time + timezone picker -->
                             <field name="callback_time"
-                                   invisible="session_path not in ('callback', 'session_scheduled')"/>
+                                   string="Callback Time"
+                                   invisible="session_path != 'callback'"
+                                   required="session_path == 'callback'"/>
                             <field name="callback_timezone"
-                                   invisible="session_path not in ('callback', 'session_scheduled')"/>
+                                   string="Callback Timezone"
+                                   invisible="session_path != 'callback'"/>
+                            <!-- Repair status (auto-set by session_path, editable) -->
+                            <field name="repair_status"/>
                         </group>
                     </group>
 
-                    <!-- ─── Onsite Address (only when onsite_queue) ─── -->
+                    <!-- ═══ ONSITE ADDRESS (conditional) ═══ -->
+                    <!-- Matches legacy section 3 — visible + required only for onsite_queue -->
                     <group string="Onsite Address"
                            invisible="session_path != 'onsite_queue'">
                         <group>
-                            <field name="address_street" placeholder="Street address"/>
-                            <field name="address_street2" placeholder="Apt / Suite"/>
-                            <field name="address_city" placeholder="City"/>
+                            <field name="address_street"
+                                   string="Address"
+                                   placeholder="Street address"
+                                   required="session_path == 'onsite_queue'"/>
+                            <field name="address_street2" placeholder="Apt / Suite / Unit"/>
+                            <field name="address_city"
+                                   string="City"
+                                   placeholder="City"
+                                   required="session_path == 'onsite_queue'"/>
                         </group>
                         <group>
-                            <field name="address_state" placeholder="State"/>
-                            <field name="address_zip" placeholder="ZIP code"/>
+                            <field name="address_state"
+                                   string="State"
+                                   placeholder="State"
+                                   required="session_path == 'onsite_queue'"/>
+                            <field name="address_zip"
+                                   string="ZIP Code"
+                                   placeholder="ZIP code"
+                                   required="session_path == 'onsite_queue'"/>
                         </group>
                     </group>
 
-                    <!-- ─── Section 5: Team ─── -->
-                    <group>
-                        <group string="Team">
-                            <field name="agent_id" widget="many2one_avatar_user"/>
-                            <field name="assisting_agent_id" widget="many2one_avatar_user"/>
-                            <field name="billing_agent_id" widget="many2one_avatar_user"/>
+                    <!-- ═══ SECTION 5: ROLE ASSIGNMENT ═══ -->
+                    <!-- Matches legacy section 6 — Phone Tech, Assisting Tech, VBT -->
+                    <group string="Role Assignment">
+                        <group>
+                            <field name="agent_id"
+                                   widget="many2one_avatar_user"
+                                   string="Phone Technician"/>
+                            <field name="assisting_agent_id"
+                                   widget="many2one_avatar_user"
+                                   string="Assisting Technician"/>
                         </group>
-
-                        <!-- ─── Section 6: Classification ─── -->
-                        <group string="Classification">
-                            <field name="primary_driver_id"/>
-                            <field name="secondary_driver_ids" widget="many2many_tags"/>
-                            <field name="ai_confidence" invisible="not ai_confidence"/>
+                        <group>
+                            <field name="billing_agent_id"
+                                   widget="many2one_avatar_user"
+                                   string="Verification &amp; Billing Tech (VBT)"/>
                         </group>
                     </group>
 
-                    <!-- ─── Notebook: supplementary tabs ─── -->
+                    <!-- ═══ SECTION 6: DRIVER CLASSIFICATION ═══ -->
+                    <!-- Matches legacy section 7 — primary driver + secondary tags -->
+                    <group string="Driver Classification">
+                        <group>
+                            <field name="primary_driver_id"
+                                   string="Primary Driver Code"
+                                   required="1"/>
+                            <field name="secondary_driver_ids"
+                                   string="Secondary Drivers"
+                                   widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="ai_confidence"
+                                   string="AI Confidence"
+                                   invisible="not ai_confidence"/>
+                        </group>
+                    </group>
+
+                    <!-- ═══ SUPPLEMENTARY TABS ═══ -->
+                    <!-- Non-primary data — recording, transcript, links, legacy IDs -->
                     <notebook>
+                        <page string="Call Timing" name="call_timing">
+                            <group>
+                                <group>
+                                    <field name="call_start"/>
+                                    <field name="call_end" invisible="not call_end"/>
+                                    <field name="duration_display" invisible="not call_duration"/>
+                                </group>
+                                <group>
+                                    <field name="disposition"/>
+                                    <field name="online_session_started"
+                                           invisible="session_path != 'session_now'"/>
+                                    <field name="callback_requested"
+                                           invisible="session_path != 'callback'"/>
+                                </group>
+                            </group>
+                        </page>
                         <page string="Recording" name="recording"
                               invisible="not has_recording">
                             <group>
