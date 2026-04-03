@@ -198,34 +198,3 @@
     </t>
 
 </templates>
-                        Discuss
-                    </button>
-                    <button class="btn btn-outline-primary"
-                            t-on-click="openActivities">
-                        <i class="fa fa-clock-o me-1"/>
-                        My Activities
-                    </button>
-                </div>
-            </div>
-
-            <!-- ── Info Card ──────────────────────────────────── -->
-            <div class="card border-0 bg-100">
-                <div class="card-body">
-                    <h5 class="card-title mb-2">
-                        <i class="fa fa-info-circle me-1 text-primary"/>
-                        Getting Started
-                    </h5>
-                    <p class="card-text text-muted mb-0">
-                        This is your Operations Center. As new modules are
-                        installed (Intake, Cases, Dispatch, QA, Reports),
-                        additional sections and live metrics will appear
-                        here automatically. Use the menu on the left to
-                        navigate between sections.
-                    </p>
-                </div>
-            </div>
-
-        </div>
-    </t>
-
-</templates>

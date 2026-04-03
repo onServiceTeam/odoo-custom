@@ -7,7 +7,7 @@
  * and quick-action buttons linking to key areas. Matches the legacy
  * SmartOpsDashboard layout with operations-specific metrics.
  */
-import { Component, useState, onWillStart } from "@odoo/owl";
+import { Component, useState, onWillStart, onWillDestroy } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { user } from "@web/core/user";
@@ -41,6 +41,12 @@ export class OpsDashboard extends Component {
         onWillStart(async () => {
             await this._loadKpis();
             this._startClock();
+        });
+
+        onWillDestroy(() => {
+            if (this._clockInterval) {
+                clearInterval(this._clockInterval);
+            }
         });
     }
 
