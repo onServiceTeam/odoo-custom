@@ -1,0 +1,120 @@
+// ═══════════════════════════════════════════════════════════════
+// Badge Overrides
+// Maps Odoo's generic badge widget to the legacy's
+// semantic status-colored pill badges
+// ═══════════════════════════════════════════════════════════════
+
+// ── Base badge reset ──
+.badge {
+    font-family: $ons-font;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 9999px; // pill shape
+    padding: 2px 10px;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+    border: 1px solid transparent;
+}
+
+// ═══ Call Status Badges ═══
+// Odoo renders <span class="badge ..."> with data attributes.
+// We use [data-value] when available, and decoration classes as fallback.
+
+.o_field_badge[name="call_status"] {
+    .badge {
+        // Default: blue
+        background-color: $ons-primary-light;
+        color: $ons-primary;
+        border-color: rgba(75, 123, 235, 0.2);
+    }
+}
+
+.o_field_badge[name="repair_status"] {
+    .badge {
+        // Default: teal
+        background-color: rgba(20, 184, 166, 0.1);
+        color: #0D9488;
+        border-color: rgba(20, 184, 166, 0.2);
+    }
+}
+
+.o_field_badge[name="payment_status"] {
+    .badge {
+        // Default: amber
+        background-color: rgba(245, 158, 11, 0.1);
+        color: #B45309;
+        border-color: rgba(245, 158, 11, 0.2);
+    }
+}
+
+// ═══ State Badge Colors ═══
+.o_field_badge[name="state"] {
+    .badge {
+        &.text-bg-info {
+            background-color: $ons-primary-light !important;
+            color: $ons-primary !important;
+        }
+        &.text-bg-warning {
+            background-color: $ons-warning-light !important;
+            color: $ons-warning !important;
+        }
+        &.text-bg-success {
+            background-color: $ons-success-light !important;
+            color: $ons-success !important;
+        }
+    }
+}
+
+// ═══ Stage Badge ═══
+.o_field_badge[name="stage_id"] {
+    .badge {
+        background-color: rgba(124, 58, 237, 0.1);
+        color: #6D28D9;
+        border-color: rgba(124, 58, 237, 0.2);
+    }
+}
+
+// ═══ Generic decoration overrides ═══
+// Odoo uses Bootstrap's text-bg-* classes on badges
+.badge {
+    &.text-bg-success {
+        background-color: $ons-success-light !important;
+        color: $ons-success !important;
+        border-color: rgba(22, 163, 74, 0.2) !important;
+    }
+
+    &.text-bg-danger {
+        background-color: $ons-destructive-light !important;
+        color: $ons-destructive !important;
+        border-color: rgba(220, 38, 38, 0.2) !important;
+    }
+
+    &.text-bg-warning {
+        background-color: $ons-warning-light !important;
+        color: darken($ons-warning, 10%) !important;
+        border-color: rgba(249, 115, 22, 0.2) !important;
+    }
+
+    &.text-bg-info {
+        background-color: $ons-primary-light !important;
+        color: $ons-primary !important;
+        border-color: rgba(75, 123, 235, 0.2) !important;
+    }
+
+    &.text-bg-secondary {
+        background-color: rgba(107, 114, 128, 0.1) !important;
+        color: $ons-text-muted !important;
+        border-color: rgba(107, 114, 128, 0.2) !important;
+    }
+}
+
+// ═══ Many2many tags ═══
+.o_field_many2many_tags .badge {
+    background-color: $ons-primary-light;
+    color: $ons-primary;
+    border-color: rgba(75, 123, 235, 0.15);
+    border-radius: $ons-radius-sm;
+    font-weight: 500;
+    padding: 3px 8px;
+    margin: 2px;
+}

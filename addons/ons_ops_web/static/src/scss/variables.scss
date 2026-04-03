@@ -1,0 +1,51 @@
+// ═══════════════════════════════════════════════════════════════
+// onService Theme Variables
+// Matches legacy dashboard: Inter font, accessible blue primary,
+// soft gray backgrounds, 12px radius cards
+// ═══════════════════════════════════════════════════════════════
+
+// ── Color Palette (legacy HSL conversions) ──
+$ons-primary:           #4B7BEB;
+$ons-primary-hover:     #2E5AA8;
+$ons-primary-light:     rgba(75, 123, 235, 0.08);
+$ons-primary-medium:    rgba(75, 123, 235, 0.15);
+
+$ons-success:           #16A34A;
+$ons-success-light:     rgba(22, 163, 74, 0.08);
+$ons-warning:           #F97316;
+$ons-warning-light:     rgba(249, 115, 22, 0.08);
+$ons-destructive:       #DC2626;
+$ons-destructive-light: rgba(220, 38, 38, 0.08);
+
+$ons-bg:                #F3F4F6;
+$ons-card:              #FFFFFF;
+$ons-border:            #E5E7EB;
+$ons-border-strong:     #D1D5DB;
+$ons-text:              #111827;
+$ons-text-muted:        #6B7280;
+$ons-text-light:        #9CA3AF;
+
+// Session path colors (matches legacy icons)
+$ons-session-troubleshoot: #CA8A04; // yellow-600
+$ons-session-online:       #16A34A; // green-600
+$ons-session-callback:     #2563EB; // blue-600
+$ons-session-onsite:       #EA580C; // orange-600
+
+// ── Typography ──
+$ons-font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+// ── Shape ──
+$ons-radius:       12px;
+$ons-radius-sm:    8px;
+$ons-radius-xs:    6px;
+
+// ── Shadows (elevation system) ──
+$ons-shadow-sm:  0 1px 2px 0 rgba(0,0,0,0.05);
+$ons-shadow-md:  0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.04);
+$ons-shadow-lg:  0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -2px rgba(0,0,0,0.03);
+
+// ── Sidebar (legacy dark charcoal) ──
+$ons-sidebar-bg:        #2D3748;
+$ons-sidebar-text:      #F7F7F7;
+$ons-sidebar-active-bg: #334155;
+$ons-sidebar-border:    #1F2937;

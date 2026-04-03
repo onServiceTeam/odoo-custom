@@ -1,0 +1,98 @@
+// ═══════════════════════════════════════════════════════════════
+// Global Layout Overrides
+// Transforms Odoo's default grey layout into the legacy
+// onService dashboard feel: soft bg, Inter font, clean spacing
+// ═══════════════════════════════════════════════════════════════
+
+// ── Google Font (Inter) loaded via XML link tag ──
+// NOTE: Do NOT use @import url() in SCSS — the semicolons in Google Fonts
+// query strings break Odoo's CSS concatenation pipeline.
+
+// ── Root typography override ──
+body, .o_web_client {
+    font-family: $ons-font !important;
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+// ── Page background ──
+.o_action_manager {
+    background-color: $ons-bg !important;
+}
+
+// ── Control panel (top bar with breadcrumbs + buttons) ──
+.o_control_panel {
+    background-color: $ons-card !important;
+    border-bottom: 1px solid $ons-border !important;
+    box-shadow: $ons-shadow-sm;
+
+    .o_control_panel_breadcrumbs .breadcrumb {
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        color: $ons-text;
+    }
+
+    .breadcrumb-item + .breadcrumb-item::before {
+        color: $ons-text-light;
+    }
+}
+
+// ── Navbar / top bar ──
+.o_main_navbar {
+    background-color: $ons-sidebar-bg !important;
+    border-bottom: 1px solid $ons-sidebar-border;
+    font-family: $ons-font !important;
+    height: 48px;
+
+    .o_menu_brand {
+        color: $ons-sidebar-text !important;
+        font-weight: 600;
+        font-size: 15px;
+    }
+
+    .o_menu_sections .dropdown-toggle,
+    .o_menu_sections > a,
+    .o_menu_sections > button {
+        color: rgba(255,255,255,0.85) !important;
+        font-weight: 500;
+        font-size: 13px;
+
+        &:hover, &.show {
+            color: #FFFFFF !important;
+            background-color: rgba(255,255,255,0.1) !important;
+        }
+    }
+}
+
+// ── Left sidebar / main menu ──
+.o_main_navbar .o_menu_toggle {
+    color: $ons-sidebar-text !important;
+}
+
+// ── Content area spacing ──
+.o_content {
+    padding: 0 !important;
+}
+
+.o_action {
+    padding: 16px 20px !important;
+    max-width: 1400px;
+}
+
+// ── Scrollbar refinement ──
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: $ons-border-strong;
+    border-radius: 3px;
+}

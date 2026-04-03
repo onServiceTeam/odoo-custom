@@ -1,0 +1,85 @@
+// ═══════════════════════════════════════════════════════════════
+// Session Tracker — List view styling
+// Transforms Odoo's plain list into the legacy's polished table:
+// dark navy header, colored row states, badge styling per status.
+// JS adds .ons_model_ons_case / .ons_model_ons_interaction to root
+// ═══════════════════════════════════════════════════════════════
+
+// ── Shared list enhancements for our models ──
+.ons_model_ons_case,
+.ons_model_ons_interaction {
+    .o_list_renderer {
+        background-color: $ons-card;
+        border-radius: $ons-radius;
+        border: 1px solid $ons-border;
+        box-shadow: $ons-shadow-sm;
+        overflow: hidden;
+    }
+
+    // ── Table header: dark navy (matches legacy) ──
+    .o_list_table thead th {
+        background-color: #1E3A5F !important;
+        color: white !important;
+        font-family: $ons-font;
+        font-weight: 600;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        padding: 10px 12px !important;
+        border-bottom: 2px solid #16314F !important;
+        white-space: nowrap;
+
+        &:hover {
+            background-color: #2A4A6F !important;
+        }
+    }
+
+    // ── Table body ──
+    .o_list_table tbody {
+        tr.o_data_row {
+            transition: background-color 100ms ease;
+            border-bottom: 1px solid $ons-border;
+
+            &:hover {
+                background-color: rgba(75, 123, 235, 0.04) !important;
+            }
+
+            td {
+                font-family: $ons-font;
+                font-size: 13px;
+                padding: 8px 12px !important;
+                color: $ons-text;
+                vertical-align: middle;
+            }
+
+            // Alternating rows (subtle)
+            &:nth-child(even) {
+                background-color: rgba(243, 244, 246, 0.5);
+            }
+        }
+
+        // Decoration classes from Odoo (set via tree decoration-*)
+        tr.text-danger {
+            background-color: rgba(220, 38, 38, 0.04) !important;
+            td { color: $ons-destructive; }
+        }
+
+        tr.text-warning:not(.text-danger) {
+            background-color: rgba(249, 115, 22, 0.04) !important;
+        }
+
+        tr.text-muted {
+            background-color: rgba(107, 114, 128, 0.04) !important;
+            td { color: $ons-text-muted; }
+        }
+    }
+
+    // ── Footer totals ──
+    .o_list_table tfoot td {
+        background-color: $ons-bg !important;
+        font-weight: 600;
+        font-size: 13px;
+        border-top: 2px solid $ons-border;
+        padding: 10px 12px !important;
+    }
+}

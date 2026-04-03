@@ -1,0 +1,101 @@
+// ═══════════════════════════════════════════════════════════════
+// Button Overrides
+// Matches legacy dashboard's button styling:
+// rounded, medium weight, clear hierarchy
+// ═══════════════════════════════════════════════════════════════
+
+.o_form_view, .o_list_view, .o_kanban_view {
+
+    .btn-primary {
+        background-color: $ons-primary !important;
+        border-color: $ons-primary !important;
+        color: white !important;
+        border-radius: $ons-radius-sm;
+        font-family: $ons-font;
+        font-weight: 500;
+        font-size: 13px;
+        padding: 6px 16px;
+        transition: all 150ms ease;
+        box-shadow: none;
+
+        &:hover, &:focus {
+            background-color: $ons-primary-hover !important;
+            border-color: $ons-primary-hover !important;
+            box-shadow: 0 2px 4px rgba(75, 123, 235, 0.25) !important;
+        }
+
+        &:active {
+            background-color: darken($ons-primary-hover, 5%) !important;
+        }
+    }
+
+    .btn-secondary {
+        background-color: $ons-card !important;
+        border: 1px solid $ons-border !important;
+        color: $ons-text !important;
+        border-radius: $ons-radius-sm;
+        font-family: $ons-font;
+        font-weight: 500;
+        font-size: 13px;
+        padding: 6px 16px;
+        transition: all 150ms ease;
+
+        &:hover, &:focus {
+            background-color: $ons-bg !important;
+            border-color: $ons-border-strong !important;
+        }
+    }
+
+    .btn-success {
+        background-color: $ons-success !important;
+        border-color: $ons-success !important;
+        border-radius: $ons-radius-sm;
+        font-family: $ons-font;
+        font-weight: 500;
+
+        &:hover {
+            background-color: darken($ons-success, 8%) !important;
+        }
+    }
+
+    .btn-link {
+        color: $ons-text-muted !important;
+        font-family: $ons-font;
+        font-weight: 500;
+        text-decoration: none;
+        padding: 6px 12px;
+
+        &:hover {
+            color: $ons-text !important;
+            text-decoration: underline;
+        }
+    }
+}
+
+// ── Stat buttons (in form button_box) ──
+.o_form_view .oe_stat_button {
+    border-radius: $ons-radius-sm;
+    border: 1px solid $ons-border;
+    background-color: $ons-card;
+    transition: all 150ms ease;
+    padding: 8px 12px;
+    min-width: 0;
+
+    &:hover {
+        background-color: $ons-bg;
+        border-color: $ons-border-strong;
+        box-shadow: $ons-shadow-sm;
+    }
+
+    .o_stat_info .o_stat_value {
+        color: $ons-primary;
+        font-weight: 700;
+        font-size: 18px;
+    }
+
+    .o_stat_info .o_stat_text {
+        color: $ons-text-muted;
+        font-size: 11px;
+        font-weight: 500;
+    }
+}

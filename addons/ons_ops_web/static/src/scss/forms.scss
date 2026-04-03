@@ -1,0 +1,263 @@
+// ═══════════════════════════════════════════════════════════════
+// Form View Overrides
+// Transforms standard Odoo forms into card-based sections
+// matching the legacy dashboard's elevated card pattern
+// ═══════════════════════════════════════════════════════════════
+
+// ── Form sheet background ──
+.o_form_view .o_form_sheet_bg {
+    background-color: $ons-bg !important;
+    padding: 16px 20px !important;
+}
+
+.o_form_view .o_form_sheet {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 !important;
+}
+
+// ── Header / statusbar ──
+.o_form_view .o_form_statusbar {
+    background-color: $ons-card !important;
+    border-bottom: 1px solid $ons-border !important;
+    border-radius: $ons-radius $ons-radius 0 0;
+    padding: 8px 16px !important;
+
+    .o_statusbar_status {
+        .o_arrow_button {
+            font-family: $ons-font;
+            font-size: 12px;
+            font-weight: 500;
+
+            &.o_arrow_button_current {
+                background-color: $ons-primary !important;
+                color: white !important;
+            }
+        }
+    }
+
+    .o_statusbar_buttons .btn {
+        border-radius: $ons-radius-sm;
+        font-weight: 500;
+        font-size: 13px;
+        padding: 6px 14px;
+    }
+}
+
+// ── Title area ──
+.o_form_view .oe_title {
+    h1 .o_field_widget {
+        font-size: 20px !important;
+        font-weight: 600 !important;
+        letter-spacing: -0.01em;
+        color: $ons-text;
+    }
+}
+
+// ── Section separator headers (group string=) ──
+// Odoo 19 renders <group string="X"> as div.o_horizontal_separator
+.o_form_view .o_horizontal_separator {
+    font-family: $ons-font;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    color: $ons-text;
+    letter-spacing: -0.01em;
+    text-transform: none !important;
+    border-bottom: 2px solid $ons-border !important;
+    padding-bottom: 10px;
+    margin-top: 24px !important;
+    margin-bottom: 16px !important;
+    box-shadow: none !important;
+    display: flex;
+    align-items: center;
+}
+
+// ── Inner groups: card styling ──
+.o_form_view .o_inner_group {
+    background-color: $ons-card;
+    border: 1px solid $ons-border;
+    border-radius: $ons-radius;
+    padding: 16px 20px;
+    box-shadow: $ons-shadow-sm;
+    margin-bottom: 4px;
+
+    // Label styling
+    .o_cell .o_form_label,
+    .o_cell.o_wrap_label {
+        font-size: 13px;
+        font-weight: 500;
+        color: $ons-text-muted;
+        padding: 4px 0;
+    }
+}
+
+// ── Outer group with separator title becomes a section card ──
+.o_form_view .o_group:has(.o_horizontal_separator) {
+    background-color: $ons-card;
+    border: 1px solid $ons-border;
+    border-radius: $ons-radius;
+    box-shadow: $ons-shadow-sm;
+    margin-bottom: 12px;
+    padding: 0;
+    overflow: hidden;
+
+    > div:has(.o_horizontal_separator) {
+        background-color: $ons-bg;
+        border-bottom: 1px solid $ons-border;
+        padding: 12px 20px;
+        margin: 0;
+    }
+
+    .o_horizontal_separator {
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    // Content area within section card
+    > .o_inner_group,
+    > [class*="col-lg"] {
+        padding: 16px 20px;
+    }
+
+    // Nested inner_groups inside titled outer groups don't need extra card
+    .o_inner_group {
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        margin: 0;
+    }
+}
+
+// ── Input fields ──
+.o_form_view .o_field_widget {
+    .o_input {
+        border: 1px solid $ons-border !important;
+        border-radius: $ons-radius-xs !important;
+        padding: 6px 10px !important;
+        font-size: 14px;
+        font-family: $ons-font;
+        transition: border-color 150ms ease, box-shadow 150ms ease;
+        background-color: $ons-card;
+
+        &:focus {
+            border-color: $ons-primary !important;
+            box-shadow: 0 0 0 3px $ons-primary-light !important;
+            outline: none;
+        }
+
+        &::placeholder {
+            color: $ons-text-light;
+            font-size: 13px;
+        }
+    }
+
+    // Select / dropdown
+    select.o_input {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        background-size: 14px;
+        padding-right: 32px !important;
+    }
+
+    // Textarea
+    textarea.o_input {
+        min-height: 80px;
+        resize: vertical;
+    }
+}
+
+// ── Required field indicator ──
+.o_form_view .o_form_label.o_form_label_empty {
+    &::after {
+        content: " *";
+        color: $ons-destructive;
+        font-weight: 600;
+    }
+}
+
+// ── Radio widget styling ──
+.o_form_view .o_field_radio {
+    .o_radio_item {
+        border: 1px solid $ons-border;
+        border-radius: $ons-radius-sm;
+        padding: 10px 14px;
+        margin: 4px 0;
+        cursor: pointer;
+        transition: all 150ms ease;
+        background-color: $ons-card;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        &:hover {
+            background-color: $ons-bg;
+            border-color: $ons-border-strong;
+        }
+
+        label {
+            font-weight: 500;
+            font-size: 13px;
+            color: $ons-text;
+            cursor: pointer;
+        }
+    }
+
+    // Selected radio item
+    .o_radio_item:has(input:checked) {
+        border-color: $ons-primary;
+        background-color: $ons-primary-light;
+    }
+}
+
+// ── Notebook / tabs ──
+.o_form_view .o_notebook {
+    .nav-link {
+        font-family: $ons-font;
+        font-weight: 500;
+        font-size: 13px;
+        color: $ons-text-muted;
+        padding: 10px 16px;
+        border: none !important;
+        border-bottom: 2px solid transparent !important;
+
+        &.active {
+            color: $ons-primary !important;
+            border-bottom-color: $ons-primary !important;
+            background-color: transparent !important;
+        }
+
+        &:hover:not(.active) {
+            color: $ons-text;
+            border-bottom-color: $ons-border-strong !important;
+        }
+    }
+
+    .tab-content {
+        padding: 16px 0;
+    }
+}
+
+// ── Chatter ──
+.o_form_view .o_FormRenderer_chatterContainer {
+    .o_Chatter {
+        border-top: 1px solid $ons-border;
+        margin-top: 16px;
+        padding-top: 16px;
+    }
+}
+
+// ── Many2one avatar user widget ──
+.o_field_many2one_avatar_user {
+    .o_m2o_avatar {
+        border-radius: 50%;
+        border: 2px solid $ons-border;
+    }
+}
