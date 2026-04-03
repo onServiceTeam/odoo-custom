@@ -1,0 +1,254 @@
+// ═══════════════════════════════════════════════════════════════
+// Operations Dashboard Styling
+// Matches legacy SmartOpsDashboard: KPI cards, quick actions,
+// activity feed, status indicators
+// ═══════════════════════════════════════════════════════════════
+
+.o_ops_dashboard {
+    padding: 20px 24px !important;
+    max-width: 1400px;
+    margin: 0 auto;
+
+    // ── Dashboard Header ──
+    .o_ops_dashboard_header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+
+        .o_ops_title {
+            font-family: $ons-font;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            color: $ons-text;
+            margin: 0;
+        }
+
+        .o_ops_subtitle {
+            font-size: 14px;
+            color: $ons-text-muted;
+            margin: 4px 0 0 0;
+        }
+
+        .o_ops_header_right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            .o_ops_clock {
+                font-family: $ons-font;
+                font-size: 13px;
+                font-weight: 500;
+                color: $ons-text-muted;
+                padding: 6px 12px;
+                background: $ons-card;
+                border: 1px solid $ons-border;
+                border-radius: $ons-radius-sm;
+
+                .o_ops_clock_label {
+                    font-size: 11px;
+                    color: $ons-text-light;
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                }
+
+                .o_ops_clock_time {
+                    font-size: 14px;
+                    font-weight: 600;
+                    color: $ons-text;
+                }
+            }
+        }
+    }
+
+    // ── KPI Cards ──
+    .o_ops_kpi_card {
+        background: $ons-card;
+        border: 1px solid $ons-border;
+        border-radius: $ons-radius;
+        box-shadow: $ons-shadow-sm;
+        cursor: pointer;
+        transition: all 200ms ease;
+
+        &:hover {
+            box-shadow: $ons-shadow-md;
+            transform: translateY(-2px);
+            border-color: $ons-primary;
+        }
+
+        .card-body {
+            padding: 20px !important;
+        }
+
+        .o_ops_kpi_icon {
+            width: 48px;
+            height: 48px;
+            border-radius: $ons-radius;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+
+            &.bg-primary-light { background: $ons-primary-light; }
+            &.bg-success-light { background: $ons-success-light; }
+            &.bg-warning-light { background: $ons-warning-light; }
+            &.bg-danger-light { background: $ons-destructive-light; }
+
+            i.fa {
+                font-size: 22px;
+            }
+        }
+
+        .o_ops_kpi_value {
+            font-family: $ons-font;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            color: $ons-text;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .o_ops_kpi_label {
+            font-size: 13px;
+            font-weight: 500;
+            color: $ons-text-muted;
+        }
+
+        .o_ops_kpi_trend {
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 4px;
+
+            &.trend-up { color: $ons-success; }
+            &.trend-down { color: $ons-destructive; }
+        }
+    }
+
+    // ── Status Row (agents online, calls in queue) ──
+    .o_ops_status_row {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 24px;
+
+        .o_ops_status_item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: $ons-card;
+            border: 1px solid $ons-border;
+            border-radius: $ons-radius;
+            font-size: 13px;
+            font-weight: 500;
+            color: $ons-text;
+
+            .o_ops_status_dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+
+                &.online { background: $ons-success; }
+                &.busy { background: $ons-warning; }
+                &.offline { background: $ons-text-light; }
+            }
+
+            .o_ops_status_count {
+                font-weight: 700;
+                font-size: 15px;
+            }
+        }
+    }
+
+    // ── Quick Actions Bar ──
+    .o_ops_quick_actions {
+        h3 {
+            font-family: $ons-font;
+            font-size: 16px;
+            font-weight: 600;
+            color: $ons-text;
+        }
+
+        .btn {
+            font-family: $ons-font;
+            font-weight: 500;
+            font-size: 13px;
+            border-radius: $ons-radius-sm;
+            padding: 8px 16px;
+            transition: all 150ms ease;
+
+            i.fa {
+                font-size: 14px;
+            }
+        }
+
+        .btn-primary {
+            background-color: $ons-primary;
+            border-color: $ons-primary;
+
+            &:hover {
+                background-color: $ons-primary-hover;
+                border-color: $ons-primary-hover;
+                transform: translateY(-1px);
+            }
+        }
+    }
+
+    // ── Section titles ──
+    .o_ops_section_title {
+        font-family: $ons-font;
+        font-size: 16px;
+        font-weight: 600;
+        color: $ons-text;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid $ons-border;
+    }
+
+    // ── Activity Feed ──
+    .o_ops_activity_feed {
+        background: $ons-card;
+        border: 1px solid $ons-border;
+        border-radius: $ons-radius;
+        box-shadow: $ons-shadow-sm;
+
+        .o_ops_activity_item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 16px;
+            border-bottom: 1px solid $ons-border;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            .o_ops_activity_icon {
+                width: 32px;
+                height: 32px;
+                border-radius: $ons-radius-xs;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+                font-size: 14px;
+            }
+
+            .o_ops_activity_content {
+                flex: 1;
+
+                .o_ops_activity_title {
+                    font-size: 13px;
+                    font-weight: 500;
+                    color: $ons-text;
+                }
+
+                .o_ops_activity_time {
+                    font-size: 12px;
+                    color: $ons-text-light;
+                }
+            }
+        }
+    }
+}

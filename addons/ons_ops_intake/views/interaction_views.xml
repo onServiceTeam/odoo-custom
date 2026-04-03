@@ -286,6 +286,9 @@
                 <separator/>
                 <filter name="filter_my" string="My Interactions"
                         domain="[('agent_id', '=', uid)]"/>
+                <filter name="filter_callbacks" string="Callbacks"
+                        domain="[('callback_requested', '=', True), ('state', '!=', 'completed')]"/>
+                <separator/>
                 <group colspan="16">
                     <filter name="group_state" string="State"
                             context="{'group_by': 'state'}"/>
@@ -324,6 +327,45 @@
         parent="ons_ops_shell.menu_ops_intake_section"
         action="action_interaction_list"
         sequence="5"
+    />
+
+    <!-- ═══ Intake Hub: Callbacks ═══ -->
+    <record id="action_interaction_callbacks" model="ir.actions.act_window">
+        <field name="name">Pending Callbacks</field>
+        <field name="res_model">ons.interaction</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_interaction_search"/>
+        <field name="domain">[('callback_requested', '=', True), ('state', '!=', 'completed')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No pending callbacks
+            </p>
+            <p>Interactions marked for callback that haven't been completed yet.</p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_ops_callbacks"
+        name="Callbacks"
+        parent="ons_ops_shell.menu_ops_intake_section"
+        action="action_interaction_callbacks"
+        sequence="7"
+    />
+
+    <!-- ═══ Intake Hub: New Interaction shortcut ═══ -->
+    <record id="action_interaction_new" model="ir.actions.act_window">
+        <field name="name">New Interaction</field>
+        <field name="res_model">ons.interaction</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+    </record>
+
+    <menuitem
+        id="menu_ops_new_interaction"
+        name="New Intake"
+        parent="ons_ops_shell.menu_ops_intake_section"
+        action="action_interaction_new"
+        sequence="1"
     />
 
 </odoo>

@@ -125,6 +125,9 @@ class Case(models.Model):
         })
         self.invoice_id = invoice
         self.payment_status = "invoice_sent"
+        # Auto-attribute billing to the user who created the invoice
+        if not self.billing_agent_id:
+            self.billing_agent_id = self.env.uid
         return {
             "type": "ir.actions.act_window",
             "res_model": "account.move",

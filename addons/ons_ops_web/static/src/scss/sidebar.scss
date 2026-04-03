@@ -1,0 +1,147 @@
+// ═══════════════════════════════════════════════════════════════
+// Custom Left Sidebar — Dark charcoal theme matching legacy
+// Overrides Odoo's default navbar menu sections
+// ═══════════════════════════════════════════════════════════════
+
+// ── Sidebar/NavBar left section (app switcher + menu items) ──
+.o_web_client {
+    // Make the main navbar match legacy dark sidebar
+    .o_main_navbar {
+        background-color: $ons-sidebar-bg !important;
+
+        // App switcher icon
+        .o_navbar_apps_menu .dropdown-toggle {
+            color: $ons-sidebar-text !important;
+            &:hover {
+                background-color: $ons-sidebar-active-bg !important;
+            }
+        }
+
+        // Menu brand (app name)
+        .o_menu_brand {
+            color: $ons-sidebar-text !important;
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: -0.01em;
+        }
+
+        // Top menu sections
+        .o_menu_sections {
+            > .dropdown, > a, > button {
+                .dropdown-toggle, & {
+                    color: rgba(255, 255, 255, 0.8) !important;
+                    font-weight: 500;
+                    font-size: 13px;
+                    padding: 6px 12px;
+                    border-radius: $ons-radius-xs;
+                    transition: all 150ms ease;
+
+                    &:hover, &.show, &:focus {
+                        color: #FFFFFF !important;
+                        background-color: $ons-sidebar-active-bg !important;
+                    }
+
+                    i.fa {
+                        margin-right: 6px;
+                        font-size: 14px;
+                        opacity: 0.85;
+                    }
+                }
+            }
+        }
+
+        // Systray (right side icons: messaging, activities, user menu)
+        .o_menu_systray {
+            > .o-dropdown, > .o_systray_item, > a {
+                .dropdown-toggle, & {
+                    color: rgba(255, 255, 255, 0.8) !important;
+
+                    &:hover {
+                        color: #FFFFFF !important;
+                        background-color: $ons-sidebar-active-bg !important;
+                    }
+                }
+            }
+
+            // Notification badge
+            .o-mail-MessagingMenu-counter,
+            .badge {
+                background-color: $ons-primary !important;
+                color: white !important;
+                font-size: 10px;
+                min-width: 18px;
+                height: 18px;
+                line-height: 18px;
+                border-radius: 9px;
+            }
+        }
+
+        // User menu dropdown
+        .o_user_menu {
+            .dropdown-toggle {
+                color: $ons-sidebar-text !important;
+            }
+        }
+    }
+
+    // ── App Switcher dropdown ──
+    .o_navbar_apps_menu .dropdown-menu {
+        background-color: $ons-sidebar-bg;
+        border: 1px solid $ons-sidebar-border;
+        border-radius: $ons-radius;
+        box-shadow: $ons-shadow-lg;
+        padding: 8px;
+
+        .dropdown-item, a {
+            color: $ons-sidebar-text !important;
+            border-radius: $ons-radius-xs;
+            padding: 8px 12px;
+            font-size: 13px;
+
+            &:hover, &:focus {
+                background-color: $ons-sidebar-active-bg !important;
+                color: #FFFFFF !important;
+            }
+
+            &.active, &.focus {
+                background-color: $ons-primary !important;
+                color: #FFFFFF !important;
+            }
+        }
+    }
+
+    // ── Dropdown menus from navbar ──
+    .o_main_navbar .dropdown-menu {
+        background-color: $ons-card;
+        border: 1px solid $ons-border;
+        border-radius: $ons-radius;
+        box-shadow: $ons-shadow-lg;
+        padding: 6px;
+        min-width: 200px;
+
+        .dropdown-item {
+            font-size: 13px;
+            font-weight: 500;
+            color: $ons-text;
+            border-radius: $ons-radius-xs;
+            padding: 8px 12px;
+
+            &:hover, &:focus {
+                background-color: $ons-primary-light;
+                color: $ons-primary;
+            }
+
+            i.fa {
+                margin-right: 8px;
+                width: 16px;
+                text-align: center;
+                color: $ons-text-muted;
+            }
+        }
+
+        .dropdown-divider {
+            border-color: $ons-border;
+            margin: 4px 0;
+        }
+    }
+}

@@ -301,3 +301,18 @@ class Case(models.Model):
         """Extension point for connectors (Discord notifications, etc.).
         Override in sub-modules to add side effects on stage transition."""
         pass
+
+    # ── Auto-detect assisting tech from chatter ─────────────────────
+    def message_post(self, **kwargs):
+        """Auto-set assisting tech when a non-intake user posts a note."""
+        result = super().message_post(**kwargs)
+        if kwargs.get("message_type") == "comment" and kwargs.get("subtype_xmlid") == "mail.mt_note":
+            author_uid = self.env.uid
+            for rec in self:
+                if (
+                    not rec.assigned_tech_id
+                    and rec.intake_agent_id
+                    and author_uid != rec.intake_agent_id.id
+                ):
+                    rec.assigned_tech_id = author_uid
+        return result

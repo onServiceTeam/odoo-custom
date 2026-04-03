@@ -74,9 +74,19 @@ class Interaction(models.Model):
         tracking=True,
         index=True,
     )
-    customer_name = fields.Char(string="Customer Name (raw)")
+    customer_name = fields.Char(
+        string="Customer Name",
+        related="partner_id.name",
+        readonly=False,
+        store=True,
+    )
     customer_phone = fields.Char(string="Phone (raw)")
-    customer_email = fields.Char(string="Email (raw)")
+    customer_email = fields.Char(
+        string="Email",
+        related="partner_id.email",
+        readonly=False,
+        store=True,
+    )
     caller_type = fields.Selection(
         [("new", "New Caller"), ("returning", "Returning Caller"), ("subscriber", "Subscriber")],
         tracking=True,
@@ -86,9 +96,18 @@ class Interaction(models.Model):
     )
 
     # ── Agent attribution ───────────────────────────────────────────
-    agent_id = fields.Many2one("res.users", string="Phone Technician", tracking=True, index=True)
-    assisting_agent_id = fields.Many2one("res.users", string="Assisting Technician")
-    billing_agent_id = fields.Many2one("res.users", string="Verification & Billing Tech (VBT)")
+    agent_id = fields.Many2one(
+        "res.users", string="Phone Technician", tracking=True, index=True,
+        default=lambda self: self.env.uid,
+    )
+    assisting_agent_id = fields.Many2one(
+        "res.users", string="Assisting Technician",
+        default=lambda self: self.env.uid,
+    )
+    billing_agent_id = fields.Many2one(
+        "res.users", string="Verification & Billing Tech (VBT)",
+        default=lambda self: self.env.uid,
+    )
 
     # ── Call details ────────────────────────────────────────────────
     queue_name = fields.Selection(
@@ -288,6 +307,23 @@ class Interaction(models.Model):
             self.callback_requested = True
             if not self.session_path or self.session_path == "no_session":
                 self.session_path = "callback"
+
+    # ── Onchange: partner → follow-up case detection ────────────────
+    @api.onchange("partner_id")
+    def _onchange_partner_id(self):
+        """When a partner is selected, detect open cases for follow-up context."""
+        if not self.partner_id:
+            return
+        open_cases = self.env["ons.case"].search([
+            ("partner_id", "=", self.partner_id.id),
+            ("is_closed", "=", False),
+        ], limit=5)
+        if open_cases:
+            case_names = ", ".join(open_cases.mapped("name"))
+            return {"warning": {
+                "title": "Open Cases Found",
+                "message": "This customer has %d open case(s): %s. Consider linking this interaction as a follow-up." % (len(open_cases), case_names),
+            }}
 
     # ── Sequence + post-create automation ───────────────────────────
     @api.model_create_multi
